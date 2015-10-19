@@ -16,26 +16,41 @@
 package com.alibaba.dubbo.cache.support.jcache;
 
 import javax.cache.Cache;
-import javax.cache.CacheBuilder;
 import javax.cache.CacheManager;
 import javax.cache.Caching;
+import javax.cache.spi.CachingProvider;
 
 import com.alibaba.dubbo.common.URL;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 /**
  * JCache
- * 
+ *
  * @author william.liangf
  */
 public class JCache implements com.alibaba.dubbo.cache.Cache {
 
-    private final Cache<Object, Object> store;
+    private Cache<Object, Object> store;
 
     public JCache(URL url) {
+        ClassLoader classLoader = this.getClass().getClassLoader();
+        CachingProvider cachingProvider = Caching.getCachingProvider();
         String type = url.getParameter("jcache");
-        CacheManager cacheManager = type == null || type.length() == 0 ? Caching.getCacheManager() : Caching.getCacheManager(type);
-        CacheBuilder<Object, Object> cacheBuilder = cacheManager.createCacheBuilder(url.getServiceKey());
-        this.store = cacheBuilder.build();
+        CacheManager cacheManager = null;
+        if (type == null || type.length() == 0) {
+            cacheManager = cachingProvider.getCacheManager();
+        } else {
+            try {
+                cacheManager = cachingProvider.getCacheManager(new URI(url.toString()), classLoader);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
+        if (cacheManager != null) {
+            this.store = cacheManager.getCache("dubbo");
+        }
     }
 
     public void put(Object key, Object value) {
