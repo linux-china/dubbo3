@@ -99,8 +99,8 @@
         <xmemcached.version>1.4.3</xmemcached.version>
         <cxf_version>2.6.1</cxf_version>
         <thrift.version>0.9.3</thrift.version>
-        <jfreechart_version>1.0.13</jfreechart_version>
-        <servlet_version>2.5</servlet_version>
+        <jfreechart.version>1.0.13</jfreechart.version>
+        <servlet.version>2.5</servlet.version>
         <jetty_version>6.1.26</jetty_version>
         <sca_version>2.0-M5.1</sca_version>
         <guice_version>3.0</guice_version>
@@ -229,12 +229,12 @@
             <dependency>
                 <groupId>jfree</groupId>
                 <artifactId>jfreechart</artifactId>
-                <version>${jfreechart_version}</version>
+                <version>${jfreechart.version}</version>
             </dependency>
             <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>servlet-api</artifactId>
-                <version>${servlet_version}</version>
+                <version>${servlet.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.mortbay.jetty</groupId>
