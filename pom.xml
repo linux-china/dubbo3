@@ -88,8 +88,8 @@
         <!-- Common libs -->
         <spring.version>4.2.2.RELEASE</spring.version>
         <netty.version>3.2.10.Final</netty.version>
-        <mina_version>1.1.7</mina_version>
-        <grizzly_version>2.1.4</grizzly_version>
+        <mina.version>1.1.7</mina.version>
+        <grizzly.version>2.3.23</grizzly.version>
         <hessian_lite_version>3.2.1-fixed-2</hessian_lite_version>
         <fastjson_version>1.1.39</fastjson_version>
         <bsf_version>3.1</bsf_version>
@@ -132,8 +132,8 @@
 
         <!-- for maven compiler plugin -->
         <maven_compiler_plugin_version>2.3.2</maven_compiler_plugin_version>
-        <java_source_version>1.5</java_source_version>
-        <java_target_version>1.5</java_target_version>
+        <java_source_version>1.6</java_source_version>
+        <java_target_version>1.6</java_target_version>
         <file_encoding>UTF-8</file_encoding>
 
         <maven_source_plugin_version>2.1.1</maven_source_plugin_version>
@@ -174,12 +174,12 @@
             <dependency>
                 <groupId>org.apache.mina</groupId>
                 <artifactId>mina-core</artifactId>
-                <version>${mina_version}</version>
+                <version>${mina.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.glassfish.grizzly</groupId>
                 <artifactId>grizzly-core</artifactId>
-                <version>${grizzly_version}</version>
+                <version>${grizzly.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.alibaba</groupId>
