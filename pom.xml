@@ -253,15 +253,15 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>com.googlecode.jmockit</groupId>
-                <artifactId>jmockit</artifactId>
-                <version>${jmockit.version}</version>
+                <groupId>org.easymock</groupId>
+                <artifactId>easymockclassextension</artifactId>
+                <version>3.2</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>org.easymock</groupId>
-                <artifactId>easymockclassextension</artifactId>
-                <version>${easymock.version}</version>
+                <groupId>com.googlecode.jmockit</groupId>
+                <artifactId>jmockit</artifactId>
+                <version>${jmockit.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
