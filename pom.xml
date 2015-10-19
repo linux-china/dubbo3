@@ -104,7 +104,7 @@
         <jetty_version>6.1.26</jetty_version>
         <sca_version>2.0-M5.1</sca_version>
         <guice_version>3.0</guice_version>
-        <cglib_version>2.2</cglib_version>
+        <cglib.version>3.1</cglib.version>
         <!-- Test libs -->
         <easymock.version>3.4</easymock.version>
         <jmockit.version>1.7</jmockit.version>
@@ -251,11 +251,6 @@
                 <artifactId>guice</artifactId>
                 <version>${guice_version}</version>
             </dependency>
-            <dependency>
-                <groupId>com.alibaba.citrus</groupId>
-                <artifactId>citrus-webx-all</artifactId>
-                <version>${webx_version}</version>
-            </dependency>
             <!-- Test libs -->
             <dependency>
                 <groupId>org.easymock</groupId>
@@ -278,7 +273,7 @@
             <dependency>
                 <groupId>cglib</groupId>
                 <artifactId>cglib-nodep</artifactId>
-                <version>${cglib_version}</version>
+                <version>${cglib.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
