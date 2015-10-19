@@ -22,7 +22,7 @@
 		<version>3.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>dubbo</artifactId>
-	<packaging>pom</packaging>
+	<packaging>jar</packaging>
 	<name>${project.artifactId}</name>
 	<description>The all in one project of dubbo</description>
 	<properties>
