@@ -90,7 +90,7 @@
         <netty.version>3.2.10.Final</netty.version>
         <mina.version>1.1.7</mina.version>
         <grizzly.version>2.3.23</grizzly.version>
-        <hessian_lite_version>3.2.1-fixed-2</hessian_lite_version>
+        <hessian_lite.version>3.2.1-fixed-2</hessian_lite.version>
         <bsf.version>3.1</bsf.version>
         <sorcerer.version>0.8</sorcerer.version>
         <zookeeper.version>3.4.6</zookeeper.version>
@@ -178,7 +178,7 @@
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>hessian-lite</artifactId>
-                <version>${hessian_lite_version}</version>
+                <version>${hessian_lite.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.bsf</groupId>
