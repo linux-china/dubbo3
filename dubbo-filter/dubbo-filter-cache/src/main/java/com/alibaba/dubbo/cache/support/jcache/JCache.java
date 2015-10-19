@@ -18,6 +18,7 @@ package com.alibaba.dubbo.cache.support.jcache;
 import javax.cache.Cache;
 import javax.cache.CacheManager;
 import javax.cache.Caching;
+import javax.cache.configuration.MutableConfiguration;
 import javax.cache.spi.CachingProvider;
 
 import com.alibaba.dubbo.common.URL;
@@ -49,7 +50,7 @@ public class JCache implements com.alibaba.dubbo.cache.Cache {
             }
         }
         if (cacheManager != null) {
-            this.store = cacheManager.getCache("dubbo");
+            this.store = cacheManager.createCache("dubbo", new MutableConfiguration<Object, Object>());
         }
     }
 
