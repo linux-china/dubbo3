@@ -106,8 +106,8 @@
         <guice_version>3.0</guice_version>
         <cglib_version>2.2</cglib_version>
         <!-- Test libs -->
-        <easymock_version>3.0</easymock_version>
-        <jmockit_version>0.999.8</jmockit_version>
+        <easymock.version>3.4</easymock.version>
+        <jmockit.version>1.7</jmockit.version>
         <!-- Build args -->
         <!--<argline>-server -Xms64m -Xmx64m -XX:PermSize=64m -XX:MaxPermSize=64m</argline>-->
         <skip_maven_deploy>false</skip_maven_deploy>
@@ -260,19 +260,19 @@
             <dependency>
                 <groupId>org.easymock</groupId>
                 <artifactId>easymock</artifactId>
-                <version>${easymock_version}</version>
+                <version>${easymock.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>com.googlecode.jmockit</groupId>
                 <artifactId>jmockit</artifactId>
-                <version>${jmockit_version}</version>
+                <version>${jmockit.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.easymock</groupId>
                 <artifactId>easymockclassextension</artifactId>
-                <version>${easymock_version}</version>
+                <version>${easymock.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
