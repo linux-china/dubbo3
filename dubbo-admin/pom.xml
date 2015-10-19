@@ -30,7 +30,7 @@
 		<wtpContextName>/</wtpContextName>
 		<eclipse.useProjectReferences>false</eclipse.useProjectReferences>
 		<skip_maven_deploy>false</skip_maven_deploy>
-        <webx_version>3.0.8</webx_version>
+        <webx.version>3.0.8</webx.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -41,6 +41,7 @@
 		<dependency>
 			<groupId>com.alibaba.citrus</groupId>
 			<artifactId>citrus-webx-all</artifactId>
+            <version>${webx.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
