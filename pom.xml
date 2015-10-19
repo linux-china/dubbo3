@@ -104,7 +104,7 @@
         <jetty_version>6.1.26</jetty_version>
         <validation_version>1.0.0.GA</validation_version>
         <hibernate_validator_version>4.2.0.Final</hibernate_validator_version>
-        <jcache_version>0.4</jcache_version>
+        <jcache.version>1.0.0</jcache.version>
         <sca_version>2.0-M5.1</sca_version>
         <guice_version>3.0</guice_version>
         <cglib_version>2.2</cglib_version>
@@ -258,7 +258,7 @@
             <dependency>
                 <groupId>javax.cache</groupId>
                 <artifactId>cache-api</artifactId>
-                <version>${jcache_version}</version>
+                <version>${jcache.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.tuscany.sca</groupId>
