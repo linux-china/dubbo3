@@ -205,7 +205,7 @@
 					<artifactId>zkclient</artifactId>
 				</exclusion>
 				<exclusion>
-					<groupId>com.netflix.curator</groupId>
+					<groupId>org.apache.curator</groupId>
 					<artifactId>curator-framework</artifactId>
 				</exclusion>
 			</exclusions>
