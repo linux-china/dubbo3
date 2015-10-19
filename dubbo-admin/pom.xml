@@ -30,6 +30,7 @@
 		<wtpContextName>/</wtpContextName>
 		<eclipse.useProjectReferences>false</eclipse.useProjectReferences>
 		<skip_maven_deploy>false</skip_maven_deploy>
+        <webx_version>3.0.8</webx_version>
 	</properties>
 	<dependencies>
 		<dependency>
