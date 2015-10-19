@@ -102,7 +102,7 @@
         <jfreechart.version>1.0.13</jfreechart.version>
         <servlet.version>2.5</servlet.version>
         <jetty_version>6.1.26</jetty_version>
-        <sca_version>2.0-M5.1</sca_version>
+        <sca.version>2.0.1</sca.version>
         <cglib.version>3.1</cglib.version>
         <!-- Test libs -->
         <easymock.version>3.4</easymock.version>
@@ -111,7 +111,7 @@
         <!--<argline>-server -Xms64m -Xmx64m -XX:PermSize=64m -XX:MaxPermSize=64m</argline>-->
         <skip_maven_deploy>false</skip_maven_deploy>
         <updateReleaseInfo>true</updateReleaseInfo>
-        <project.build.sourceEncoding>${file_encoding}</project.build.sourceEncoding>
+        <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
 
         <!-- generate idea copyright -->
         <copyright>Copyright 1999-2012 Alibaba Group.&#10; &#10;Licensed under the Apache License, Version 2.0 (the
@@ -243,7 +243,7 @@
             <dependency>
                 <groupId>org.apache.tuscany.sca</groupId>
                 <artifactId>tuscany-sca-api</artifactId>
-                <version>${sca_version}</version>
+                <version>${sca.version}</version>
             </dependency>
             <!-- Test libs -->
             <dependency>
