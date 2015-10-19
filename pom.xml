@@ -108,7 +108,6 @@
         <sca_version>2.0-M5.1</sca_version>
         <guice_version>3.0</guice_version>
         <cglib_version>2.2</cglib_version>
-        <webx_version>3.0.8</webx_version>
         <!-- Test libs -->
         <easymock_version>3.0</easymock_version>
         <jmockit_version>0.999.8</jmockit_version>
