@@ -91,7 +91,6 @@
         <mina_version>1.1.7</mina_version>
         <grizzly_version>2.1.4</grizzly_version>
         <hessian_lite_version>3.2.1-fixed-2</hessian_lite_version>
-        <xstream_version>1.4.1</xstream_version>
         <fastjson_version>1.1.39</fastjson_version>
         <bsf_version>3.1</bsf_version>
         <sorcerer_version>0.8</sorcerer_version>
@@ -191,11 +190,6 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson_version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.thoughtworks.xstream</groupId>
-                <artifactId>xstream</artifactId>
-                <version>${xstream_version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.bsf</groupId>
