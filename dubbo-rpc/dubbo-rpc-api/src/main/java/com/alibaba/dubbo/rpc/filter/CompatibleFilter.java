@@ -49,8 +49,7 @@ public class CompatibleFilter implements Filter {
                     Class<?> type = method.getReturnType();
                     Object newValue;
                     String serialization = invoker.getUrl().getParameter(Constants.SERIALIZATION_KEY); 
-                    if ("json".equals(serialization)
-                            || "fastjson".equals(serialization)){
+                    if ("json".equals(serialization)){
                         Type gtype = method.getGenericReturnType();
                         newValue = PojoUtils.realize(value, type, gtype);
                     } else if (! type.isInstance(value)) {
