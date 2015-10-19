@@ -31,17 +31,17 @@ import com.caucho.hessian.client.HessianConnection;
 
 /**
  * HttpClientConnection
- * 
+ *
  * @author william.liangf
  */
 public class HttpClientConnection implements HessianConnection {
-    
+
     private final HttpClient httpClient;
 
     private final ByteArrayOutputStream output;
-    
+
     private final HttpPost request;
-    
+
     private volatile HttpResponse response;
 
     public HttpClientConnection(HttpClient httpClient, URL url) {
@@ -68,7 +68,7 @@ public class HttpClientConnection implements HessianConnection {
     }
 
     public String getStatusMessage() {
-        return response == null || response.getStatusLine() == null ? null :  response.getStatusLine().getReasonPhrase();
+        return response == null || response.getStatusLine() == null ? null : response.getStatusLine().getReasonPhrase();
     }
 
     public InputStream getInputStream() throws IOException {
@@ -85,4 +85,7 @@ public class HttpClientConnection implements HessianConnection {
     public void destroy() throws IOException {
     }
 
+    public String getContentEncoding() {
+        return "utf-8";
+    }
 }
