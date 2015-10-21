@@ -38,7 +38,7 @@ import com.alibaba.dubbo.config.ProtocolConfig;
 import com.alibaba.dubbo.config.ProviderConfig;
 import com.alibaba.dubbo.config.RegistryConfig;
 import com.alibaba.dubbo.config.ServiceConfig;
-import com.alibaba.dubbo.config.annotation.Service;
+import com.alibaba.dubbo.config.annotation.DubboService;
 import com.alibaba.dubbo.config.spring.extension.SpringExtensionFactory;
 
 /**
@@ -63,7 +63,7 @@ public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean
         super();
     }
 
-    public ServiceBean(Service service) {
+    public ServiceBean(DubboService service) {
         super(service);
     }
 

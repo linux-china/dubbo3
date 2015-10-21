@@ -15,7 +15,7 @@
  */
 package com.alibaba.dubbo.examples.annotation.impl;
 
-import com.alibaba.dubbo.config.annotation.Service;
+import com.alibaba.dubbo.config.annotation.DubboService;
 import com.alibaba.dubbo.examples.annotation.api.AnnotationService;
 
 /**
@@ -23,7 +23,7 @@ import com.alibaba.dubbo.examples.annotation.api.AnnotationService;
  * 
  * @author william.liangf
  */
-@Service
+@DubboService
 public class AnnotationServiceImpl implements AnnotationService {
 
     public String sayHello(String name) {

@@ -15,7 +15,7 @@
  */
 package com.alibaba.dubbo.config.spring.annotation.provider;
 
-import com.alibaba.dubbo.config.annotation.Service;
+import com.alibaba.dubbo.config.annotation.DubboService;
 import com.alibaba.dubbo.config.spring.api.Box;
 import com.alibaba.dubbo.config.spring.api.DemoService;
 
@@ -24,7 +24,7 @@ import com.alibaba.dubbo.config.spring.api.DemoService;
  * 
  * @author william.liangf
  */
-@Service(version = "1.2")
+@DubboService(version = "1.2")
 public class AnnotationServiceImpl implements DemoService {
     
     public String sayName(String name) {
