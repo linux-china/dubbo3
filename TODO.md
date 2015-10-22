@@ -6,3 +6,5 @@ Todo
 * Jetty升级
 * Admin从Webx调整到Vaadin
 * 调整到Java 8
+* Spring Boot集成
+* 和Spring Cloud的Registry Server集成
