@@ -111,6 +111,8 @@
         <!--<argline>-server -Xms64m -Xmx64m -XX:PermSize=64m -XX:MaxPermSize=64m</argline>-->
         <skip_maven_deploy>false</skip_maven_deploy>
         <updateReleaseInfo>true</updateReleaseInfo>
+
+        <java.vesion>1.8</java.vesion>
         <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
 
         <!-- generate idea copyright -->
@@ -123,12 +125,6 @@
             the License.
         </copyright>
         <profile.name>oss</profile.name>
-
-        <!-- for maven compiler plugin -->
-        <maven_compiler_plugin_version>2.3.2</maven_compiler_plugin_version>
-        <java_source_version>1.6</java_source_version>
-        <java_target_version>1.6</java_target_version>
-        <file_encoding>UTF-8</file_encoding>
 
         <maven_source_plugin_version>2.1.1</maven_source_plugin_version>
         <maven_jar_plugin_version>2.3.2</maven_jar_plugin_version>
@@ -295,6 +291,14 @@
     </dependencies>
     <build>
         <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
