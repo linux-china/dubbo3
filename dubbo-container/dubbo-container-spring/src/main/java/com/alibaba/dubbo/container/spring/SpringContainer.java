@@ -36,7 +36,7 @@ public class SpringContainer implements Container {
     
     public static final String DEFAULT_SPRING_CONFIG = "classpath*:META-INF/spring/*.xml";
 
-    static ClassPathXmlApplicationContext context;
+    public static ClassPathXmlApplicationContext context;
     
     public static ClassPathXmlApplicationContext getContext() {
 		return context;
