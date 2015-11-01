@@ -61,6 +61,8 @@ import com.alibaba.dubbo.rpc.Protocol;
 public class DubboBeanDefinitionParser implements BeanDefinitionParser {
     //reference bean id list
     public static List<String> referenceBeanList = new ArrayList<>();
+    //service bean id list
+    public static List<String> serviceBeanList = new ArrayList<>();
     private static final Logger logger = LoggerFactory.getLogger(DubboBeanDefinitionParser.class);
 
     private final Class<?> beanClass;
@@ -132,6 +134,7 @@ public class DubboBeanDefinitionParser implements BeanDefinitionParser {
                 parseProperties(element.getChildNodes(), classDefinition);
                 beanDefinition.getPropertyValues().addPropertyValue("ref", new BeanDefinitionHolder(classDefinition, id + "Impl"));
             }
+            serviceBeanList.add(id);
         } else if (ReferenceBean.class.equals(beanClass)) {
             referenceBeanList.add(id);
         }
