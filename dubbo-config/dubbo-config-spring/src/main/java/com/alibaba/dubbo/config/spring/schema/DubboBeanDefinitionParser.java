@@ -59,10 +59,6 @@ import com.alibaba.dubbo.rpc.Protocol;
  * @export
  */
 public class DubboBeanDefinitionParser implements BeanDefinitionParser {
-    //reference bean id list
-    public static Map<String, String> referenceBeanList = new HashMap<>();
-    //service bean id list
-    public static Map<String, String> serviceBeanList = new HashMap<>();
     private static final Logger logger = LoggerFactory.getLogger(DubboBeanDefinitionParser.class);
 
     private final Class<?> beanClass;
@@ -134,9 +130,6 @@ public class DubboBeanDefinitionParser implements BeanDefinitionParser {
                 parseProperties(element.getChildNodes(), classDefinition);
                 beanDefinition.getPropertyValues().addPropertyValue("ref", new BeanDefinitionHolder(classDefinition, id + "Impl"));
             }
-            serviceBeanList.put(id, element.getAttribute("interface"));
-        } else if (ReferenceBean.class.equals(beanClass)) {
-            referenceBeanList.put(id, element.getAttribute("interface"));
         }
         Set<String> props = new HashSet<String>();
         ManagedMap parameters = null;
