@@ -109,6 +109,8 @@
         <!-- Test libs -->
         <easymock.version>3.4</easymock.version>
         <jmockit.version>1.7</jmockit.version>
+        <spring.version>4.2.3.RELEASE</spring.version>
+        <spring-boot.version>1.3.0.RELEASE</spring-boot.version>
         <!-- Build args -->
         <!--<argline>-server -Xms64m -Xmx64m -XX:PermSize=64m -XX:MaxPermSize=64m</argline>-->
         <!-- generate idea copyright -->
@@ -126,14 +128,14 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-framework-bom</artifactId>
-                <version>4.2.3.RELEASE</version>
+                <version>${spring.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>1.3.0.RELEASE</version>
+                <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
