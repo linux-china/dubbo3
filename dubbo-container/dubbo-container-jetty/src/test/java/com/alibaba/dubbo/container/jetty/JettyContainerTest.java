@@ -32,7 +32,7 @@ public class JettyContainerTest {
     public void testContainer() {
         JettyContainer container = (JettyContainer) ExtensionLoader.getExtensionLoader(Container.class).getExtension("jetty");
         container.start();
-        Assert.assertTrue(container.connector.isStarted());
+        Assert.assertTrue(container.server.isStarted());
         container.stop();
     }
 

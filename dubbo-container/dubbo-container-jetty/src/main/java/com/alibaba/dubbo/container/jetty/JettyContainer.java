@@ -15,12 +15,12 @@
  */
 package com.alibaba.dubbo.container.jetty;
 
-import org.mortbay.jetty.Handler;
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.nio.SelectChannelConnector;
-import org.mortbay.jetty.servlet.FilterHolder;
-import org.mortbay.jetty.servlet.ServletHandler;
-import org.mortbay.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.FilterHolder;
+import org.eclipse.jetty.servlet.FilterMapping;
+import org.eclipse.jetty.servlet.ServletHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 
 import com.alibaba.dubbo.common.logger.Logger;
 import com.alibaba.dubbo.common.logger.LoggerFactory;
@@ -32,7 +32,7 @@ import com.alibaba.dubbo.container.page.ResourceFilter;
 
 /**
  * JettyContainer. (SPI, Singleton, ThreadSafe)
- * 
+ *
  * @author william.liangf
  */
 public class JettyContainer implements Container {
@@ -47,8 +47,7 @@ public class JettyContainer implements Container {
 
     public static final int DEFAULT_JETTY_PORT = 8080;
 
-    SelectChannelConnector connector;
-
+    Server server =null;
     public void start() {
         String serverPort = ConfigUtils.getProperty(JETTY_PORT);
         int port;
@@ -57,23 +56,19 @@ public class JettyContainer implements Container {
         } else {
             port = Integer.parseInt(serverPort);
         }
-        connector = new SelectChannelConnector();
-        connector.setPort(port);
         ServletHandler handler = new ServletHandler();
-        
         String resources = ConfigUtils.getProperty(JETTY_DIRECTORY);
         if (resources != null && resources.length() > 0) {
-            FilterHolder resourceHolder = handler.addFilterWithMapping(ResourceFilter.class, "/*", Handler.DEFAULT);
+            FilterHolder resourceHolder = handler.addFilterWithMapping(ResourceFilter.class, "/*", FilterMapping.DEFAULT);
             resourceHolder.setInitParameter("resources", resources);
         }
-        
+
         ServletHolder pageHolder = handler.addServletWithMapping(PageServlet.class, "/*");
         pageHolder.setInitParameter("pages", ConfigUtils.getProperty(JETTY_PAGES));
         pageHolder.setInitOrder(2);
-        
-        Server server = new Server();
-        server.addConnector(connector);
-        server.addHandler(handler);
+
+         server = new Server(port);
+        server.setHandler(handler);
         try {
             server.start();
         } catch (Exception e) {
@@ -83,10 +78,7 @@ public class JettyContainer implements Container {
 
     public void stop() {
         try {
-            if (connector != null) {
-                connector.close();
-                connector = null;
-            }
+           server.stop();
         } catch (Throwable e) {
             logger.error(e.getMessage(), e);
         }
