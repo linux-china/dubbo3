@@ -33,7 +33,6 @@
 	</group>
     <script>
         <generate template="web.xml.vm" destfile="WEB-INF/web.xml" charset="UTF-8"/>
-        <generate template="log4j.xml" destfile="WEB-INF/log4j.xml" charset="UTF-8"/>
         <generate template="resources.xml" destfile="WEB-INF/common/resources.xml" charset="UTF-8"/>
         <generate template="dubbo.properties.vm" destfile="WEB-INF/classes/dubbo.properties" charset="UTF-8"/>
     </script>
