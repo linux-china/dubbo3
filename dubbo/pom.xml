@@ -108,11 +108,6 @@
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
-			<artifactId>dubbo-rpc-rmi</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.alibaba</groupId>
 			<artifactId>dubbo-rpc-hessian</artifactId>
 			<version>${project.parent.version}</version>
 			<exclusions>
@@ -130,32 +125,6 @@
 				<exclusion>
 					<groupId>com.caucho</groupId>
     				<artifactId>hessian</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>dubbo-rpc-webservice</artifactId>
-			<version>${project.parent.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.apache.cxf</groupId>
-					<artifactId>cxf-rt-frontend-simple</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.apache.cxf</groupId>
-					<artifactId>cxf-rt-transports-http</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>dubbo-rpc-thrift</artifactId>
-			<version>${project.parent.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.apache.thrift</groupId>
-					<artifactId>libthrift</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -314,11 +283,8 @@
 									<include>com.alibaba:dubbo-rpc-api</include>
 									<include>com.alibaba:dubbo-rpc-default</include>
 									<include>com.alibaba:dubbo-rpc-injvm</include>
-									<include>com.alibaba:dubbo-rpc-rmi</include>
 									<include>com.alibaba:dubbo-rpc-hessian</include>
 									<include>com.alibaba:dubbo-rpc-http</include>
-									<include>com.alibaba:dubbo-rpc-webservice</include>
-									<include>com.alibaba:dubbo-rpc-thrift</include>
 									<include>com.alibaba:dubbo-rpc-memcached</include>
 									<include>com.alibaba:dubbo-rpc-redis</include>
 									<include>com.alibaba:dubbo-filter-validation</include>

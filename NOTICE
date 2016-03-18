@@ -106,13 +106,6 @@ Jetty:
   * HOMEPAGE:
     * http://jetty.mortbay.org
 
-Thrift:
-
-  * LICENSE:
-    * http://www.apache.org/licenses/LICENSE-2.0 (Apache License 2.0)
-  * HOMEPAGE:
-    * http://thrift.apache.org
-
 CXF:
 
   * LICENSE:

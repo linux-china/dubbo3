@@ -99,7 +99,6 @@
         <curator.version>2.9.0</curator.version>
         <xmemcached.version>2.0.0</xmemcached.version>
         <cxf.version>2.7.17</cxf.version>
-        <thrift.version>0.9.3</thrift.version>
         <jfreechart.version>1.0.13</jfreechart.version>
         <servlet.version>2.5</servlet.version>
         <jetty_version>6.1.26</jetty_version>
@@ -195,21 +194,6 @@
                 <groupId>com.googlecode.xmemcached</groupId>
                 <artifactId>xmemcached</artifactId>
                 <version>${xmemcached.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-rt-frontend-simple</artifactId>
-                <version>${cxf.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-rt-transports-http</artifactId>
-                <version>${cxf.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.thrift</groupId>
-                <artifactId>libthrift</artifactId>
-                <version>${thrift.version}</version>
             </dependency>
             <dependency>
                 <groupId>jfree</groupId>
