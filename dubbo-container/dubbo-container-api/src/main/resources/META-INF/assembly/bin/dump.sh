@@ -6,7 +6,6 @@ DEPLOY_DIR=`pwd`
 CONF_DIR=$DEPLOY_DIR/conf
 
 SERVER_NAME=`sed '/dubbo.application.name/!d;s/.*=//' conf/dubbo.properties | tr -d '\r'`
-LOGS_FILE=`sed '/dubbo.log4j.file/!d;s/.*=//' conf/dubbo.properties | tr -d '\r'`
 
 if [ -z "$SERVER_NAME" ]; then
 	SERVER_NAME=`hostname`
@@ -18,12 +17,7 @@ if [ -z "$PIDS" ]; then
     exit 1
 fi
 
-LOGS_DIR=""
-if [ -n "$LOGS_FILE" ]; then
-	LOGS_DIR=`dirname $LOGS_FILE`
-else
-	LOGS_DIR=$DEPLOY_DIR/logs
-fi
+LOGS_DIR=$DEPLOY_DIR/logs
 if [ ! -d $LOGS_DIR ]; then
 	mkdir $LOGS_DIR
 fi

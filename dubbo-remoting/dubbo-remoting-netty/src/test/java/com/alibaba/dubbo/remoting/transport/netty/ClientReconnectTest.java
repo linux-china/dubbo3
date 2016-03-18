@@ -15,7 +15,6 @@
  */
 package com.alibaba.dubbo.remoting.transport.netty;
 
-import org.apache.log4j.Level;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -29,6 +28,7 @@ import com.alibaba.dubbo.remoting.RemotingException;
 import com.alibaba.dubbo.remoting.Server;
 import com.alibaba.dubbo.remoting.exchange.Exchangers;
 import com.alibaba.dubbo.remoting.exchange.support.ExchangeHandlerAdapter;
+import org.slf4j.event.Level;
 
 /**
  * 客户端重连测试

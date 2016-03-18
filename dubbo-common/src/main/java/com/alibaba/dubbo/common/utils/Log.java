@@ -15,9 +15,10 @@
  */
 package com.alibaba.dubbo.common.utils;
 
+import org.slf4j.event.Level;
+
 import java.io.Serializable;
 
-import org.apache.log4j.Level;
 
 /**
  * @author tony.chenl

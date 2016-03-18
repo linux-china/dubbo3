@@ -8,7 +8,6 @@ CONF_DIR=$DEPLOY_DIR/conf
 SERVER_NAME=`sed '/dubbo.application.name/!d;s/.*=//' conf/dubbo.properties | tr -d '\r'`
 SERVER_PROTOCOL=`sed '/dubbo.protocol.name/!d;s/.*=//' conf/dubbo.properties | tr -d '\r'`
 SERVER_PORT=`sed '/dubbo.protocol.port/!d;s/.*=//' conf/dubbo.properties | tr -d '\r'`
-LOGS_FILE=`sed '/dubbo.log4j.file/!d;s/.*=//' conf/dubbo.properties | tr -d '\r'`
 
 if [ -z "$SERVER_NAME" ]; then
     SERVER_NAME=`hostname`
@@ -29,12 +28,7 @@ if [ -n "$SERVER_PORT" ]; then
     fi
 fi
 
-LOGS_DIR=""
-if [ -n "$LOGS_FILE" ]; then
-    LOGS_DIR=`dirname $LOGS_FILE`
-else
-    LOGS_DIR=$DEPLOY_DIR/logs
-fi
+LOGS_DIR=$DEPLOY_DIR/logs
 if [ ! -d $LOGS_DIR ]; then
     mkdir $LOGS_DIR
 fi

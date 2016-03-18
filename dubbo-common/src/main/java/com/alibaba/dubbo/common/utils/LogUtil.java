@@ -18,10 +18,10 @@ package com.alibaba.dubbo.common.utils;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Level;
 
 import com.alibaba.dubbo.common.logger.Logger;
 import com.alibaba.dubbo.common.logger.LoggerFactory;
+import org.slf4j.event.Level;
 
 /**
  * @author tony.chenl
