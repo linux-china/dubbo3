@@ -90,7 +90,7 @@
         <hessian_lite.version>3.2.1-fixed-2</hessian_lite.version>
         <bsf.version>3.1</bsf.version>
         <sorcerer.version>0.8</sorcerer.version>
-        <zookeeper.version>3.4.6</zookeeper.version>
+        <zookeeper.version>3.4.8</zookeeper.version>
         <zkclient.version>0.1</zkclient.version>
         <curator.version>2.9.1</curator.version>
         <xmemcached.version>2.0.0</xmemcached.version>
@@ -101,8 +101,8 @@
         <!-- Test libs -->
         <easymock.version>3.4</easymock.version>
         <jmockit.version>1.7</jmockit.version>
-        <spring.version>4.2.5.RELEASE</spring.version>
-        <platform-bom.version>2.0.3.RELEASE</platform-bom.version>
+        <spring.version>4.2.6.RELEASE</spring.version>
+        <platform-bom.version>2.0.5.RELEASE</platform-bom.version>
         <!-- Build args -->
         <!--<argline>-server -Xms64m -Xmx64m -XX:PermSize=64m -XX:MaxPermSize=64m</argline>-->
         <!-- generate idea copyright -->
