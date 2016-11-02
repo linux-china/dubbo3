@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-mvn -DskipTests clean package
+./mvnw -DskipTests clean package
 
-mvn -pl dubbo clean install
+./mvnw -pl dubbo clean install
