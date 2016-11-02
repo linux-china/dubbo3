@@ -62,13 +62,11 @@ Refer remote service:
         dubbo-demo-provider/src/test/java/com.alibaba.dubbo.demo.provider.DemoProvider
         dubbo-demo-consumer/src/test/java/com.alibaba.dubbo.demo.consumer.DemoConsumer
         dubbo-monitor-simple/src/test/java/com.alibaba.dubbo.monitor.simple.SimpleMonitor
-        dubbo-registry-simple/src/test/java/com.alibaba.dubbo.registry.simple.SimpleRegistry
     
         Edit Config:
         dubbo-demo-provider/src/test/resources/dubbo.properties
         dubbo-demo-consumer/src/test/resources/dubbo.properties
         dubbo-monitor-simple/src/test/resources/dubbo.properties
-        dubbo-registry-simple/src/test/resources/dubbo.properties
 
 * Build the dubbo binary package:
 
