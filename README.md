@@ -30,50 +30,24 @@ Refer remote service:
         <property name="barService" ref="barService" />
     </bean>
 
+### Environment setup
+
+* Please install Docker and Docker Compose first, then execute:
+
+
+     docker-compose up -d
+
 ### Source Building
-
-* Install the git and maven command line:
-
-        yum install git
-        or: apt-get install git
-    
-        cd ~
-        wget http://www.apache.org/dist//maven/binaries/apache-maven-2.2.1-bin.tar.gz
-        tar zxvf apache-maven-2.2.1-bin.tar.gz
-        vi .bash_profile
-           - edit: export PATH=$PATH:~/apache-maven-2.2.1/bin
-        source .bash_profile
 
 * Checkout the dubbo source code:
 
         cd ~
         git clone https://github.com/alibaba/dubbo.git dubbo
-    
-        git checkout -b dubbo-2.4.0
-        git checkout master
-
-* Import the dubbo source code to eclipse project:
-
-        cd ~/dubbo
-        mvn eclipse:eclipse
-        Eclipse -> Menu -> File -> Import -> Exsiting Projects to Workspace -> Browse -> Finish
-    
-        Context Menu -> Run As -> Java Application:
-        dubbo-demo-provider/src/test/java/com.alibaba.dubbo.demo.provider.DemoProvider
-        dubbo-demo-consumer/src/test/java/com.alibaba.dubbo.demo.consumer.DemoConsumer
-        dubbo-monitor-simple/src/test/java/com.alibaba.dubbo.monitor.simple.SimpleMonitor
-    
-        Edit Config:
-        dubbo-demo-provider/src/test/resources/dubbo.properties
-        dubbo-demo-consumer/src/test/resources/dubbo.properties
-        dubbo-monitor-simple/src/test/resources/dubbo.properties
 
 * Build the dubbo binary package:
 
         cd ~/dubbo
-        mvn clean install -Dmaven.test.skip
-        cd dubbo/target
-        ls
+        ./build.sh
 
 * Install the demo provider:
 
@@ -98,88 +72,6 @@ Refer remote service:
         cd dubbo-simple-monitor-2.4.0/bin
         ./start.sh
         http://127.0.0.1:8080
-
-* Install the simple registry:
-
-        cd ~/dubbo/dubbo-simple-registry/target
-        tar zxvf dubbo-simple-registry-2.4.0-assembly.tar.gz
-        cd dubbo-simple-registry-2.4.0/bin
-        ./start.sh
-    
-        cd ~/dubbo/dubbo-demo-provider/conf
-        vi dubbo.properties
-           - edit: dubbo.registry.adddress=dubbo://127.0.0.1:9090
-        cd ../bin
-        ./restart.sh
-    
-        cd ~/dubbo/dubbo-demo-consumer/conf
-        vi dubbo.properties
-           - edit: dubbo.registry.adddress=dubbo://127.0.0.1:9090
-        cd ../bin
-        ./restart.sh
-    
-        cd ~/dubbo/dubbo-simple-monitor/conf
-        vi dubbo.properties
-           - edit: dubbo.registry.adddress=dubbo://127.0.0.1:9090
-        cd ../bin
-        ./restart.sh
-
-* Install the zookeeper registry:
-
-        cd ~
-        wget http://www.apache.org/dist//zookeeper/zookeeper-3.3.3/zookeeper-3.3.3.tar.gz
-        tar zxvf zookeeper-3.3.3.tar.gz
-        cd zookeeper-3.3.3/conf
-        cp zoo_sample.cfg zoo.cfg
-        vi zoo.cfg
-           - edit: dataDir=/home/xxx/data
-        cd ../bin
-        ./zkServer.sh start
-    
-        cd ~/dubbo/dubbo-demo-provider/conf
-        vi dubbo.properties
-           - edit: dubbo.registry.adddress=zookeeper://127.0.0.1:2181
-        cd ../bin
-        ./restart.sh
-    
-        cd ~/dubbo/dubbo-demo-consumer/conf
-        vi dubbo.properties
-           - edit: dubbo.registry.adddress=zookeeper://127.0.0.1:2181
-        cd ../bin
-        ./restart.sh
-    
-        cd ~/dubbo/dubbo-simple-monitor/conf
-        vi dubbo.properties
-           - edit: dubbo.registry.adddress=zookeeper://127.0.0.1:2181
-        cd ../bin
-        ./restart.sh
-
-* Install the redis registry:
-
-        cd ~
-        wget http://redis.googlecode.com/files/redis-2.4.8.tar.gz
-        tar xzf redis-2.4.8.tar.gz
-        cd redis-2.4.8
-        make
-        nohup ./src/redis-server redis.conf &
-    
-        cd ~/dubbo/dubbo-demo-provider/conf
-        vi dubbo.properties
-           - edit: dubbo.registry.adddress=redis://127.0.0.1:6379
-        cd ../bin
-        ./restart.sh
-    
-        cd ~/dubbo/dubbo-demo-consumer/conf
-        vi dubbo.properties
-           - edit: dubbo.registry.adddress=redis://127.0.0.1:6379
-        cd ../bin
-        ./restart.sh
-    
-        cd ~/dubbo/dubbo-simple-monitor/conf
-        vi dubbo.properties
-           - edit: dubbo.registry.adddress=redis://127.0.0.1:6379
-        cd ../bin
-        ./restart.sh
 
 *  Install the admin console:
 
