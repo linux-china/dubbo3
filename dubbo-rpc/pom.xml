@@ -31,7 +31,5 @@
     <modules>
         <module>dubbo-rpc-api</module>
         <module>dubbo-rpc-default</module>
-        <module>dubbo-rpc-injvm</module>
-        <module>dubbo-rpc-hessian</module>
     </modules>
 </project>
