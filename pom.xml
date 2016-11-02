@@ -93,7 +93,6 @@
         <curator.version>2.11.0</curator.version>
         <cxf.version>2.7.17</cxf.version>
         <jfreechart.version>1.0.13</jfreechart.version>
-        <sca.version>2.0.1</sca.version>
         <cglib.version>3.2.4</cglib.version>
         <!-- Test libs -->
         <easymock.version>3.4</easymock.version>
@@ -168,11 +167,6 @@
                 <groupId>jfree</groupId>
                 <artifactId>jfreechart</artifactId>
                 <version>${jfreechart.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.tuscany.sca</groupId>
-                <artifactId>tuscany-sca-api</artifactId>
-                <version>${sca.version}</version>
             </dependency>
             <!-- Test libs -->
             <dependency>
