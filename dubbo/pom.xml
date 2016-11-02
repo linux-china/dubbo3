@@ -104,11 +104,6 @@
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
-			<artifactId>dubbo-registry-multicast</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.alibaba</groupId>
 			<artifactId>dubbo-registry-zookeeper</artifactId>
 			<version>${project.parent.version}</version>
 			<exclusions>
@@ -234,7 +229,6 @@
 									<include>com.alibaba:dubbo-cluster</include>
 									<include>com.alibaba:dubbo-registry-api</include>
 									<include>com.alibaba:dubbo-registry-default</include>
-									<include>com.alibaba:dubbo-registry-multicast</include>
 									<include>com.alibaba:dubbo-registry-zookeeper</include>
 									<include>com.alibaba:dubbo-registry-redis</include>
 									<include>com.alibaba:dubbo-monitor-api</include>
