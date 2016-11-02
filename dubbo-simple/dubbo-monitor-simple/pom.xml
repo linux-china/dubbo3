@@ -75,10 +75,6 @@
             <artifactId>curator-framework</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.googlecode.xmemcached</groupId>
-            <artifactId>xmemcached</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.caucho</groupId>
             <artifactId>hessian</artifactId>
         </dependency>

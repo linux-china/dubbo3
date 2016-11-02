@@ -34,6 +34,5 @@
         <module>dubbo-rpc-injvm</module>
         <module>dubbo-rpc-hessian</module>
         <module>dubbo-rpc-http</module>
-        <module>dubbo-rpc-memcached</module>
     </modules>
 </project>

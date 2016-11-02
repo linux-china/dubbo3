@@ -91,7 +91,6 @@
         <zookeeper.version>3.4.9</zookeeper.version>
         <zkclient.version>0.1</zkclient.version>
         <curator.version>2.11.0</curator.version>
-        <xmemcached.version>2.0.0</xmemcached.version>
         <cxf.version>2.7.17</cxf.version>
         <jfreechart.version>1.0.13</jfreechart.version>
         <sca.version>2.0.1</sca.version>
@@ -164,11 +163,6 @@
                 <groupId>org.apache.curator</groupId>
                 <artifactId>curator-framework</artifactId>
                 <version>${curator.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.googlecode.xmemcached</groupId>
-                <artifactId>xmemcached</artifactId>
-                <version>${xmemcached.version}</version>
             </dependency>
             <dependency>
                 <groupId>jfree</groupId>
