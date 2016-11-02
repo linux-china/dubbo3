@@ -52,37 +52,6 @@
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
-			<artifactId>dubbo-remoting-mina</artifactId>
-			<version>${project.parent.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.apache.mina</groupId>
-					<artifactId>mina-core</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-api</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>dubbo-remoting-grizzly</artifactId>
-			<version>${project.parent.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.glassfish.grizzly</groupId>
-					<artifactId>grizzly-core</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>dubbo-remoting-p2p</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.alibaba</groupId>
 			<artifactId>dubbo-remoting-http</artifactId>
 			<version>${project.parent.version}</version>
 			<exclusions>
