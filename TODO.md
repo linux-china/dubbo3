@@ -15,3 +15,4 @@ Todo
 * netty 3 to netty 4 : http://netty.io/wiki/new-and-noteworthy-in-4.0.html 
 * http://colobu.com/2015/08/17/netty-new-and-noteworthy-in-4-0/
 * http://www.infoq.com/cn/articles/netty-version-upgrade-history-thread-part
+https://github.com/QianmiOpen/dubbo-remoting-netty4
