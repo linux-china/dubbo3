@@ -12,4 +12,6 @@ Todo
 * 去除multicast，这个基本没有用，加强redis
 * remoting，去除grizzly, mina,p2p，直接上netty
 * rpc: injvm, memcached
-* netty 3 to netty 4 : http://netty.io/wiki/new-and-noteworthy-in-4.0.html  http://colobu.com/2015/08/17/netty-new-and-noteworthy-in-4-0/
+* netty 3 to netty 4 : http://netty.io/wiki/new-and-noteworthy-in-4.0.html 
+* http://colobu.com/2015/08/17/netty-new-and-noteworthy-in-4-0/
+* http://www.infoq.com/cn/articles/netty-version-upgrade-history-thread-part
