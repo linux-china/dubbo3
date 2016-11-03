@@ -90,7 +90,7 @@
         <zookeeper.version>3.4.9</zookeeper.version>
         <zkclient.version>0.9</zkclient.version>
         <curator.version>2.11.0</curator.version>
-        <jfreechart.version>1.0.13</jfreechart.version>
+        <jfreechart.version>1.0.19</jfreechart.version>
         <cglib.version>3.2.4</cglib.version>
         <!-- Test libs -->
         <easymock.version>3.4</easymock.version>
@@ -154,7 +154,7 @@
                 <version>${curator.version}</version>
             </dependency>
             <dependency>
-                <groupId>jfree</groupId>
+                <groupId>org.jfree</groupId>
                 <artifactId>jfreechart</artifactId>
                 <version>${jfreechart.version}</version>
             </dependency>
