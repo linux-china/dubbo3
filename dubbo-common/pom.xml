@@ -52,11 +52,6 @@
             <artifactId>hessian-lite</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.jvnet.sorcerer</groupId>
-            <artifactId>sorcerer-javac</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib-nodep</artifactId>
             <scope>test</scope>

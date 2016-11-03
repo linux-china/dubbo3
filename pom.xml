@@ -143,11 +143,6 @@
                 <version>${bsf.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.jvnet.sorcerer</groupId>
-                <artifactId>sorcerer-javac</artifactId>
-                <version>${sorcerer.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.apache.zookeeper</groupId>
                 <artifactId>zookeeper</artifactId>
                 <version>${zookeeper.version}</version>
