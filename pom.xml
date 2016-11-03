@@ -97,10 +97,7 @@
         <jmockit.version>1.7</jmockit.version>
         <spring.version>4.3.3.RELEASE</spring.version>
         <platform-bom.version>Athens-RELEASE</platform-bom.version>
-        <!-- Build args -->
-        <!--<argline>-server -Xms64m -Xmx64m -XX:PermSize=64m -XX:MaxPermSize=64m</argline>-->
-        <!-- generate idea copyright -->
-        <copyright>Copyright 1999-2012 Alibaba Group.&#10; &#10;Licensed under the Apache License, Version 2.0 (the
+        <copyright>Copyright 1999-2016 Alibaba Group.&#10; &#10;Licensed under the Apache License, Version 2.0 (the
             &quot;License&quot;);&#10;you may not use this file except in compliance with the License.&#10;You may
             obtain a copy of the License at&#10; &#10; http://www.apache.org/licenses/LICENSE-2.0&#10; &#10;Unless
             required by applicable law or agreed to in writing, software&#10;distributed under the License is
