@@ -15,18 +15,6 @@
  */
 package com.alibaba.dubbo.remoting.transport.netty;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-
-import org.jboss.netty.bootstrap.ClientBootstrap;
-import org.jboss.netty.channel.Channel;
-import org.jboss.netty.channel.ChannelFactory;
-import org.jboss.netty.channel.ChannelFuture;
-import org.jboss.netty.channel.ChannelPipeline;
-import org.jboss.netty.channel.ChannelPipelineFactory;
-import org.jboss.netty.channel.Channels;
-import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
-
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.common.Version;
@@ -37,50 +25,67 @@ import com.alibaba.dubbo.common.utils.NetUtils;
 import com.alibaba.dubbo.remoting.ChannelHandler;
 import com.alibaba.dubbo.remoting.RemotingException;
 import com.alibaba.dubbo.remoting.transport.AbstractClient;
+import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.*;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.util.internal.SystemPropertyUtil;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * NettyClient.
  * 
  * @author qian.lei
  * @author william.liangf
+ * @author wuwen
  */
 public class NettyClient extends AbstractClient {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(NettyClient.class);
 
-    // 因ChannelFactory的关闭有DirectMemory泄露，采用静态化规避
-    // https://issues.jboss.org/browse/NETTY-424
-    private static final ChannelFactory channelFactory = new NioClientSocketChannelFactory(Executors.newCachedThreadPool(new NamedThreadFactory("NettyClientBoss", true)), 
-                                                                                           Executors.newCachedThreadPool(new NamedThreadFactory("NettyClientWorker", true)), 
-                                                                                           Constants.DEFAULT_IO_THREADS);
-    private ClientBootstrap bootstrap;
+    private Bootstrap bootstrap;
 
     private volatile Channel channel; // volatile, please copy reference to use
-    
+
     public NettyClient(final URL url, final ChannelHandler handler) throws RemotingException{
         super(url, wrapChannelHandler(url, handler));
     }
-    
+
+    private static final int DEFAULT_EVENT_LOOP_THREADS;
+
+    static {
+        DEFAULT_EVENT_LOOP_THREADS = Math.max(1, SystemPropertyUtil.getInt(
+                "io.netty.eventLoopThreads", Constants.DEFAULT_IO_THREADS));
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("-Dio.netty.eventLoopThreads: " + DEFAULT_EVENT_LOOP_THREADS);
+        }
+    }
+
+    private static final EventLoopGroup WORKER_GROUP = new NioEventLoopGroup(DEFAULT_EVENT_LOOP_THREADS, new NamedThreadFactory("NettyClientTCPWorker", true));
+
     @Override
     protected void doOpen() throws Throwable {
-        NettyHelper.setNettyLoggerFactory();
-        bootstrap = new ClientBootstrap(channelFactory);
+        com.alibaba.dubbo.remoting.transport.netty.NettyHelper.setNettyLoggerFactory();
+        bootstrap = new Bootstrap();
         // config
-        // @see org.jboss.netty.channel.socket.SocketChannelConfig
-        bootstrap.setOption("keepAlive", true);
-        bootstrap.setOption("tcpNoDelay", true);
-        bootstrap.setOption("connectTimeoutMillis", getTimeout());
-        final NettyHandler nettyHandler = new NettyHandler(getUrl(), this);
-        bootstrap.setPipelineFactory(new ChannelPipelineFactory() {
-            public ChannelPipeline getPipeline() {
-                NettyCodecAdapter adapter = new NettyCodecAdapter(getCodec(), getUrl(), NettyClient.this);
-                ChannelPipeline pipeline = Channels.pipeline();
-                pipeline.addLast("decoder", adapter.getDecoder());
-                pipeline.addLast("encoder", adapter.getEncoder());
-                pipeline.addLast("handler", nettyHandler);
-                return pipeline;
+        bootstrap.channel(NioSocketChannel.class);
+        bootstrap.group(WORKER_GROUP);
+        bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
+        bootstrap.option(ChannelOption.TCP_NODELAY, true);
+        bootstrap.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, getTimeout());
+        final com.alibaba.dubbo.remoting.transport.netty.NettyHandler nettyHandler = new com.alibaba.dubbo.remoting.transport.netty.NettyHandler(getUrl(), this);
+        bootstrap.handler(new ChannelInitializer() {
+            public void initChannel(Channel ch) {
+                com.alibaba.dubbo.remoting.transport.netty.NettyCodecAdapter adapter = new com.alibaba.dubbo.remoting.transport.netty.NettyCodecAdapter(getCodec(), getUrl(), NettyClient.this);
+                ChannelPipeline channelPipeline = ch.pipeline();
+                channelPipeline.addLast("decoder", adapter.getDecoder());
+                channelPipeline.addLast("encoder", adapter.getEncoder());
+                channelPipeline.addLast("handler", nettyHandler);
             }
         });
+
     }
 
     protected void doConnect() throws Throwable {
@@ -90,8 +95,8 @@ public class NettyClient extends AbstractClient {
             boolean ret = future.awaitUninterruptibly(getConnectTimeout(), TimeUnit.MILLISECONDS);
             
             if (ret && future.isSuccess()) {
-                Channel newChannel = future.getChannel();
-                newChannel.setInterestOps(Channel.OP_READ_WRITE);
+                Channel newChannel = future.channel();
+
                 try {
                     // 关闭旧的连接
                     Channel oldChannel = NettyClient.this.channel; // copy reference
@@ -100,7 +105,7 @@ public class NettyClient extends AbstractClient {
                             if (logger.isInfoEnabled()) {
                                 logger.info("Close old netty channel " + oldChannel + " on create new netty channel " + newChannel);
                             }
-                            oldChannel.close();
+                            oldChannel.close().syncUninterruptibly();
                         } finally {
                             NettyChannel.removeChannelIfDisconnected(oldChannel);
                         }
@@ -111,7 +116,7 @@ public class NettyClient extends AbstractClient {
                             if (logger.isInfoEnabled()) {
                                 logger.info("Close new netty channel " + newChannel + ", because the client closed.");
                             }
-                            newChannel.close();
+                            newChannel.close().syncUninterruptibly();
                         } finally {
                             NettyClient.this.channel = null;
                             NettyChannel.removeChannelIfDisconnected(newChannel);
@@ -120,9 +125,9 @@ public class NettyClient extends AbstractClient {
                         NettyClient.this.channel = newChannel;
                     }
                 }
-            } else if (future.getCause() != null) {
+            } else if (future.cause() != null) {
                 throw new RemotingException(this, "client(url: " + getUrl() + ") failed to connect to server "
-                        + getRemoteAddress() + ", error message is:" + future.getCause().getMessage(), future.getCause());
+                        + getRemoteAddress() + ", error message is:" + future.cause().getMessage(), future.cause());
             } else {
                 throw new RemotingException(this, "client(url: " + getUrl() + ") failed to connect to server "
                         + getRemoteAddress() + " client-side timeout "
@@ -131,7 +136,7 @@ public class NettyClient extends AbstractClient {
             }
         }finally{
             if (! isConnected()) {
-                future.cancel();
+                future.cancel(true);
             }
         }
     }
@@ -147,17 +152,13 @@ public class NettyClient extends AbstractClient {
     
     @Override
     protected void doClose() throws Throwable {
-        /*try {
-            bootstrap.releaseExternalResources();
-        } catch (Throwable t) {
-            logger.warn(t.getMessage());
-        }*/
+        //WORKER_GROUP.shutdownGracefully()
     }
 
     @Override
     protected com.alibaba.dubbo.remoting.Channel getChannel() {
         Channel c = channel;
-        if (c == null || ! c.isConnected())
+        if (c == null || ! c.isActive())
             return null;
         return NettyChannel.getOrAddChannel(c, getUrl(), this);
     }
