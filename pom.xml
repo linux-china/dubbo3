@@ -87,7 +87,6 @@
         <netty3.version>3.10.6.Final</netty3.version>
         <hessian_lite.version>3.2.1-fixed-2</hessian_lite.version>
         <bsf.version>3.1</bsf.version>
-        <sorcerer.version>0.8</sorcerer.version>
         <zookeeper.version>3.4.9</zookeeper.version>
         <zkclient.version>0.9</zkclient.version>
         <curator.version>2.11.0</curator.version>
