@@ -59,10 +59,6 @@
             <artifactId>xstream</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.bsf</groupId>
-            <artifactId>bsf-api</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.apache.zookeeper</groupId>
             <artifactId>zookeeper</artifactId>
         </dependency>
