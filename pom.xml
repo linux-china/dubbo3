@@ -89,7 +89,7 @@
         <bsf.version>3.1</bsf.version>
         <sorcerer.version>0.8</sorcerer.version>
         <zookeeper.version>3.4.9</zookeeper.version>
-        <zkclient.version>0.1</zkclient.version>
+        <zkclient.version>0.9</zkclient.version>
         <curator.version>2.11.0</curator.version>
         <jfreechart.version>1.0.13</jfreechart.version>
         <cglib.version>3.2.4</cglib.version>
@@ -148,7 +148,7 @@
                 <version>${zookeeper.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.sgroschupf</groupId>
+                <groupId>com.101tec</groupId>
                 <artifactId>zkclient</artifactId>
                 <version>${zkclient.version}</version>
             </dependency>
