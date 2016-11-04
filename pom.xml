@@ -54,17 +54,6 @@
     </modules>
     <profiles>
         <profile>
-            <id>test</id>
-            <activation>
-                <file>
-                    <missing>.project</missing>
-                </file>
-            </activation>
-            <modules>
-                <module>dubbo-test</module>
-            </modules>
-        </profile>
-        <profile>
             <id>hudson</id>
             <build>
                 <plugins>
