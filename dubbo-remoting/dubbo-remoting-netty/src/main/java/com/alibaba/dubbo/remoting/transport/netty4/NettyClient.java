@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.alibaba.dubbo.remoting.transport.netty;
+package com.alibaba.dubbo.remoting.transport.netty4;
 
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
@@ -67,7 +67,7 @@ public class NettyClient extends AbstractClient {
 
     @Override
     protected void doOpen() throws Throwable {
-        com.alibaba.dubbo.remoting.transport.netty.NettyHelper.setNettyLoggerFactory();
+        com.alibaba.dubbo.remoting.transport.netty4.NettyHelper.setNettyLoggerFactory();
         bootstrap = new Bootstrap();
         // config
         bootstrap.channel(NioSocketChannel.class);
@@ -75,10 +75,10 @@ public class NettyClient extends AbstractClient {
         bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
         bootstrap.option(ChannelOption.TCP_NODELAY, true);
         bootstrap.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, getTimeout());
-        final com.alibaba.dubbo.remoting.transport.netty.NettyHandler nettyHandler = new com.alibaba.dubbo.remoting.transport.netty.NettyHandler(getUrl(), this);
+        final com.alibaba.dubbo.remoting.transport.netty4.NettyHandler nettyHandler = new com.alibaba.dubbo.remoting.transport.netty4.NettyHandler(getUrl(), this);
         bootstrap.handler(new ChannelInitializer() {
             public void initChannel(Channel ch) {
-                com.alibaba.dubbo.remoting.transport.netty.NettyCodecAdapter adapter = new com.alibaba.dubbo.remoting.transport.netty.NettyCodecAdapter(getCodec(), getUrl(), NettyClient.this);
+                com.alibaba.dubbo.remoting.transport.netty4.NettyCodecAdapter adapter = new com.alibaba.dubbo.remoting.transport.netty4.NettyCodecAdapter(getCodec(), getUrl(), NettyClient.this);
                 ChannelPipeline channelPipeline = ch.pipeline();
                 channelPipeline.addLast("decoder", adapter.getDecoder());
                 channelPipeline.addLast("encoder", adapter.getEncoder());

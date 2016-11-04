@@ -1,4 +1,4 @@
-package com.alibaba.dubbo.remoting.transport.netty;
+package com.alibaba.dubbo.remoting.transport.netty4;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,7 +39,7 @@ public class NettyBackedChannelBuffer implements ChannelBuffer {
 
     @Override
     public ChannelBufferFactory factory() {
-        return com.alibaba.dubbo.remoting.transport.netty.NettyBackedChannelBufferFactory.getInstance();
+        return com.alibaba.dubbo.remoting.transport.netty4.NettyBackedChannelBufferFactory.getInstance();
     }
 
     @Override

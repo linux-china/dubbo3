@@ -1,8 +1,7 @@
-package com.alibaba.dubbo.remoting.transport.netty;
+package com.alibaba.dubbo.remoting.transport.netty4;
 
 import com.alibaba.dubbo.remoting.buffer.ChannelBuffer;
 import com.alibaba.dubbo.remoting.buffer.ChannelBufferFactory;
-import com.alibaba.dubbo.remoting.transport.netty.NettyBackedChannelBuffer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.Unpooled;
