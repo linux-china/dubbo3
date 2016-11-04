@@ -117,17 +117,6 @@
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
-			<artifactId>dubbo-container-jetty</artifactId>
-			<version>${project.parent.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.eclipse.jetty</groupId>
-					<artifactId>jetty-server</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>com.alibaba</groupId>
 			<artifactId>dubbo-container-logback</artifactId>
 			<version>${project.parent.version}</version>
 			<exclusions>
@@ -207,7 +196,6 @@
 									<include>com.alibaba:dubbo-config-spring</include>
 									<include>com.alibaba:dubbo-container-api</include>
 									<include>com.alibaba:dubbo-container-spring</include>
-									<include>com.alibaba:dubbo-container-jetty</include>
 									<include>com.alibaba:dubbo-container-logback</include>
 								</includes>
 							</artifactSet>
@@ -304,14 +292,14 @@
 									implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
 									<resource>META-INF/dubbo/internal/com.alibaba.dubbo.rpc.cluster.ConfiguratorFactory</resource>
 								</transformer>
-								<transformer
+								<!--<transformer
 									implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
 									<resource>META-INF/dubbo/internal/com.alibaba.dubbo.container.Container</resource>
 								</transformer>
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
 									<resource>META-INF/dubbo/internal/com.alibaba.dubbo.container.page.PageHandler</resource>
-								</transformer>
+								</transformer>-->
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
 									<resource>META-INF/dubbo/internal/com.alibaba.dubbo.monitor.MonitorFactory</resource>
