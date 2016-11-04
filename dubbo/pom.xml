@@ -33,12 +33,6 @@
 			<groupId>com.alibaba</groupId>
 			<artifactId>dubbo-config-api</artifactId>
 			<version>${project.parent.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.eclipse.jetty</groupId>
-					<artifactId>jetty-server</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
@@ -49,21 +43,6 @@
 			<groupId>com.alibaba</groupId>
 			<artifactId>dubbo-remoting-netty</artifactId>
 			<version>${project.parent.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>dubbo-remoting-http</artifactId>
-			<version>${project.parent.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.eclipse.jetty</groupId>
-					<artifactId>jetty-server</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.apache.httpcomponents</groupId>
-		    		<artifactId>httpclient</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
@@ -179,7 +158,6 @@
 									<include>com.alibaba:dubbo-common</include>
 									<include>com.alibaba:dubbo-remoting-api</include>
 									<include>com.alibaba:dubbo-remoting-netty</include>
-									<include>com.alibaba:dubbo-remoting-http</include>
 									<include>com.alibaba:dubbo-remoting-zookeeper</include>
 									<include>com.alibaba:dubbo-rpc-api</include>
 									<include>com.alibaba:dubbo-rpc-default</include>
