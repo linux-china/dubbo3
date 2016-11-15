@@ -5,7 +5,7 @@ services:
       ports:
         - "6379:6379"
   zookeeper:
-      image: jplock/zookeeper:3.4.9
+      image: jplock/zookeeper
       ports:
         - "2181:2181"
         - "2888:2888"
