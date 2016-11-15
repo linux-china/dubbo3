@@ -76,14 +76,14 @@
         <hessian_lite.version>3.2.1-fixed-2</hessian_lite.version>
         <zookeeper.version>3.4.9</zookeeper.version>
         <zkclient.version>0.10</zkclient.version>
-        <curator.version>2.11.0</curator.version>
+        <curator.version>2.11.1</curator.version>
         <jfreechart.version>1.0.19</jfreechart.version>
         <cglib.version>3.2.4</cglib.version>
         <!-- Test libs -->
         <easymock.version>3.4</easymock.version>
         <jmockit.version>1.7</jmockit.version>
         <spring.version>4.3.4.RELEASE</spring.version>
-        <platform-bom.version>Athens-RELEASE</platform-bom.version>
+        <platform-bom.version>Athens-SR1</platform-bom.version>
         <copyright>Copyright 1999-2016 Alibaba Group.&#10; &#10;Licensed under the Apache License, Version 2.0 (the
             &quot;License&quot;);&#10;you may not use this file except in compliance with the License.&#10;You may
             obtain a copy of the License at&#10; &#10; http://www.apache.org/licenses/LICENSE-2.0&#10; &#10;Unless
