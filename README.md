@@ -13,7 +13,7 @@ Dubbo是一个高性能的分布式RPC框架，主要包括一下部分:
 * Java 8 only
 * Spring Boot兼容
 * 注册中心: 删除simple registry
-* 通讯协议: 删除thrift，http，Grizzly，rmi等
+* 通讯协议: 默认Netty4， 删除thrift，http，Grizzly，rmi等协议支持
 * 容器: 取消Jetty支持，使用Spring Boot替换
 
 ### Quick Start
