@@ -77,6 +77,7 @@
         <zookeeper.version>3.4.9</zookeeper.version>
         <zkclient.version>0.10</zkclient.version>
         <curator.version>2.11.1</curator.version>
+        <consul-api.version>1.2.1</consul-api.version>
         <jfreechart.version>1.0.19</jfreechart.version>
         <cglib.version>3.2.4</cglib.version>
         <!-- Test libs -->
@@ -134,6 +135,11 @@
                 <groupId>org.apache.curator</groupId>
                 <artifactId>curator-framework</artifactId>
                 <version>${curator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ecwid.consul</groupId>
+                <artifactId>consul-api</artifactId>
+                <version>${consul-api.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jfree</groupId>
