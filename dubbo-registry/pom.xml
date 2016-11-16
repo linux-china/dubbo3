@@ -32,5 +32,6 @@
 		<module>dubbo-registry-api</module>
 		<module>dubbo-registry-zookeeper</module>
 		<module>dubbo-registry-redis</module>
+		<module>dubbo-registry-consul</module>
 	</modules>
 </project>
