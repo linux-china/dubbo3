@@ -1,10 +1,10 @@
 Todo
 ================
 
+* code adjustment: upgraded to Java 8
 * @Service -> @DubboService
 * API升级,去除deprecated API使用
 * Admin从Webx调整到Vaadin
-* 调整到Java 8
 * Spring Boot集成
 * 和Spring Cloud的Registry Server集成: consul注册中心
 * netty 3 to netty 4 : http://netty.io/wiki/new-and-noteworthy-in-4.0.html
