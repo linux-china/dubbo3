@@ -79,7 +79,6 @@
         <curator.version>2.11.1</curator.version>
         <consul-api.version>1.2.1</consul-api.version>
         <jfreechart.version>1.0.19</jfreechart.version>
-        <cglib.version>3.2.4</cglib.version>
         <!-- Test libs -->
         <easymock.version>3.4</easymock.version>
         <jmockit.version>1.7</jmockit.version>
@@ -164,11 +163,6 @@
                 <artifactId>jmockit</artifactId>
                 <version>${jmockit.version}</version>
                 <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>cglib</groupId>
-                <artifactId>cglib-nodep</artifactId>
-                <version>${cglib.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
