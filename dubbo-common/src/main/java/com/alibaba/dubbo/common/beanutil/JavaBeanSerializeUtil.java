@@ -38,8 +38,7 @@ public final class JavaBeanSerializeUtil {
     private static final Logger logger = LoggerFactory.getLogger(JavaBeanSerializeUtil.class);
 
     public static JavaBeanDescriptor serialize(Object obj) {
-        JavaBeanDescriptor result = serialize(obj, JavaBeanAccessor.FIELD);
-        return result;
+        return serialize(obj, JavaBeanAccessor.FIELD);
     }
 
     public static JavaBeanDescriptor serialize(Object obj, JavaBeanAccessor accessor) {
@@ -50,8 +49,7 @@ public final class JavaBeanSerializeUtil {
             return (JavaBeanDescriptor)obj;
         }
         IdentityHashMap<Object, JavaBeanDescriptor> cache = new IdentityHashMap<Object, JavaBeanDescriptor>();
-        JavaBeanDescriptor result = createDescriptorIfAbsent(obj, accessor, cache);
-        return result;
+        return createDescriptorIfAbsent(obj, accessor, cache);
     }
 
     private static JavaBeanDescriptor createDescriptorForSerialize(Class<?> cl) {
@@ -166,10 +164,9 @@ public final class JavaBeanSerializeUtil {
     } // ~ end of method serializeInternal
 
     public static Object deserialize(JavaBeanDescriptor beanDescriptor) {
-        Object result = deserialize(
+        return deserialize(
             beanDescriptor,
             Thread.currentThread().getContextClassLoader());
-        return result;
     }
 
     public static Object deserialize(JavaBeanDescriptor beanDescriptor, ClassLoader loader) {
