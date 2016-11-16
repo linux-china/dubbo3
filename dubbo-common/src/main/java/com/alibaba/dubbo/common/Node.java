@@ -15,8 +15,6 @@
  */
 package com.alibaba.dubbo.common;
 
-import com.alibaba.dubbo.common.URL;
-
 /**
  * Node. (API/SPI, Prototype, ThreadSafe)
  * 
