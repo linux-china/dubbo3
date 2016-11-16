@@ -37,37 +37,38 @@ import com.alibaba.dubbo.registry.RegistryService;
 
 /**
  * RegistryContainer
- * 
+ *
  * @author william.liangf
  */
+@SuppressWarnings("Duplicates")
 public class RegistryContainer implements Container {
 
     public static final String REGISTRY_ADDRESS = "dubbo.registry.address";
 
-    private final Set<String> applications = new ConcurrentHashSet<String>();
+    private final Set<String> applications = new ConcurrentHashSet<>();
 
-    private final Map<String, Set<String>> providerServiceApplications = new ConcurrentHashMap<String, Set<String>>();
+    private final Map<String, Set<String>> providerServiceApplications = new ConcurrentHashMap<>();
 
-    private final Map<String, Set<String>> providerApplicationServices = new ConcurrentHashMap<String, Set<String>>();
+    private final Map<String, Set<String>> providerApplicationServices = new ConcurrentHashMap<>();
 
-    private final Map<String, Set<String>> consumerServiceApplications = new ConcurrentHashMap<String, Set<String>>();
+    private final Map<String, Set<String>> consumerServiceApplications = new ConcurrentHashMap<>();
 
-    private final Map<String, Set<String>> consumerApplicationServices = new ConcurrentHashMap<String, Set<String>>();
+    private final Map<String, Set<String>> consumerApplicationServices = new ConcurrentHashMap<>();
 
-    private final Set<String> services = new ConcurrentHashSet<String>();
+    private final Set<String> services = new ConcurrentHashSet<>();
 
-    private final Map<String, List<URL>> serviceProviders = new ConcurrentHashMap<String, List<URL>>();
+    private final Map<String, List<URL>> serviceProviders = new ConcurrentHashMap<>();
 
-    private final Map<String, List<URL>> serviceConsumers = new ConcurrentHashMap<String, List<URL>>();
+    private final Map<String, List<URL>> serviceConsumers = new ConcurrentHashMap<>();
 
     private RegistryService registry;
-    
+
     private static RegistryContainer INSTANCE = null;
-    
+
     public RegistryContainer() {
         INSTANCE = this;
     }
-    
+
     public static RegistryContainer getInstance() {
         if (INSTANCE == null) {
             ExtensionLoader.getExtensionLoader(Container.class).getExtension("registry");
@@ -82,10 +83,10 @@ public class RegistryContainer implements Container {
     public Set<String> getApplications() {
         return Collections.unmodifiableSet(applications);
     }
-    
+
     public Set<String> getDependencies(String application, boolean reverse) {
         if (reverse) {
-            Set<String> dependencies = new HashSet<String>();
+            Set<String> dependencies = new HashSet<>();
             Set<String> services = providerApplicationServices.get(application);
             if (services != null && services.size() > 0) {
                 for (String service : services) {
@@ -97,7 +98,7 @@ public class RegistryContainer implements Container {
             }
             return dependencies;
         } else {
-            Set<String> dependencies = new HashSet<String>();
+            Set<String> dependencies = new HashSet<>();
             Set<String> services = consumerApplicationServices.get(application);
             if (services != null && services.size() > 0) {
                 for (String service : services) {
@@ -125,7 +126,7 @@ public class RegistryContainer implements Container {
     }
 
     public List<URL> getProvidersByHost(String host) {
-        List<URL> urls = new ArrayList<URL>();
+        List<URL> urls = new ArrayList<>();
         if (host != null && host.length() > 0) {
             for (List<URL> providers : serviceProviders.values()) {
                 for (URL url : providers) {
@@ -139,7 +140,7 @@ public class RegistryContainer implements Container {
     }
 
     public List<URL> getProvidersByApplication(String application) {
-        List<URL> urls = new ArrayList<URL>();
+        List<URL> urls = new ArrayList<>();
         if (application != null && application.length() > 0) {
             for (List<URL> providers : serviceProviders.values()) {
                 for (URL url : providers) {
@@ -153,7 +154,7 @@ public class RegistryContainer implements Container {
     }
 
     public Set<String> getHosts() {
-        Set<String> addresses = new HashSet<String>();
+        Set<String> addresses = new HashSet<>();
         for (List<URL> providers : serviceProviders.values()) {
             for (URL url : providers) {
                 addresses.add(url.getHost());
@@ -177,7 +178,7 @@ public class RegistryContainer implements Container {
     }
 
     public List<URL> getConsumersByHost(String host) {
-        List<URL> urls = new ArrayList<URL>();
+        List<URL> urls = new ArrayList<>();
         if (host != null && host.length() > 0) {
             for (List<URL> consumers : serviceConsumers.values()) {
                 for (URL url : consumers) {
@@ -191,7 +192,7 @@ public class RegistryContainer implements Container {
     }
 
     public List<URL> getConsumersByApplication(String application) {
-        List<URL> urls = new ArrayList<URL>();
+        List<URL> urls = new ArrayList<>();
         if (application != null && application.length() > 0) {
             for (List<URL> consumers : serviceConsumers.values()) {
                 for (URL url : consumers) {
@@ -211,20 +212,20 @@ public class RegistryContainer implements Container {
         }
         registry = (RegistryService) SpringContainer.getContext().getBean("registryService");
         URL subscribeUrl = new URL(Constants.ADMIN_PROTOCOL, NetUtils.getLocalHost(), 0, "",
-                                    Constants.INTERFACE_KEY, Constants.ANY_VALUE, 
-                                    Constants.GROUP_KEY, Constants.ANY_VALUE, 
-                                    Constants.VERSION_KEY, Constants.ANY_VALUE,
-                                    Constants.CLASSIFIER_KEY, Constants.ANY_VALUE,
-                                    Constants.CATEGORY_KEY, Constants.PROVIDERS_CATEGORY + "," 
-                                            + Constants.CONSUMERS_CATEGORY,
-                                    Constants.CHECK_KEY, String.valueOf(false));
+                Constants.INTERFACE_KEY, Constants.ANY_VALUE,
+                Constants.GROUP_KEY, Constants.ANY_VALUE,
+                Constants.VERSION_KEY, Constants.ANY_VALUE,
+                Constants.CLASSIFIER_KEY, Constants.ANY_VALUE,
+                Constants.CATEGORY_KEY, Constants.PROVIDERS_CATEGORY + ","
+                + Constants.CONSUMERS_CATEGORY,
+                Constants.CHECK_KEY, String.valueOf(false));
         registry.subscribe(subscribeUrl, new NotifyListener() {
             public void notify(List<URL> urls) {
                 if (urls == null || urls.size() == 0) {
                     return;
                 }
-                Map<String, List<URL>> proivderMap = new HashMap<String, List<URL>>();
-                Map<String, List<URL>> consumerMap = new HashMap<String, List<URL>>();
+                Map<String, List<URL>> proivderMap = new HashMap<>();
+                Map<String, List<URL>> consumerMap = new HashMap<>();
                 for (URL url : urls) {
                     String application = url.getParameter(Constants.APPLICATION_KEY);
                     if (application != null && application.length() > 0) {
@@ -237,23 +238,19 @@ public class RegistryContainer implements Container {
                         if (Constants.EMPTY_PROTOCOL.equals(url.getProtocol())) {
                             serviceProviders.remove(service);
                         } else {
-                            List<URL> list = proivderMap.get(service);
-                            if (list == null) {
-                                list = new ArrayList<URL>();
-                                proivderMap.put(service, list);
-                            }
+                            List<URL> list = proivderMap.computeIfAbsent(service, k -> new ArrayList<>());
                             list.add(url);
                             if (application != null && application.length() > 0) {
                                 Set<String> serviceApplications = providerServiceApplications.get(service);
                                 if (serviceApplications == null) {
-                                    providerServiceApplications.put(service, new ConcurrentHashSet<String>());
+                                    providerServiceApplications.put(service, new ConcurrentHashSet<>());
                                     serviceApplications = providerServiceApplications.get(service);
                                 }
                                 serviceApplications.add(application);
-        
+
                                 Set<String> applicationServices = providerApplicationServices.get(application);
                                 if (applicationServices == null) {
-                                    providerApplicationServices.put(application, new ConcurrentHashSet<String>());
+                                    providerApplicationServices.put(application, new ConcurrentHashSet<>());
                                     applicationServices = providerApplicationServices.get(application);
                                 }
                                 applicationServices.add(service);
@@ -263,35 +260,31 @@ public class RegistryContainer implements Container {
                         if (Constants.EMPTY_PROTOCOL.equals(url.getProtocol())) {
                             serviceConsumers.remove(service);
                         } else {
-                            List<URL> list = consumerMap.get(service);
-                            if (list == null) {
-                                list = new ArrayList<URL>();
-                                consumerMap.put(service, list);
-                            }
+                            List<URL> list = consumerMap.computeIfAbsent(service, k -> new ArrayList<>());
                             list.add(url);
                             if (application != null && application.length() > 0) {
                                 Set<String> serviceApplications = consumerServiceApplications.get(service);
                                 if (serviceApplications == null) {
-                                    consumerServiceApplications.put(service, new ConcurrentHashSet<String>());
+                                    consumerServiceApplications.put(service, new ConcurrentHashSet<>());
                                     serviceApplications = consumerServiceApplications.get(service);
                                 }
                                 serviceApplications.add(application);
-        
+
                                 Set<String> applicationServices = consumerApplicationServices.get(application);
                                 if (applicationServices == null) {
-                                    consumerApplicationServices.put(application, new ConcurrentHashSet<String>());
+                                    consumerApplicationServices.put(application, new ConcurrentHashSet<>());
                                     applicationServices = consumerApplicationServices.get(application);
                                 }
                                 applicationServices.add(service);
                             }
-                            
+
                         }
                     }
                 }
-                if (proivderMap != null && proivderMap.size() > 0) {
+                if (!proivderMap.isEmpty()) {
                     serviceProviders.putAll(proivderMap);
                 }
-                if (consumerMap != null && consumerMap.size() > 0) {
+                if (!consumerMap.isEmpty()) {
                     serviceConsumers.putAll(consumerMap);
                 }
             }
