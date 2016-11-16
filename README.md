@@ -24,9 +24,9 @@ Please visit https://github.com/linux-china/spring-boot-dubbo for demo with Spri
 
 Please execute build.sh to build project
 
-
 ### Todo
 
 * 代码迁移到Java 8
 * Consul注册中心
+* javassist替换为byte-buddy
 * 文档更新
