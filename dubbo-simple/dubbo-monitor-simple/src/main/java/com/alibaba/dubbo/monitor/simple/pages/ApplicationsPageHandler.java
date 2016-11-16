@@ -35,14 +35,14 @@ public class ApplicationsPageHandler implements PageHandler {
 
     public Page handle(URL url) {
         Set<String> applications = RegistryContainer.getInstance().getApplications();
-        List<List<String>> rows = new ArrayList<List<String>>();
+        List<List<String>> rows = new ArrayList<>();
         int providersCount = 0;
         int consumersCount = 0;
         int efferentCount = 0;
         int afferentCount = 0;
         if (applications != null && applications.size() > 0) {
             for (String application : applications) {
-                List<String> row = new ArrayList<String>();
+                List<String> row = new ArrayList<>();
                 row.add(application);
                 
                 List<URL> providers = RegistryContainer.getInstance().getProvidersByApplication(application);
