@@ -81,7 +81,6 @@
         <jfreechart.version>1.0.19</jfreechart.version>
         <!-- Test libs -->
         <easymock.version>3.4</easymock.version>
-        <jmockit.version>1.7</jmockit.version>
         <spring.version>4.3.4.RELEASE</spring.version>
         <platform-bom.version>Athens-SR1</platform-bom.version>
         <copyright>Copyright 1999-2016 Alibaba Group.&#10; &#10;Licensed under the Apache License, Version 2.0 (the
@@ -158,12 +157,6 @@
                 <version>3.2</version>
                 <scope>test</scope>
             </dependency>
-            <dependency>
-                <groupId>com.googlecode.jmockit</groupId>
-                <artifactId>jmockit</artifactId>
-                <version>${jmockit.version}</version>
-                <scope>test</scope>
-            </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>
@@ -180,11 +173,6 @@
         <dependency>
             <groupId>org.easymock</groupId>
             <artifactId>easymockclassextension</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.googlecode.jmockit</groupId>
-            <artifactId>jmockit</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
