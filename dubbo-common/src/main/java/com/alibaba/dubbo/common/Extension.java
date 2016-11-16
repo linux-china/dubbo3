@@ -47,7 +47,6 @@ import java.lang.annotation.Target;
  * @deprecated 因为含义广泛废弃，改用功 {@link com.alibaba.dubbo.common.extension.SPI}
  * @author william.liangf
  * @author ding.lid
- * @export
  */
 @Deprecated
 @Documented
