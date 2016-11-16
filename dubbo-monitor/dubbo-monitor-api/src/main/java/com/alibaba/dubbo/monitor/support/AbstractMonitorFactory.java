@@ -38,7 +38,7 @@ public abstract class AbstractMonitorFactory implements MonitorFactory {
     private static final ReentrantLock LOCK = new ReentrantLock();
     
     // 注册中心集合 Map<RegistryAddress, Registry>
-    private static final Map<String, Monitor> MONITORS = new ConcurrentHashMap<String, Monitor>();
+    private static final Map<String, Monitor> MONITORS = new ConcurrentHashMap<>();
 
     public static Collection<Monitor> getMonitors() {
         return Collections.unmodifiableCollection(MONITORS.values());
