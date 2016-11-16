@@ -56,8 +56,7 @@ public class CountUtils {
     private static long calc(File file, int op) {
         if (file.exists()) {
             try {
-                BufferedReader reader = new BufferedReader(new FileReader(file));
-                try {
+                try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
                     int times = 0;
                     int count = 0;
                     String line;
@@ -67,7 +66,7 @@ public class CountUtils {
                             line = line.substring(i + 1).trim();
                             if (NUMBER_PATTERN.matcher(line).matches()) {
                                 int value = Integer.parseInt(line);
-                                times ++;
+                                times++;
                                 if (op == MAX) {
                                     count = Math.max(count, value);
                                 } else {
@@ -80,8 +79,6 @@ public class CountUtils {
                         return count / times;
                     }
                     return count;
-                } finally {
-                    reader.close();
                 }
             } catch (IOException e) {
                 logger.warn(e.getMessage(), e);
