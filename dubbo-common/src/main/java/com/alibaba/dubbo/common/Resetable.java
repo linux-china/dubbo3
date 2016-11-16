@@ -15,8 +15,6 @@
  */
 package com.alibaba.dubbo.common;
 
-import com.alibaba.dubbo.common.URL;
-
 /**
  * Resetable.
  * 
@@ -27,7 +25,7 @@ public interface Resetable {
     /**
      * reset.
      * 
-     * @param url
+     * @param url url
      */
     void reset(URL url);
     
