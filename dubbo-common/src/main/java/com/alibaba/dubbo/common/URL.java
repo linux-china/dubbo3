@@ -66,7 +66,6 @@ import com.alibaba.dubbo.common.utils.StringUtils;
  * 
  * @author william.liangf
  * @author ding.lid
- * @see java.net.URL
  * @see java.net.URI
  */
 public final class URL implements Serializable {
