@@ -61,6 +61,7 @@ import com.alibaba.dubbo.monitor.MonitorService;
  * 
  * @author william.liangf
  */
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public class SimpleMonitorService implements MonitorService {
 
     private static final Logger logger = LoggerFactory.getLogger(SimpleMonitorService.class);
@@ -112,18 +113,16 @@ public class SimpleMonitorService implements MonitorService {
     }
     
     public SimpleMonitorService() {
-        queue = new LinkedBlockingQueue<URL>(Integer.parseInt(ConfigUtils.getProperty("dubbo.monitor.queue", "100000")));
-        writeThread = new Thread(new Runnable() {
-            public void run() {
-                while (running) {
+        queue = new LinkedBlockingQueue<>(Integer.parseInt(ConfigUtils.getProperty("dubbo.monitor.queue", "100000")));
+        writeThread = new Thread(() -> {
+            while (running) {
+                try {
+                    write(); // 记录统计日志
+                } catch (Throwable t) { // 防御性容错
+                    logger.error("Unexpected error occur at write stat log, cause: " + t.getMessage(), t);
                     try {
-                        write(); // 记录统计日志
-                    } catch (Throwable t) { // 防御性容错
-                        logger.error("Unexpected error occur at write stat log, cause: " + t.getMessage(), t);
-                        try {
-                            Thread.sleep(5000); // 失败延迟
-                        } catch (Throwable t2) {
-                        }
+                        Thread.sleep(5000); // 失败延迟
+                    } catch (Throwable ignore) {
                     }
                 }
             }
@@ -131,13 +130,11 @@ public class SimpleMonitorService implements MonitorService {
         writeThread.setDaemon(true);
         writeThread.setName("DubboMonitorAsyncWriteLogThread");
         writeThread.start();
-        chartFuture = scheduledExecutorService.scheduleWithFixedDelay(new Runnable() {
-            public void run() {
-                try {
-                    draw(); // 绘制图表
-                } catch (Throwable t) { // 防御性容错
-                    logger.error("Unexpected error occur at draw stat chart, cause: " + t.getMessage(), t);
-                }
+        chartFuture = scheduledExecutorService.scheduleWithFixedDelay(() -> {
+            try {
+                draw(); // 绘制图表
+            } catch (Throwable t) { // 防御性容错
+                logger.error("Unexpected error occur at draw stat chart, cause: " + t.getMessage(), t);
             }
         }, 1, 300, TimeUnit.SECONDS);
         INSTANCE = this;
@@ -207,12 +204,9 @@ public class SimpleMonitorService implements MonitorService {
                 if (dir != null && ! dir.exists()) {
                     dir.mkdirs();
                 }
-                FileWriter writer = new FileWriter(file, true);
-                try {
+                try (FileWriter writer = new FileWriter(file, true)) {
                     writer.write(format.format(now) + " " + statistics.getParameter(key, 0) + "\n");
                     writer.flush();
-                } finally {
-                    writer.close();
                 }
             } catch (Throwable t) {
                 logger.error(t.getMessage(), t);
@@ -220,6 +214,7 @@ public class SimpleMonitorService implements MonitorService {
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void draw() {
         File rootDir = new File(statisticsDirectory);
         if (! rootDir.exists()) {
@@ -236,13 +231,13 @@ public class SimpleMonitorService implements MonitorService {
                     File successFile = new File(methodUri + "/" + SUCCESS + ".png");
                     long successModified = successFile.lastModified();
                     boolean successChanged = false;
-                    Map<String, long[]> successData = new HashMap<String, long[]>();
+                    Map<String, long[]> successData = new HashMap<>();
                     double[] successSummary = new double[4];
                     
                     File elapsedFile = new File(methodUri + "/" + ELAPSED + ".png");
                     long elapsedModified = elapsedFile.lastModified();
                     boolean elapsedChanged = false;
-                    Map<String, long[]> elapsedData = new HashMap<String, long[]>();
+                    Map<String, long[]> elapsedData = new HashMap<>();
                     double[] elapsedSummary = new double[4];
                     long elapsedMax = 0;
                     
@@ -314,8 +309,7 @@ public class SimpleMonitorService implements MonitorService {
                 continue;
             }
             try {
-                BufferedReader reader = new BufferedReader(new FileReader(file));
-                try {
+                try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
                     int sum = 0;
                     int cnt = 0;
                     String line;
@@ -324,24 +318,18 @@ public class SimpleMonitorService implements MonitorService {
                         if (index > 0) {
                             String key = line.substring(0, index).trim();
                             long value = Long.parseLong(line.substring(index + 1).trim());
-                            long[] values = data.get(key);
-                            if (values == null) {
-                                values = new long[files.length];
-                                data.put(key, values);
-                            }
+                            long[] values = data.computeIfAbsent(key, k -> new long[files.length]);
                             values[i] += value;
                             summary[0] = Math.max(summary[0], values[i]);
                             summary[1] = summary[1] == 0 ? values[i] : Math.min(summary[1], values[i]);
                             sum += value;
-                            cnt ++;
+                            cnt++;
                         }
                     }
                     if (i == 0) {
                         summary[3] += sum;
                         summary[2] = (summary[2] + (sum / cnt)) / 2;
                     }
-                } finally {
-                    reader.close();
                 }
             } catch (IOException e) {
                 logger.warn(e.getMessage(), e);
@@ -388,12 +376,9 @@ public class SimpleMonitorService implements MonitorService {
             if (methodChartDir != null && ! methodChartDir.exists()) {
                 methodChartDir.mkdirs();
             }
-            FileOutputStream output = new FileOutputStream(methodChartFile);
-            try {
+            try (FileOutputStream output = new FileOutputStream(methodChartFile)) {
                 ImageIO.write(image, "png", output);
                 output.flush();
-            } finally {
-                output.close();
             }
         } catch (IOException e) {
             logger.warn(e.getMessage(), e);
