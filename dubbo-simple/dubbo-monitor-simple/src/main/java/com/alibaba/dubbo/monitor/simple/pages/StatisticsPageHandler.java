@@ -35,6 +35,7 @@ import com.alibaba.dubbo.monitor.simple.SimpleMonitorService;
  * 
  * @author william.liangf
  */
+@SuppressWarnings("ConstantConditions")
 public class StatisticsPageHandler implements PageHandler {
 
     public Page handle(URL url) {

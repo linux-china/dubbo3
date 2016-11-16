@@ -25,6 +25,7 @@ import com.alibaba.dubbo.monitor.simple.RegistryContainer;
  * 
  * @author william.liangf
  */
+@SuppressWarnings("Duplicates")
 public class UnregisterPageHandler implements PageHandler {
 
     public Page handle(URL url) {

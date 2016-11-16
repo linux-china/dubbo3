@@ -76,7 +76,7 @@ public class ChartsPageHandler implements PageHandler {
     }
     
     private List<String> toRow(File dir, String uri) {
-        List<String> row = new ArrayList<String>();
+        List<String> row = new ArrayList<>();
         row.add(dir.getName());
         if (new File(dir, MonitorService.SUCCESS + ".png").exists()) {
             String url = uri + MonitorService.SUCCESS + ".png";

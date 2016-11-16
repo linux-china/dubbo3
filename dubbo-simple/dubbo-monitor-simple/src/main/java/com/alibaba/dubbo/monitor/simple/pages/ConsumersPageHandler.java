@@ -36,11 +36,11 @@ public class ConsumersPageHandler implements PageHandler {
         String host = url.getParameter("host");
         String application = url.getParameter("application");
         if (service != null && service.length() > 0) {
-            List<List<String>> rows = new ArrayList<List<String>>();
+            List<List<String>> rows = new ArrayList<>();
             List<URL> consumers = RegistryContainer.getInstance().getConsumersByService(service);
             if (consumers != null && consumers.size() > 0) {
                 for (URL u : consumers) {
-                    List<String> row = new ArrayList<String>();
+                    List<String> row = new ArrayList<>();
                     String s = u.toFullString();
                     row.add(s.replace("&", "&amp;"));
                     row.add("<button onclick=\"if(confirm('Confirm unsubscribe consumer?')){window.location.href='unsubscribe.html?service=" + service + "&consumer=" + URL.encode(s) + "';}\">Unsubscribe</button>");
@@ -54,11 +54,11 @@ public class ConsumersPageHandler implements PageHandler {
                     + "\">Charts</a>", "Consumers (" + rows.size() + ")",
                     new String[] { "Consumer URL:", "Unsubscribe" }, rows);
         } else if (host != null && host.length() > 0) {
-            List<List<String>> rows = new ArrayList<List<String>>();
+            List<List<String>> rows = new ArrayList<>();
             List<URL> consumers = RegistryContainer.getInstance().getConsumersByHost(host);
             if (consumers != null && consumers.size() > 0) {
                 for (URL u : consumers) {
-                    List<String> row = new ArrayList<String>();
+                    List<String> row = new ArrayList<>();
                     String s = u.toFullString();
                     row.add(s.replace("&", "&amp;"));
                     row.add("<button onclick=\"if(confirm('Confirm unsubscribe consumer?')){window.location.href='unsubscribe.html?host=" + host + "&consumer=" + URL.encode(s) + "';}\">Unsubscribe</button>");
@@ -68,11 +68,11 @@ public class ConsumersPageHandler implements PageHandler {
             return new Page("<a href=\"hosts.html\">Hosts</a> &gt; " + NetUtils.getHostName(host) + "/" + host + " &gt; <a href=\"providers.html?host=" + host + "\">Providers</a> | Consumers", "Consumers (" + rows.size() + ")",
                     new String[] { "Consumer URL:", "Unsubscribe" }, rows);
         } else if (application != null && application.length() > 0) {
-            List<List<String>> rows = new ArrayList<List<String>>();
+            List<List<String>> rows = new ArrayList<>();
             List<URL> consumers = RegistryContainer.getInstance().getConsumersByApplication(application);
             if (consumers != null && consumers.size() > 0) {
                 for (URL u : consumers) {
-                    List<String> row = new ArrayList<String>();
+                    List<String> row = new ArrayList<>();
                     String s = u.toFullString();
                     row.add(s.replace("&", "&amp;"));
                     row.add("<button onclick=\"if(confirm('Confirm unsubscribe consumer?')){window.location.href='unsubscribe.html?application=" + application + "&consumer=" + URL.encode(s) + "';}\">Unsubscribe</button>");

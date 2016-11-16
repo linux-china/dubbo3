@@ -36,7 +36,7 @@ import com.alibaba.dubbo.monitor.simple.RegistryContainer;
 public class HostsPageHandler implements PageHandler {
     
     public Page handle(URL url) {
-        List<List<String>> rows = new ArrayList<List<String>>();
+        List<List<String>> rows = new ArrayList<>();
         Set<String> hosts = RegistryContainer.getInstance().getHosts();
         int providersCount = 0;
         int consumersCount = 0;

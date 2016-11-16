@@ -28,6 +28,7 @@ import com.alibaba.dubbo.registry.NotifyListener;
  * 
  * @author william.liangf
  */
+@SuppressWarnings("Duplicates")
 public class UnsubscribePageHandler implements PageHandler {
 
     public Page handle(URL url) {
