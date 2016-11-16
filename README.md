@@ -1,16 +1,10 @@
 Dubbo: 分布式通讯框架
 ======================================
-Dubbo is a distributed service framework enpowers applications with service import/export capability with high performance RPC.
-It's composed of three kernel parts:
+Dubbo是一个高性能的分布式RPC框架，主要包括一下部分:
 
-* Remoting: a network communication framework provides sync-over-async and request-response messaging.
-* Clustering: a remote procedure call abstraction with load-balancing/failover/clustering capabilities.
-* Registry: a service directory framework for service registration and service event publish/subscription
-
-For more, please refer to:
-
-    http://code.alibabatech.com/wiki/display/dubbo
-
+* Remoting(远程通信): a network communication framework provides sync-over-async and request-response messaging.
+* Clustering(集群): a remote procedure call abstraction with load-balancing/failover/clustering capabilities.
+* Registry(注册中心): a service directory framework for service registration and service event publish/subscription
 
 文档地址: http://alibaba.github.io/dubbo-doc-static/Developer+Guide-zh.htm
 
@@ -28,4 +22,11 @@ Please visit https://github.com/linux-china/spring-boot-dubbo for demo with Spri
 
 ### Development
 
-Please execute build.sh
+Please execute build.sh to build project
+
+
+### Todo
+
+* 代码迁移到Java 8
+* Consul注册中心
+* 文档更新
