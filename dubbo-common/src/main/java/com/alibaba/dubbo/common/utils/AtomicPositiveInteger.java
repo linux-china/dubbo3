@@ -167,7 +167,7 @@ public class AtomicPositiveInteger extends Number {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((i == null) ? 0 : i.hashCode());
+        result = prime * result + i.hashCode();
         return result;
     }
 
@@ -177,10 +177,7 @@ public class AtomicPositiveInteger extends Number {
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         AtomicPositiveInteger other = (AtomicPositiveInteger) obj;
-        if (i == null) {
-            if (other.i != null) return false;
-        } else if (!i.equals(other.i)) return false;
-        return true;
+        return i.equals(other.i);
     }
 
 }
