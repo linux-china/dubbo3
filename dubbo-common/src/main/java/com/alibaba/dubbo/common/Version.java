@@ -36,7 +36,7 @@ public final class Version {
 
     private static final Logger logger = LoggerFactory.getLogger(Version.class);
 
-    private static final String VERSION = getVersion(Version.class, "2.0.0");
+    private static final String VERSION = getVersion(Version.class, "3.0.0");
 
     private static final boolean INTERNAL = hasResource("com/alibaba/dubbo/registry/internal/RemoteRegistry.class");
 
