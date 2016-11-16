@@ -2,6 +2,8 @@
 
 ./mvnw clean
 
-rm -rf ~/.m2/repository/com/alibaba/dubbo-*
+rm -rf ~/.m2/repository/com/alibaba/dubbo*
 
 ./mvnw -DskipTests clean source:jar package install
+
+rm -rf ~/.m2/repository/com/alibaba/dubbo-*
