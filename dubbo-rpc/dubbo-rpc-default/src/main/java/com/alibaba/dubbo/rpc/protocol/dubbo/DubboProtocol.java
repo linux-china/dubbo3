@@ -1,12 +1,12 @@
 /*
  * Copyright 1999-2011 Alibaba Group.
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -178,7 +178,10 @@ public class DubboProtocol extends AbstractProtocol {
     Invoker<?> getInvoker(Channel channel, Invocation inv) throws RemotingException {
         boolean isCallBackServiceInvoke;
         boolean isStubServiceInvoke;
-        int port = channel.getLocalAddress().getPort();
+        // get export port from realprot in attachment, use this for serviceKey
+        // because the local address port in docker is different with port export to host
+        String exportPortStr = inv.getAttachment(Constants.REAL_PORT_KEY);
+        int port = exportPortStr == null ? channel.getLocalAddress().getPort() : Integer.valueOf(exportPortStr);
         String path = inv.getAttachments().get(Constants.PATH_KEY);
         //如果是客户端的回调服务.
         isStubServiceInvoke = Boolean.TRUE.toString().equals(inv.getAttachments().get(Constants.STUB_EVENT_KEY));
@@ -350,7 +353,7 @@ public class DubboProtocol extends AbstractProtocol {
 
         ExchangeClient client;
         try {
-            //设置连接应该是lazy的 
+            //设置连接应该是lazy的
             if (url.getParameter(Constants.LAZY_CONNECT_KEY, false)) {
                 client = new LazyConnectExchangeClient(url, requestHandler);
             } else {

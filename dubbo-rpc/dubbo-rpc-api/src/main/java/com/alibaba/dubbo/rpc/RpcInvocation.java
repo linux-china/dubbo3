@@ -1,12 +1,12 @@
 /*
  * Copyright 1999-2011 Alibaba Group.
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,18 +15,18 @@
  */
 package com.alibaba.dubbo.rpc;
 
+import com.alibaba.dubbo.common.Constants;
+import com.alibaba.dubbo.common.URL;
+
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.alibaba.dubbo.common.Constants;
-import com.alibaba.dubbo.common.URL;
-
 /**
  * RPC Invocation.
- * 
+ *
  * @serial Don't change the class name and properties.
  * @author qian.lei
  */
@@ -48,7 +48,7 @@ public class RpcInvocation implements Invocation, Serializable {
     }
 
     public RpcInvocation(Invocation invocation, Invoker<?> invoker) {
-        this(invocation.getMethodName(), invocation.getParameterTypes(), 
+        this(invocation.getMethodName(), invocation.getParameterTypes(),
                 invocation.getArguments(), new HashMap<String, String>(invocation.getAttachments()),
                 invocation.getInvoker());
         if (invoker != null) {
@@ -76,7 +76,7 @@ public class RpcInvocation implements Invocation, Serializable {
     }
 
     public RpcInvocation(Invocation invocation) {
-        this(invocation.getMethodName(), invocation.getParameterTypes(), 
+        this(invocation.getMethodName(), invocation.getParameterTypes(),
                 invocation.getArguments(), invocation.getAttachments(), invocation.getInvoker());
     }
 
@@ -103,7 +103,7 @@ public class RpcInvocation implements Invocation, Serializable {
         this.attachments = attachments == null ? new HashMap<String, String>() : attachments;
         this.invoker = invoker;
     }
-    
+
     public Invoker<?> getInvoker() {
         return invoker;
     }
@@ -143,7 +143,7 @@ public class RpcInvocation implements Invocation, Serializable {
     public void setAttachments(Map<String, String> attachments) {
         this.attachments = attachments == null ? new HashMap<String, String>() : attachments;
     }
-    
+
     public void setAttachment(String key, String value) {
         if (attachments == null) {
             attachments = new HashMap<String, String>();
@@ -185,7 +185,7 @@ public class RpcInvocation implements Invocation, Serializable {
         }
         return attachments.get(key);
     }
-    
+
     public String getAttachment(String key, String defaultValue) {
         if (attachments == null) {
             return defaultValue;

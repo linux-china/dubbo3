@@ -232,7 +232,6 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
         if (path == null || path.length() == 0) {
             path = interfaceName;
         }
-        // ANSON0370 疑似注册
         doExportUrls();
     }
 
@@ -282,14 +281,16 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
             name = "dubbo";
         }
 
+        boolean anyhost = false;
         String host = protocolConfig.getExportHost();
-        if (host == null) {
+        if (host != null) {
+            anyhost = true;
+        } else {
             host = protocolConfig.getHost();
         }
         if (provider != null && (host == null || host.length() == 0)) {
             host = provider.getHost();
         }
-        boolean anyhost = false;
         if (NetUtils.isInvalidLocalHost(host)) {
             anyhost = true;
             try {
@@ -323,10 +324,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
             }
         }
 
-        Integer port = protocolConfig.getExportPort();
-        if (port == null) {
-            port = protocolConfig.getPort();
-        }
+        Integer port = protocolConfig.getPort();
         if (provider != null && (port == null || port == 0)) {
             port = provider.getPort();
         }
@@ -342,11 +340,18 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
             }
             logger.warn("Use random available port(" + port + ") for protocol " + name);
         }
+        // export port, register to registry server
+        Integer exportPort = protocolConfig.getExportPort();
+        if (exportPort == null) {
+            exportPort = port;
+        }
 
         Map<String, String> map = new HashMap<String, String>();
         if (anyhost) {
             map.put(Constants.ANYHOST_KEY, "true");
         }
+        // real port, bind by Netty
+        map.put(Constants.REAL_PORT_KEY, String.valueOf(port));
         map.put(Constants.SIDE_KEY, Constants.PROVIDER_SIDE);
         map.put(Constants.DUBBO_VERSION_KEY, Version.getVersion());
         map.put(Constants.TIMESTAMP_KEY, String.valueOf(System.currentTimeMillis()));
@@ -448,7 +453,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
         if ((contextPath == null || contextPath.length() == 0) && provider != null) {
             contextPath = provider.getContextpath();
         }
-        URL url = new URL(name, host, port, (contextPath == null || contextPath.length() == 0 ? "" : contextPath + "/") + path, map);
+        URL url = new URL(name, host, exportPort, (contextPath == null || contextPath.length() == 0 ? "" : contextPath + "/") + path, map);
 
         if (ExtensionLoader.getExtensionLoader(ConfiguratorFactory.class)
                 .hasExtension(url.getProtocol())) {

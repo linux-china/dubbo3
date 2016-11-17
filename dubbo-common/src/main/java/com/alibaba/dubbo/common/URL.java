@@ -109,10 +109,6 @@ public final class URL implements Serializable {
 	    this(protocol, null, null, host, port, null, (Map<String, String>) null);
 	}
 
-	public URL(String protocol, String host, int port, String[] pairs) { // 变长参数...与下面的path参数冲突，改为数组
-        this(protocol, null, null, host, port, null, CollectionUtils.toStringMap(pairs));
-    }
-
 	public URL(String protocol, String host, int port, Map<String, String> parameters) {
         this(protocol, null, null, host, port, null, parameters);
     }
@@ -127,14 +123,6 @@ public final class URL implements Serializable {
 
 	public URL(String protocol, String host, int port, String path, Map<String, String> parameters) {
 		this(protocol, null, null, host, port, path, parameters);
-	}
-
-	public URL(String protocol, String username, String password, String host, int port, String path) {
-        this(protocol, username, password, host, port, path, (Map<String, String>) null);
-    }
-
-	public URL(String protocol, String username, String password, String host, int port, String path, String... pairs) {
-	    this(protocol, username, password, host, port, path, CollectionUtils.toStringMap(pairs));
 	}
 
 	public URL(String protocol, String username, String password, String host, int port, String path, Map<String, String> parameters) {
@@ -286,7 +274,15 @@ public final class URL implements Serializable {
         return port <= 0 ? defaultPort : port;
     }
 
-	public String getAddress() {
+    /**
+     * use this port to bind address
+     */
+    public int getRealPort() {
+        String realPort = parameters == null ? null : parameters.get(Constants.REAL_PORT_KEY);
+        return realPort == null ? port : Integer.valueOf(realPort);
+    }
+
+    public String getAddress() {
 	    return port <= 0 ? host : host + ":" + port;
 	}
 
@@ -1133,7 +1129,6 @@ public final class URL implements Serializable {
 			}
 			buf.append("@");
 		}
-        // ANSON0370 此处获取的 host 和 port 应该是宿主机的 host 和容器外的 port
 		String host;
 		if (useIP) {
 			host = getIp();
