@@ -11,6 +11,7 @@ Dubbo是一个高性能的分布式RPC框架，主要包括一下部分:
 ### 和Dubbo 2.x的区别
 
 * Java 8 only
+* zookeeper有zkClient调整到curator
 * Spring Boot兼容
 * 注册中心: 删除simple registry
 * 通讯协议: 默认Netty4， 删除thrift，http，Grizzly，rmi等协议支持
