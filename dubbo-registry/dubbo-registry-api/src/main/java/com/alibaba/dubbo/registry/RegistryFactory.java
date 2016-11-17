@@ -25,7 +25,7 @@ import com.alibaba.dubbo.common.extension.SPI;
  * @see com.alibaba.dubbo.registry.support.AbstractRegistryFactory
  * @author william.liangf
  */
-@SPI("dubbo")
+@SPI("zookeeper")
 public interface RegistryFactory {
 
     /**
