@@ -178,10 +178,7 @@ public class DubboProtocol extends AbstractProtocol {
     Invoker<?> getInvoker(Channel channel, Invocation inv) throws RemotingException {
         boolean isCallBackServiceInvoke;
         boolean isStubServiceInvoke;
-        // get export port from realprot in attachment, use this for serviceKey
-        // because the local address port in docker is different with port export to host
-        String exportPortStr = inv.getAttachment(Constants.REAL_PORT_KEY);
-        int port = exportPortStr == null ? channel.getLocalAddress().getPort() : Integer.valueOf(exportPortStr);
+        int port = channel.getLocalAddress().getPort();
         String path = inv.getAttachments().get(Constants.PATH_KEY);
         //如果是客户端的回调服务.
         isStubServiceInvoke = Boolean.TRUE.toString().equals(inv.getAttachments().get(Constants.STUB_EVENT_KEY));

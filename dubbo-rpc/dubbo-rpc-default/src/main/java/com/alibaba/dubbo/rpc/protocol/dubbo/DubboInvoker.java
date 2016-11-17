@@ -65,8 +65,6 @@ public class DubboInvoker<T> extends AbstractInvoker<T> {
         final String methodName = RpcUtils.getMethodName(invocation);
         inv.setAttachment(Constants.PATH_KEY, getUrl().getPath());
         inv.setAttachment(Constants.VERSION_KEY, version);
-        // set port, to generate serviceKey by concat with method
-        inv.setAttachment(Constants.REAL_PORT_KEY, String.valueOf(getUrl().getPort()));
 
         ExchangeClient currentClient;
         if (clients.length == 1) {
