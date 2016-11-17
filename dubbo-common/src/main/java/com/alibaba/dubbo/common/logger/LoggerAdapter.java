@@ -24,7 +24,7 @@ import com.alibaba.dubbo.common.extension.SPI;
  *
  * @author william.liangf
  */
-@SPI
+@SPI("slf4j")
 public interface LoggerAdapter {
 	
 	/**
