@@ -1,3 +1,1 @@
 slf4j=com.alibaba.dubbo.common.logger.slf4j.Slf4jLoggerAdapter
-jcl=com.alibaba.dubbo.common.logger.jcl.JclLoggerAdapter
-jdk=com.alibaba.dubbo.common.logger.jdk.JdkLoggerAdapter
