@@ -64,10 +64,6 @@
                     <artifactId>zookeeper</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>com.101tec</groupId>
-                    <artifactId>zkclient</artifactId>
-                </exclusion>
-                <exclusion>
                     <groupId>org.apache.curator</groupId>
                     <artifactId>curator-framework</artifactId>
                 </exclusion>

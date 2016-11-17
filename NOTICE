@@ -113,13 +113,6 @@ CXF:
   * HOMEPAGE:
     * http://cxf.apache.org
 
-ZKClient:
-
-  * LICENSE:
-    * http://www.apache.org/licenses/LICENSE-2.0 (Apache License 2.0)
-  * HOMEPAGE:
-    * https://github.com/sgroschupf/zkclient
-	
 Curator 
 
   * LICENSE:

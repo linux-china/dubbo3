@@ -75,7 +75,6 @@
         <netty3.version>3.10.6.Final</netty3.version>
         <hessian_lite.version>3.2.1-fixed-2</hessian_lite.version>
         <zookeeper.version>3.4.9</zookeeper.version>
-        <zkclient.version>0.10</zkclient.version>
         <curator.version>2.11.1</curator.version>
         <consul-api.version>1.2.1</consul-api.version>
         <jfreechart.version>1.0.19</jfreechart.version>
@@ -123,11 +122,6 @@
                 <groupId>org.apache.zookeeper</groupId>
                 <artifactId>zookeeper</artifactId>
                 <version>${zookeeper.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.101tec</groupId>
-                <artifactId>zkclient</artifactId>
-                <version>${zkclient.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.curator</groupId>
