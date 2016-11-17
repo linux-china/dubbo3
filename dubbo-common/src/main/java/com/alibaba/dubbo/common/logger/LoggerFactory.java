@@ -21,8 +21,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import com.alibaba.dubbo.common.extension.ExtensionLoader;
-import com.alibaba.dubbo.common.logger.jcl.JclLoggerAdapter;
-import com.alibaba.dubbo.common.logger.jdk.JdkLoggerAdapter;
 import com.alibaba.dubbo.common.logger.slf4j.Slf4jLoggerAdapter;
 import com.alibaba.dubbo.common.logger.support.FailsafeLogger;
 
@@ -45,19 +43,11 @@ public class LoggerFactory {
         String logger = System.getProperty("dubbo.application.logger");
         if ("slf4j".equals(logger)) {
             setLoggerAdapter(new Slf4jLoggerAdapter());
-        } else if ("jcl".equals(logger)) {
-            setLoggerAdapter(new JclLoggerAdapter());
-        } else if ("jdk".equals(logger)) {
-            setLoggerAdapter(new JdkLoggerAdapter());
         } else {
             try {
                 setLoggerAdapter(new Slf4jLoggerAdapter());
-            } catch (Throwable e1) {
-                try {
-                    setLoggerAdapter(new JclLoggerAdapter());
-                } catch (Throwable e3) {
-                    setLoggerAdapter(new JdkLoggerAdapter());
-                }
+            } catch (Throwable ignore) {
+
             }
         }
     }
