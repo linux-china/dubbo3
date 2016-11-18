@@ -27,22 +27,30 @@ public class ArgumentConfig implements Serializable {
 
     private static final long serialVersionUID = -2165482463925213595L;
 
-    //arugment index -1 represents not set
+    /**
+     * arugment index -1 represents not set
+     */
     private Integer index = -1;
 
-    //argument type
-    private String  type;
-    
-    //callback interface
+    /**
+     * argument type
+     */
+    private String type;
+
+    /**
+     * callback interface
+     */
     private Boolean callback;
 
     public void setIndex(Integer index) {
         this.index = index;
     }
+
     @Parameter(excluded = true)
     public Integer getIndex() {
         return index;
     }
+
     @Parameter(excluded = true)
     public String getType() {
         return type;
