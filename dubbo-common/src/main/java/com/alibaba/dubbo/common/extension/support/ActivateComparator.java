@@ -79,7 +79,8 @@ public class ActivateComparator implements Comparator<Object> {
         }
         int n1 = a1 == null ? 0 : a1.order();
         int n2 = a2 == null ? 0 : a2.order();
-        return n1 > n2 ? 1 : -1; // 就算n1 == n2也不能返回0，否则在HashSet等集合中，会被认为是同一值而覆盖
+        // 就算n1 == n2也不能返回0，否则在HashSet等集合中，会被认为是同一值而覆盖
+        return n1 > n2 ? 1 : -1;
     }
 
 }
