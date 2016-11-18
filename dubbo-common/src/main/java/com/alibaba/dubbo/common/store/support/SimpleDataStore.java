@@ -31,13 +31,12 @@ public class SimpleDataStore implements DataStore {
 
     // <组件类名或标识, <数据名, 数据值>>
     private ConcurrentMap<String, ConcurrentMap<String, Object>> data =
-        new ConcurrentHashMap<String, ConcurrentMap<String,Object>>();
+            new ConcurrentHashMap<>();
 
     public Map<String, Object> get(String componentName) {
         ConcurrentMap<String, Object> value = data.get(componentName);
-        if(value == null) return new HashMap<String, Object>();
-
-        return new HashMap<String, Object>(value);
+        if (value == null) return new HashMap<>();
+        return new HashMap<>(value);
     }
 
     public Object get(String componentName, String key) {
@@ -49,8 +48,8 @@ public class SimpleDataStore implements DataStore {
 
     public void put(String componentName, String key, Object value) {
         Map<String, Object> componentData = data.get(componentName);
-        if(null == componentData) {
-            data.putIfAbsent(componentName, new ConcurrentHashMap<String, Object>());
+        if (null == componentData) {
+            data.putIfAbsent(componentName, new ConcurrentHashMap<>());
             componentData = data.get(componentName);
         }
         componentData.put(key, value);
