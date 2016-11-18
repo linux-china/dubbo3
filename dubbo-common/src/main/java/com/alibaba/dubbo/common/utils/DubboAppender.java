@@ -43,7 +43,7 @@ public class DubboAppender extends ConsoleAppender<Object> {
 
     public void append(LoggingEvent event) {
         super.append(event);
-        if (available == true) {
+        if (available) {
             Log temp = parseLog(event);
             logList.add(temp);
         }
@@ -54,7 +54,7 @@ public class DubboAppender extends ConsoleAppender<Object> {
         log.setLogName(event.getLoggerName());
         log.setLogLevel(event.getLevel());
         log.setLogThread(event.getThreadName());
-        log.setLogMessage(event.getMessage().toString());
+        log.setLogMessage(event.getMessage());
         return log;
     }
 

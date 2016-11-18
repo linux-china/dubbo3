@@ -209,11 +209,8 @@ public class ConfigUtils {
         Properties properties = new Properties();
         if (fileName.startsWith("/")) {
             try {
-                FileInputStream input = new FileInputStream(fileName);
-                try {
+                try (FileInputStream input = new FileInputStream(fileName)) {
                     properties.load(input);
-                } finally {
-                    input.close();
                 }
             } catch (Throwable e) {
                 logger.warn("Failed to load " + fileName + " file from " + fileName + "(ingore this file): " + e.getMessage(), e);
@@ -269,7 +266,7 @@ public class ConfigUtils {
                     } finally {
                         try {
                             input.close();
-                        } catch (Throwable t) {}
+                        } catch (Throwable ignore) {}
                     }
                 }
             } catch (Throwable e) {

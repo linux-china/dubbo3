@@ -59,7 +59,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
  */
 public class PojoUtils {
     
-    private static final ConcurrentMap<String, Method>  NAME_METHODS_CACHE = new ConcurrentHashMap<String, Method>();
+    private static final ConcurrentMap<String, Method>  NAME_METHODS_CACHE = new ConcurrentHashMap<>();
     private static final ConcurrentMap<Class<?>, ConcurrentMap<String, Field>> CLASS_FIELD_CACHE = 
         new ConcurrentHashMap<Class<?>, ConcurrentMap<String, Field>>();
 
@@ -93,7 +93,7 @@ public class PojoUtils {
     }
 
     public static Object generalize(Object pojo) {
-        return generalize(pojo, new IdentityHashMap<Object, Object>());
+        return generalize(pojo, new IdentityHashMap<>());
     }
 
     @SuppressWarnings("unchecked")
@@ -143,7 +143,7 @@ public class PojoUtils {
         if (pojo instanceof Collection<?>) {
             Collection<Object> src = (Collection<Object>)pojo;
             int len = src.size();
-            Collection<Object> dest = (pojo instanceof List<?>) ? new ArrayList<Object>(len) : new HashSet<Object>(len);
+            Collection<Object> dest = (pojo instanceof List<?>) ? new ArrayList<>(len) : new HashSet<Object>(len);
             history.put(pojo, dest);
             for (Object obj : src) {
                 dest.add(generalize(obj, history));
@@ -197,11 +197,11 @@ public class PojoUtils {
     }
     
     public static Object realize(Object pojo, Class<?> type) {
-        return realize0(pojo, type, null , new IdentityHashMap<Object, Object>());
+        return realize0(pojo, type, null , new IdentityHashMap<>());
     }
     
     public static Object realize(Object pojo, Class<?> type, Type genericType) {
-        return realize0(pojo, type, genericType, new IdentityHashMap<Object, Object>());
+        return realize0(pojo, type, genericType, new IdentityHashMap<>());
     }
     
     private static class PojoInvocationHandler implements InvocationHandler {
@@ -227,7 +227,7 @@ public class PojoUtils {
                 value = map.get(methodName.substring(0, 1).toLowerCase() + methodName.substring(1));
             }
             if (value instanceof Map<?,?> && ! Map.class.isAssignableFrom(method.getReturnType())) {
-                value = realize0((Map<String, Object>) value, method.getReturnType(), null, new IdentityHashMap<Object, Object>());
+                value = realize0( value, method.getReturnType(), null, new IdentityHashMap<>());
             }
             return value;
         }
@@ -286,7 +286,7 @@ public class PojoUtils {
         }
 
         if (result == null) {
-            result = new HashMap<Object, Object>();
+            result = new HashMap<>();
         }
 
         return result;
@@ -331,7 +331,7 @@ public class PojoUtils {
 	            }
 	            return dest;
         	} else {
-	        	Class<?> ctype = (type != null && type.isArray() ? type.getComponentType() : pojo.getClass().getComponentType());
+	        	Class<?> ctype = type.isArray() ? type.getComponentType() : pojo.getClass().getComponentType();
 	            int len = Array.getLength(pojo);
 	            Object dest = Array.newInstance(ctype, len);
                 history.put(pojo, dest);
@@ -477,8 +477,8 @@ public class PojoUtils {
                             if(! filed.isAccessible()) {
                                 filed.setAccessible(true);
                             }
-                            filed.set(dest, (String) message);
-                        } catch (Exception e) {
+                            filed.set(dest, message);
+                        } catch (Exception ignore) {
                         }
                     }
                 }
@@ -490,8 +490,8 @@ public class PojoUtils {
     
     /**
      * 获取范型的类型 
-     * @param genericType
-     * @param index
+     * @param genericType generic type
+     * @param index index
      * @return List<Person>  返回Person.class ,Map<String,Person> index=0 返回String.class index=1 返回Person.class
      */
     private static Type getGenericClassByIndex(Type genericType, int index){
@@ -527,11 +527,7 @@ public class PojoUtils {
                     }
                 }
                 return constructor.newInstance(new Object[constructor.getParameterTypes().length]);
-            } catch (InstantiationException e) {
-                throw new RuntimeException(e.getMessage(), e);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e.getMessage(), e);
-            } catch (InvocationTargetException e) {
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                 throw new RuntimeException(e.getMessage(), e);
             }
         }
@@ -578,7 +574,7 @@ public class PojoUtils {
         if (result != null) {
             ConcurrentMap<String, Field> fields = CLASS_FIELD_CACHE.get(cls);
             if (fields == null) {
-                fields = new ConcurrentHashMap<String, Field>();
+                fields = new ConcurrentHashMap<>();
                 CLASS_FIELD_CACHE.putIfAbsent(cls, fields);
             }
             fields = CLASS_FIELD_CACHE.get(cls);

@@ -31,7 +31,7 @@ public class UrlUtils {
             return null;
         }
         String url;
-        if (address.indexOf("://") >= 0) {
+        if (address.contains("://")) {
             url = address;
         } else {
             String[] addresses = Constants.COMMA_SPLIT_PATTERN.split(address);
@@ -73,7 +73,7 @@ public class UrlUtils {
         int port = u.getPort();
         String path = u.getPath();
         Map<String, String> parameters = new HashMap<String, String>(u.getParameters());
-        if ((protocol == null || protocol.length() == 0) && defaultProtocol != null && defaultProtocol.length() > 0) {
+        if ((protocol == null || protocol.length() == 0) && defaultProtocol.length() > 0) {
             changed = true;
             protocol = defaultProtocol;
         }
@@ -220,11 +220,7 @@ public class UrlUtils {
                         params.put("version", name.substring(i + 1));
                         name = name.substring(0, i);
                     }
-                    Map<String, String> newUrls = newRegister.get(name);
-                    if (newUrls == null) {
-                        newUrls = new HashMap<String, String>();
-                        newRegister.put(name, newUrls);
-                    }
+                    Map<String, String> newUrls = newRegister.computeIfAbsent(name, k -> new HashMap<String, String>());
                     newUrls.put(serviceUrl, StringUtils.toQueryString(params));
                 }
             } else {

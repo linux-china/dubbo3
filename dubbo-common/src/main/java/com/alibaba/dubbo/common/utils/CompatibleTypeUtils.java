@@ -78,7 +78,7 @@ public class CompatibleTypeUtils {
             }  else if(type == Byte.class || type == byte.class) {
                 return new Byte(string);
             } else if(type == Boolean.class || type == boolean.class) {
-                return new Boolean(string);
+                return Boolean.valueOf(string);
             } else if(type == Date.class) {
                 try {
                     return new SimpleDateFormat(DATE_FORMAT).parse((String) value);
@@ -128,12 +128,12 @@ public class CompatibleTypeUtils {
                     Collection result = (Collection) type.newInstance();
                     result.addAll(collection);
                     return result;
-                } catch (Throwable e) {
+                } catch (Throwable ignore) {
                 }
             } else if (type == List.class) {
-                return new ArrayList<Object>(collection);
+                return new ArrayList<>(collection);
             } else if (type == Set.class) {
-                return new HashSet<Object>(collection);
+                return new HashSet<>(collection);
             }
         } else if(value.getClass().isArray() && Collection.class.isAssignableFrom(type)) {
             Collection collection;
@@ -141,12 +141,12 @@ public class CompatibleTypeUtils {
                 try {
                     collection = (Collection) type.newInstance();
                 } catch (Throwable e) {
-                    collection = new ArrayList<Object>();
+                    collection = new ArrayList<>();
                 }
             } else if (type == Set.class) {
-                collection = new HashSet<Object>();
+                collection = new HashSet<>();
             } else {
-                collection = new ArrayList<Object>();
+                collection = new ArrayList<>();
             }
             int length = Array.getLength(value);
             for (int i = 0; i < length; i ++) {
