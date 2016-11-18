@@ -60,16 +60,12 @@ public class DataSourceStatusChecker implements StatusChecker {
             }
             buf.append(entry.getKey());
             try {
-                Connection connection = dataSource.getConnection();
-                try {
+                try (Connection connection = dataSource.getConnection()) {
                     DatabaseMetaData metaData = connection.getMetaData();
-                    ResultSet resultSet = metaData.getTypeInfo();
-                    try {
-                        if (! resultSet.next()) {
+                    try (ResultSet resultSet = metaData.getTypeInfo()) {
+                        if (!resultSet.next()) {
                             level = Status.Level.ERROR;
                         }
-                    } finally {
-                        resultSet.close();
                     }
                     buf.append(metaData.getURL());
                     buf.append("(");
@@ -77,8 +73,6 @@ public class DataSourceStatusChecker implements StatusChecker {
                     buf.append("-");
                     buf.append(metaData.getDatabaseProductVersion());
                     buf.append(")");
-                } finally {
-                    connection.close();
                 }
             } catch (Throwable e) {
                 logger.warn(e.getMessage(), e);

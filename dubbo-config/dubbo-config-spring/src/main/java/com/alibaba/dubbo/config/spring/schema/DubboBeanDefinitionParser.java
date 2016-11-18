@@ -76,7 +76,6 @@ public class DubboBeanDefinitionParser implements BeanDefinitionParser {
 
     @SuppressWarnings("unchecked")
     private static BeanDefinition parse(Element element, ParserContext parserContext, Class<?> beanClass, boolean required) {
-        String tagName = element.getLocalName();
         RootBeanDefinition beanDefinition = new RootBeanDefinition();
         beanDefinition.setBeanClass(beanClass);
         beanDefinition.setLazyInit(false);
@@ -131,7 +130,7 @@ public class DubboBeanDefinitionParser implements BeanDefinitionParser {
                 beanDefinition.getPropertyValues().addPropertyValue("ref", new BeanDefinitionHolder(classDefinition, id + "Impl"));
             }
         }
-        Set<String> props = new HashSet<String>();
+        Set<String> props = new HashSet<>();
         ManagedMap parameters = null;
         for (Method setter : beanClass.getMethods()) {
             String name = setter.getName();
@@ -143,11 +142,11 @@ public class DubboBeanDefinitionParser implements BeanDefinitionParser {
                 props.add(property);
                 Method getter = null;
                 try {
-                    getter = beanClass.getMethod("get" + name.substring(3), new Class<?>[0]);
+                    getter = beanClass.getMethod("get" + name.substring(3));
                 } catch (NoSuchMethodException e) {
                     try {
-                        getter = beanClass.getMethod("is" + name.substring(3), new Class<?>[0]);
-                    } catch (NoSuchMethodException e2) {
+                        getter = beanClass.getMethod("is" + name.substring(3));
+                    } catch (NoSuchMethodException ignore) {
                     }
                 }
                 if (getter == null
@@ -289,8 +288,7 @@ public class DubboBeanDefinitionParser implements BeanDefinitionParser {
                                       ParserContext parserContext) {
         String[] values = value.split("\\s*[,]+\\s*");
         ManagedList list = null;
-        for (int i = 0; i < values.length; i++) {
-            String v = values[i];
+        for (String v : values) {
             if (v != null && v.length() > 0) {
                 if (list == null) {
                     list = new ManagedList();
