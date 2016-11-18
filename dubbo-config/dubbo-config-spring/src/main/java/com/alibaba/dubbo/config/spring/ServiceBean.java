@@ -77,19 +77,19 @@ public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean
 		if (applicationContext != null) {
 		    SPRING_CONTEXT = applicationContext;
 		    try {
-	            Method method = applicationContext.getClass().getMethod("addApplicationListener", new Class<?>[]{ApplicationListener.class}); // 兼容Spring2.0.1
-	            method.invoke(applicationContext, new Object[] {this});
+	            Method method = applicationContext.getClass().getMethod("addApplicationListener", ApplicationListener.class); // 兼容Spring2.0.1
+	            method.invoke(applicationContext, this);
 	            supportedApplicationListener = true;
 	        } catch (Throwable t) {
                 if (applicationContext instanceof AbstractApplicationContext) {
     	            try {
-    	                Method method = AbstractApplicationContext.class.getDeclaredMethod("addListener", new Class<?>[]{ApplicationListener.class}); // 兼容Spring2.0.1
+    	                Method method = AbstractApplicationContext.class.getDeclaredMethod("addListener", ApplicationListener.class); // 兼容Spring2.0.1
                         if (! method.isAccessible()) {
                             method.setAccessible(true);
                         }
-    	                method.invoke(applicationContext, new Object[] {this});
+    	                method.invoke(applicationContext, this);
                         supportedApplicationListener = true;
-    	            } catch (Throwable t2) {
+    	            } catch (Throwable ignore) {
     	            }
 	            }
 	        }
@@ -117,7 +117,7 @@ public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean
         if (delay == null && provider != null) {
             delay = provider.getDelay();
         }
-        return supportedApplicationListener && (delay == null || delay.intValue() == -1);
+        return supportedApplicationListener && (delay == null || delay == -1);
     }
 
     @SuppressWarnings({ "unchecked", "deprecation" })
@@ -130,7 +130,7 @@ public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean
                         && providerConfigMap.size() > 1) { // 兼容旧版本
                     List<ProviderConfig> providerConfigs = new ArrayList<ProviderConfig>();
                     for (ProviderConfig config : providerConfigMap.values()) {
-                        if (config.isDefault() != null && config.isDefault().booleanValue()) {
+                        if (config.isDefault() != null && config.isDefault()) {
                             providerConfigs.add(config);
                         }
                     }
@@ -140,7 +140,7 @@ public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean
                 } else {
                     ProviderConfig providerConfig = null;
                     for (ProviderConfig config : providerConfigMap.values()) {
-                        if (config.isDefault() == null || config.isDefault().booleanValue()) {
+                        if (config.isDefault() == null || config.isDefault()) {
                             if (providerConfig != null) {
                                 throw new IllegalStateException("Duplicate provider configs: " + providerConfig + " and " + config);
                             }
