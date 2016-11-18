@@ -30,4 +30,5 @@ Please execute build.sh to build project
 * 代码迁移到Java 8
 * Consul注册中心
 * javassist替换为byte-buddy
+* Lombok: 精简代码 https://projectlombok.org/index.html
 * 文档更新
