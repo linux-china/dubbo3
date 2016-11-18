@@ -36,7 +36,7 @@ public class LoggerFactory {
 
     private static volatile LoggerAdapter LOGGER_ADAPTER;
 
-    private static final ConcurrentMap<String, FailsafeLogger> LOGGERS = new ConcurrentHashMap<String, FailsafeLogger>();
+    private static final ConcurrentMap<String, FailsafeLogger> LOGGERS = new ConcurrentHashMap<>();
 
     // 查找常用的日志框架
     static {
