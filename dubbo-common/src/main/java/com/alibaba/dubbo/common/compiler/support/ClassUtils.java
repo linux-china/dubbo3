@@ -42,9 +42,7 @@ public class ClassUtils {
     public static Object newInstance(String name) {
         try {
             return forName(name).newInstance();
-        } catch (InstantiationException e) {
-            throw new IllegalStateException(e.getMessage(), e);
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             throw new IllegalStateException(e.getMessage(), e);
         }
     }
@@ -57,7 +55,7 @@ public class ClassUtils {
                 for (String pkg : packages) {
                     try {
                         return _forName(pkg + "." + className);
-                    } catch (ClassNotFoundException e2) {
+                    } catch (ClassNotFoundException ignore) {
                     }
                 }
             }
@@ -125,101 +123,7 @@ public class ClassUtils {
                 ? "[L" + className.substring(0, className.length() - 2) + ";"
                         : className, true, Thread.currentThread().getContextClassLoader());
     }
-    
-    public static Class<?> getBoxedClass(Class<?> type) {
-        if (type == boolean.class) {
-            return Boolean.class; 
-        } else if (type == char.class) {
-            return Character.class; 
-        } else if (type == byte.class) {
-            return Byte.class; 
-        } else if (type == short.class) {
-            return Short.class; 
-        } else if (type == int.class) {
-            return Integer.class; 
-        } else if (type == long.class) {
-            return Long.class; 
-        } else if (type == float.class) {
-            return Float.class; 
-        } else if (type == double.class) {
-            return Double.class; 
-        } else {
-            return type;
-        }
-    }
-    
-    public static Boolean boxed(boolean v) {
-        return Boolean.valueOf(v);
-    }
 
-    public static Character boxed(char v) {
-        return Character.valueOf(v);
-    }
-
-    public static Byte boxed(byte v) {
-        return Byte.valueOf(v);
-    }
-
-    public static Short boxed(short v) {
-        return Short.valueOf(v);
-    }
-
-    public static Integer boxed(int v) {
-        return Integer.valueOf(v);
-    }
-
-    public static Long boxed(long v) {
-        return Long.valueOf(v);
-    }
-
-    public static Float boxed(float v) {
-        return Float.valueOf(v);
-    }
-
-    public static Double boxed(double v) {
-        return Double.valueOf(v);
-    }
-    
-    public static Object boxed(Object v) {
-        return v;
-    }
-    
-    public static boolean unboxed(Boolean v) {
-        return v == null ? false : v.booleanValue();
-    }
-
-    public static char unboxed(Character v) {
-        return v == null ? '\0' : v.charValue();
-    }
-
-    public static byte unboxed(Byte v) {
-        return v == null ? 0 : v.byteValue();
-    }
-
-    public static short unboxed(Short v) {
-        return v == null ? 0 : v.shortValue();
-    }
-
-    public static int unboxed(Integer v) {
-        return v == null ? 0 : v.intValue();
-    }
-
-    public static long unboxed(Long v) {
-        return v == null ? 0 : v.longValue();
-    }
-
-    public static float unboxed(Float v) {
-        return v == null ? 0 : v.floatValue();
-    }
-
-    public static double unboxed(Double v) {
-        return v == null ? 0 : v.doubleValue();
-    }
-    
-    public static Object unboxed(Object v) {
-        return v;
-    }
-    
     public static boolean isNotEmpty(Object object) {
         return getSize(object) > 0;
     }
@@ -261,7 +165,7 @@ public class ClassUtils {
             } else if (genericClass != null) {
                 return (Class<?>) genericClass;
             }
-        } catch (Throwable e) {
+        } catch (Throwable ignore) {
         }
         if (cls.getSuperclass() != null) {
             return getGenericClass(cls.getSuperclass(), i);
@@ -269,17 +173,7 @@ public class ClassUtils {
             throw new IllegalArgumentException(cls.getName() + " generic type undefined!");
         }
     }
-    
-    public static boolean isBeforeJava5(String javaVersion) {
-        return (javaVersion == null || javaVersion.length() == 0 || "1.0".equals(javaVersion) 
-                || "1.1".equals(javaVersion) || "1.2".equals(javaVersion) 
-                || "1.3".equals(javaVersion) || "1.4".equals(javaVersion));
-    }
-    
-    public static boolean isBeforeJava6(String javaVersion) {
-        return isBeforeJava5(javaVersion) || "1.5".equals(javaVersion);
-    }
-    
+
     public static String toString(Throwable e) {
         StringWriter w = new StringWriter();
         PrintWriter p = new PrintWriter(w);
