@@ -1,12 +1,12 @@
 /*
  * Copyright 1999-2011 Alibaba Group.
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,20 +14,6 @@
  * limitations under the License.
  */
 package com.alibaba.dubbo.config;
-
-import java.lang.reflect.Method;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketAddress;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
@@ -48,9 +34,13 @@ import com.alibaba.dubbo.rpc.cluster.ConfiguratorFactory;
 import com.alibaba.dubbo.rpc.service.GenericService;
 import com.alibaba.dubbo.rpc.support.ProtocolUtils;
 
+import java.lang.reflect.Method;
+import java.net.*;
+import java.util.*;
+
 /**
  * ServiceConfig
- * 
+ *
  * @author william.liangf
  * @export
  */
@@ -59,7 +49,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
     private static final long   serialVersionUID = 3033787999037024738L;
 
     private static final Protocol protocol = ExtensionLoader.getExtensionLoader(Protocol.class).getAdaptiveExtension();
-    
+
     private static final ProxyFactory proxyFactory = ExtensionLoader.getExtensionLoader(ProxyFactory.class).getAdaptiveExtension();
 
     private static final Map<String, Integer> RANDOM_PORT_MAP = new HashMap<String, Integer>();
@@ -81,13 +71,13 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
     private ProviderConfig provider;
 
     private final List<URL> urls = new ArrayList<URL>();
-    
+
     private final List<Exporter<?>> exporters = new ArrayList<Exporter<?>>();
 
     private transient volatile boolean exported;
 
 	private transient volatile boolean unexported;
-    
+
     private volatile String generic;
 
     public ServiceConfig() {
@@ -104,7 +94,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
     public List<URL> toUrls() {
         return urls;
     }
-    
+
     @Parameter(excluded = true)
     public boolean isExported() {
 		return exported;
@@ -144,7 +134,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
             doExport();
         }
     }
-    
+
     protected synchronized void doExport() {
         if (unexported) {
             throw new IllegalStateException("Already unexported!");
@@ -276,7 +266,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
     	}
         unexported = true;
     }
-    
+
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private void doExportUrls() {
         List<URL> registryURLs = loadRegistries(true);
@@ -291,11 +281,16 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
             name = "dubbo";
         }
 
-        String host = protocolConfig.getHost();
+        boolean anyhost = false;
+        String host = protocolConfig.getExportHost();
+        if (host != null) {
+            anyhost = true;
+        } else {
+            host = protocolConfig.getHost();
+        }
         if (provider != null && (host == null || host.length() == 0)) {
             host = provider.getHost();
         }
-        boolean anyhost = false;
         if (NetUtils.isInvalidLocalHost(host)) {
             anyhost = true;
             try {
@@ -345,11 +340,18 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
             }
             logger.warn("Use random available port(" + port + ") for protocol " + name);
         }
+        // export port, register to registry server
+        Integer exportPort = protocolConfig.getExportPort();
+        if (exportPort == null) {
+            exportPort = port;
+        }
 
         Map<String, String> map = new HashMap<String, String>();
         if (anyhost) {
             map.put(Constants.ANYHOST_KEY, "true");
         }
+        // real port, bind by Netty
+        map.put(Constants.REAL_PORT_KEY, String.valueOf(port));
         map.put(Constants.SIDE_KEY, Constants.PROVIDER_SIDE);
         map.put(Constants.DUBBO_VERSION_KEY, Version.getVersion());
         map.put(Constants.TIMESTAMP_KEY, String.valueOf(System.currentTimeMillis()));
@@ -451,7 +453,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
         if ((contextPath == null || contextPath.length() == 0) && provider != null) {
             contextPath = provider.getContextpath();
         }
-        URL url = new URL(name, host, port, (contextPath == null || contextPath.length() == 0 ? "" : contextPath + "/") + path, map);
+        URL url = new URL(name, host, exportPort, (contextPath == null || contextPath.length() == 0 ? "" : contextPath + "/") + path, map);
 
         if (ExtensionLoader.getExtensionLoader(ConfiguratorFactory.class)
                 .hasExtension(url.getProtocol())) {
@@ -575,7 +577,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
             id = interfaceName;
         }
     }
-    
+
     public void setInterface(Class<?> interfaceClass) {
         if (interfaceClass != null && ! interfaceClass.isInterface()) {
             throw new IllegalStateException("The interface class " + interfaceClass + " is not a interface!");
@@ -631,11 +633,11 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
     public void setProvider(ProviderConfig provider) {
         this.provider = provider;
     }
-    
+
     public List<URL> getExportedUrls(){
         return urls;
     }
-    
+
     // ======== Deprecated ========
 
     /**
@@ -665,7 +667,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
         }
         return protocols;
     }
-    
+
     @Deprecated
     private static final List<ProviderConfig> convertProtocolToProvider(List<ProtocolConfig> protocols) {
         if (protocols == null || protocols.size() == 0) {
@@ -677,7 +679,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
         }
         return providers;
     }
-    
+
     @Deprecated
     private static final ProtocolConfig convertProviderToProtocol(ProviderConfig provider) {
         ProtocolConfig protocol = new ProtocolConfig();
@@ -693,7 +695,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
         protocol.setParameters(provider.getParameters());
         return protocol;
     }
-    
+
     @Deprecated
     private static final ProviderConfig convertProtocolToProvider(ProtocolConfig protocol) {
         ProviderConfig provider = new ProviderConfig();

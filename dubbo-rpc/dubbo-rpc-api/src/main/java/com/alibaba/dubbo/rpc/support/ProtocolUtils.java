@@ -12,7 +12,7 @@ public class ProtocolUtils {
     }
 
     public static String serviceKey(URL url) {
-        return serviceKey(url.getPort(), url.getPath(), url.getParameter(Constants.VERSION_KEY),
+        return serviceKey(url.getRealPort(), url.getPath(), url.getParameter(Constants.VERSION_KEY),
                           url.getParameter(Constants.GROUP_KEY));
     }
 

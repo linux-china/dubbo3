@@ -1,12 +1,12 @@
 /*
  * Copyright 1999-2011 Alibaba Group.
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -54,16 +54,16 @@ import com.alibaba.dubbo.rpc.support.RpcUtils;
 
 /**
  * RegistryDirectory
- * 
+ *
  * @author william.liangf
  * @author chao.liuc
  */
 public class RegistryDirectory<T> extends AbstractDirectory<T> implements NotifyListener {
 
     private static final Logger logger = LoggerFactory.getLogger(RegistryDirectory.class);
-    
+
     private static final Cluster cluster = ExtensionLoader.getExtensionLoader(Cluster.class).getAdaptiveExtension();
-    
+
     private static final RouterFactory routerFactory = ExtensionLoader.getExtensionLoader(RouterFactory.class).getAdaptiveExtension();
 
     private static final ConfiguratorFactory configuratorFactory = ExtensionLoader.getExtensionLoader(ConfiguratorFactory.class).getAdaptiveExtension();
@@ -75,32 +75,32 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
     private final String serviceKey; // 构造时初始化，断言不为null
 
     private final Class<T> serviceType; // 构造时初始化，断言不为null
-    
+
     private final Map<String, String> queryMap; // 构造时初始化，断言不为null
 
     private final URL directoryUrl; // 构造时初始化，断言不为null，并且总是赋非null值
-    
+
     private final String[] serviceMethods;
 
     private final boolean multiGroup;
 
     private volatile boolean forbidden = false;
-    
+
     private volatile URL overrideDirectoryUrl; // 构造时初始化，断言不为null，并且总是赋非null值
 
-    /*override规则 
+    /*override规则
      * 优先级：override>-D>consumer>provider
      * 第一种规则：针对某个provider <ip:port,timeout=100>
      * 第二种规则：针对所有provider <* ,timeout=5000>
      */
     private volatile List<Configurator> configurators; // 初始为null以及中途可能被赋为null，请使用局部变量引用
-    
+
     // Map<url, Invoker> cache service url to invoker mapping.
     private volatile Map<String, Invoker<T>> urlInvokerMap; // 初始为null以及中途可能被赋为null，请使用局部变量引用
-    
+
     // Map<methodName, Invoker> cache service method to invokers mapping.
     private volatile Map<String, List<Invoker<T>>> methodInvokerMap; // 初始为null以及中途可能被赋为null，请使用局部变量引用
-    
+
     // Set<invokerUrls> cache invokeUrls to invokers mapping.
     private volatile Set<URL> cachedInvokerUrls; // 初始为null以及中途可能被赋为null，请使用局部变量引用
 
@@ -127,7 +127,7 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
     public void setRegistry(Registry registry) {
         this.registry = registry;
     }
-    
+
     public void subscribe(URL url) {
         setConsumerUrl(url);
         registry.subscribe(url, this);
@@ -160,10 +160,10 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
         for (URL url : urls) {
             String protocol = url.getProtocol();
             String category = url.getParameter(Constants.CATEGORY_KEY, Constants.DEFAULT_CATEGORY);
-            if (Constants.ROUTERS_CATEGORY.equals(category) 
+            if (Constants.ROUTERS_CATEGORY.equals(category)
                     || Constants.ROUTE_PROTOCOL.equals(protocol)) {
                 routerUrls.add(url);
-            } else if (Constants.CONFIGURATORS_CATEGORY.equals(category) 
+            } else if (Constants.CONFIGURATORS_CATEGORY.equals(category)
                     || Constants.OVERRIDE_PROTOCOL.equals(protocol)) {
                 configuratorUrls.add(url);
             } else if (Constants.PROVIDERS_CATEGORY.equals(category)) {
@@ -172,7 +172,7 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
                 logger.warn("Unsupported category " + category + " in notified url: " + url + " from registry " + getUrl().getAddress() + " to consumer " + NetUtils.getLocalHost());
             }
         }
-        // configurators 
+        // configurators
         if (configuratorUrls != null && configuratorUrls.size() >0 ){
             this.configurators = toConfigurators(configuratorUrls);
         }
@@ -194,8 +194,8 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
         // providers
         refreshInvoker(invokerUrls);
     }
-    
-    
+
+
     /**
      * 根据invokerURL列表转换为invoker列表。转换规则如下：
      * 1.如果url已经被转换为invoker，则不在重新引用，直接从缓存中获取，注意如果url中任何一个参数变更也会重新引用
@@ -238,7 +238,7 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
             }
         }
     }
-    
+
     private Map<String, List<Invoker<T>>> toMergeMethodInvokerMap(Map<String, List<Invoker<T>>> methodMap) {
         Map<String, List<Invoker<T>>> result = new HashMap<String, List<Invoker<T>>>();
         for (Map.Entry<String, List<Invoker<T>>> entry : methodMap.entrySet()) {
@@ -268,7 +268,7 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
         }
         return result;
     }
-    
+
     /**
      * 将overrideURL转换为map，供重新refer时使用.
      * 每次下发全部规则，全部重新组装计算
@@ -277,7 +277,7 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
      * </br>1.override://0.0.0.0/...(或override://ip:port...?anyhost=true)&para1=value1...表示全局规则(对所有的提供者全部生效)
      * </br>2.override://ip:port...?anyhost=false 特例规则（只针对某个提供者生效）
      * </br>3.不支持override://规则... 需要注册中心自行计算.
-     * </br>4.不带参数的override://0.0.0.0/ 表示清除override 
+     * </br>4.不带参数的override://0.0.0.0/ 表示清除override
      * @return
      */
     public static List<Configurator> toConfigurators(List<URL> urls){
@@ -302,9 +302,9 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
         Collections.sort(configurators);
         return configurators;
     }
-    
+
     /**
-     * 
+     *
      * @param urls
      * @return null : no routers ,do nothing
      *         else :routers list
@@ -334,10 +334,10 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
         }
         return routers;
     }
-    
+
     /**
      * 将urls转成invokers,如果url已经被refer过，不再重新引用。
-     * 
+     *
      * @param urls
      * @param overrides
      * @param query
@@ -369,12 +369,12 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
                 continue;
             }
             if (! ExtensionLoader.getExtensionLoader(Protocol.class).hasExtension(providerUrl.getProtocol())) {
-                logger.error(new IllegalStateException("Unsupported protocol " + providerUrl.getProtocol() + " in notified url: " + providerUrl + " from registry " + getUrl().getAddress() + " to consumer " + NetUtils.getLocalHost() 
+                logger.error(new IllegalStateException("Unsupported protocol " + providerUrl.getProtocol() + " in notified url: " + providerUrl + " from registry " + getUrl().getAddress() + " to consumer " + NetUtils.getLocalHost()
                         + ", supported protocol: "+ExtensionLoader.getExtensionLoader(Protocol.class).getSupportedExtensions()));
                 continue;
             }
             URL url = mergeUrl(providerUrl);
-            
+
             String key = url.toFullString(); // URL参数是排序的
             if (keys.contains(key)) { // 重复URL
                 continue;
@@ -407,7 +407,7 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
         keys.clear();
         return newUrlInvokerMap;
     }
-    
+
     /**
      * 合并url参数 顺序为override > -D >Consumer > Provider
      * @param providerUrl
@@ -416,19 +416,19 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
      */
     private URL mergeUrl(URL providerUrl){
         providerUrl = ClusterUtils.mergeUrl(providerUrl, queryMap); // 合并消费端参数
-        
+
         List<Configurator> localConfigurators = this.configurators; // local reference
         if (localConfigurators != null && localConfigurators.size() > 0) {
             for (Configurator configurator : localConfigurators) {
                 providerUrl = configurator.configure(providerUrl);
             }
         }
-        
+
         providerUrl = providerUrl.addParameter(Constants.CHECK_KEY, String.valueOf(false)); // 不检查连接是否成功，总是创建Invoker！
-        
+
         //directoryUrl 与 override 合并是在notify的最后，这里不能够处理
-        this.overrideDirectoryUrl = this.overrideDirectoryUrl.addParametersIfAbsent(providerUrl.getParameters()); // 合并提供者参数        
-        
+        this.overrideDirectoryUrl = this.overrideDirectoryUrl.addParametersIfAbsent(providerUrl.getParameters()); // 合并提供者参数
+
         if ((providerUrl.getPath() == null || providerUrl.getPath().length() == 0)
                 && "dubbo".equals(providerUrl.getProtocol())) { // 兼容1.0
             //fix by tony.chenl DUBBO-44
@@ -450,7 +450,7 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
 
     private List<Invoker<T>> route(List<Invoker<T>> invokers, String method) {
         Invocation invocation = new RpcInvocation(method, new Class<?>[0], new Object[0]);
-        List<Router> routers = getRouters(); 
+        List<Router> routers = getRouters();
         if (routers != null) {
             for (Router router : routers) {
                 if (router.getUrl() != null && ! router.getUrl().getParameter(Constants.RUNTIME_KEY, true)) {
@@ -463,7 +463,7 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
 
     /**
      * 将invokers列表转成与方法的映射关系
-     * 
+     *
      * @param invokersMap Invoker列表
      * @return Invoker与方法的映射关系
      */
@@ -478,7 +478,7 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
                     String[] methods = Constants.COMMA_SPLIT_PATTERN.split(parameter);
                     if (methods != null && methods.length > 0) {
                         for (String method : methods) {
-                            if (method != null && method.length() > 0 
+                            if (method != null && method.length() > 0
                                     && ! Constants.ANY_VALUE.equals(method)) {
                                 List<Invoker<T>> methodInvokers = newMethodInvokerMap.get(method);
                                 if (methodInvokers == null) {
@@ -529,11 +529,11 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
         }
         methodInvokerMap = null;
     }
-    
+
     /**
      * 检查缓存中的invoker是否需要被destroy
      * 如果url中指定refer.autodestroy=false，则只增加不减少，可能会有refer泄漏，
-     * 
+     *
      * @param invokers
      */
     private void destroyUnusedInvokers(Map<String, Invoker<T>> oldUrlInvokerMap, Map<String, Invoker<T>> newUrlInvokerMap) {
@@ -554,7 +554,7 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
                 }
             }
         }
-        
+
         if (deleted != null) {
             for (String url : deleted){
                 if (url != null ) {
@@ -602,7 +602,7 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
         }
         return invokers == null ? new ArrayList<Invoker<T>>(0) : invokers;
     }
-    
+
     public Class<T> getInterface() {
         return serviceType;
     }
@@ -625,29 +625,29 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
         }
         return false;
     }
-    
+
     /**
      * Haomin: added for test purpose
      */
     public Map<String, Invoker<T>> getUrlInvokerMap(){
         return urlInvokerMap;
     }
-    
+
     /**
      * Haomin: added for test purpose
      */
     public Map<String, List<Invoker<T>>> getMethodInvokerMap(){
         return methodInvokerMap;
-    } 
-    
+    }
+
     private static class InvokerComparator implements Comparator<Invoker<?>> {
-        
+
         private static final InvokerComparator comparator = new InvokerComparator();
-        
+
         public static InvokerComparator getComparator() {
             return comparator;
         }
-        
+
         private InvokerComparator() {}
 
         public int compare(Invoker<?> o1, Invoker<?> o2) {
@@ -655,10 +655,10 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
         }
 
     }
-    
+
     /**
      * 代理类，主要用于存储注册中心下发的url地址，用于重新重新refer时能够根据providerURL queryMap overrideMap重新组装
-     * 
+     *
      * @author chao.liuc
      *
      * @param <T>
