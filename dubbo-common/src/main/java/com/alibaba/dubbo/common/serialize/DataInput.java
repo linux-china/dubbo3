@@ -28,7 +28,7 @@ public interface DataInput {
 	 * Read boolean.
 	 * 
 	 * @return boolean.
-	 * @throws IOException.
+	 * @throws IOException IO Exception
 	 */
 	boolean readBool() throws IOException;
 
@@ -36,7 +36,7 @@ public interface DataInput {
 	 * Read byte.
 	 * 
 	 * @return byte value.
-	 * @throws IOException.
+	 * @throws IOException IO Exception
 	 */
 	byte readByte() throws IOException;
 
@@ -44,7 +44,7 @@ public interface DataInput {
 	 * Read short integer.
 	 * 
 	 * @return short.
-	 * @throws IOException.
+	 * @throws IOException IO Exception
 	 */
 	short readShort() throws IOException;
 
@@ -52,7 +52,7 @@ public interface DataInput {
 	 * Read integer.
 	 * 
 	 * @return integer.
-	 * @throws IOException.
+	 * @throws IOException IO Exception
 	 */
 	int readInt() throws IOException;
 
@@ -60,7 +60,7 @@ public interface DataInput {
 	 * Read long.
 	 * 
 	 * @return long.
-	 * @throws IOException.
+	 * @throws IOException IO Exception
 	 */
 	long readLong() throws IOException;
 
@@ -68,7 +68,7 @@ public interface DataInput {
 	 * Read float.
 	 * 
 	 * @return float.
-	 * @throws IOException.
+	 * @throws IOException IO Exception
 	 */
 	float readFloat() throws IOException;
 
@@ -76,7 +76,7 @@ public interface DataInput {
 	 * Read double.
 	 * 
 	 * @return double.
-	 * @throws IOException.
+	 * @throws IOException IO Exception
 	 */
 	double readDouble() throws IOException;
 
@@ -84,7 +84,7 @@ public interface DataInput {
 	 * Read UTF-8 string.
 	 * 
 	 * @return string.
-	 * @throws IOException.
+	 * @throws IOException IO Exception
 	 */
 	String readUTF() throws IOException;
 
@@ -92,7 +92,7 @@ public interface DataInput {
 	 * Read byte array.
 	 * 
 	 * @return byte array.
-	 * @throws IOException.
+	 * @throws IOException IO Exception
 	 */
 	byte[] readBytes() throws IOException;
 }

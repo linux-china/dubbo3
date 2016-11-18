@@ -25,7 +25,7 @@ import com.alibaba.dubbo.common.extension.SPI;
 
 /**
  * Serialization. (SPI, Singleton, ThreadSafe)
- * 
+ *
  * @author ding.lid
  * @author william.liangf
  */
@@ -34,34 +34,36 @@ public interface Serialization {
 
     /**
      * get content type id
-     * 
+     *
      * @return content type id
      */
     byte getContentTypeId();
 
     /**
      * get content type
-     * 
+     *
      * @return content type
      */
     String getContentType();
 
     /**
      * create serializer
-     * @param url 
-     * @param output
+     *
+     * @param url    url
+     * @param output output
      * @return serializer
-     * @throws IOException
+     * @throws IOException IO Exception
      */
     @Adaptive
     ObjectOutput serialize(URL url, OutputStream output) throws IOException;
 
     /**
      * create deserializer
-     * @param url 
-     * @param input
+     *
+     * @param url   url
+     * @param input input
      * @return deserializer
-     * @throws IOException
+     * @throws IOException IO Exception
      */
     @Adaptive
     ObjectInput deserialize(URL url, InputStream input) throws IOException;

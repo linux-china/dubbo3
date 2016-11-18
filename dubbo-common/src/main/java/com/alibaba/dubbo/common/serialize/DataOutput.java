@@ -28,7 +28,7 @@ public interface DataOutput {
 	 * Write boolean.
 	 * 
 	 * @param v value.
-	 * @throws IOException
+	 * @throws IOException IO Exception
 	 */
 	void writeBool(boolean v) throws IOException;
 
@@ -36,7 +36,7 @@ public interface DataOutput {
 	 * Write byte.
 	 * 
 	 * @param v value.
-	 * @throws IOException
+	 * @throws IOException IO Exception
 	 */
 	void writeByte(byte v) throws IOException;
 
@@ -44,7 +44,7 @@ public interface DataOutput {
 	 * Write short.
 	 * 
 	 * @param v value.
-	 * @throws IOException
+	 * @throws IOException IO Exception
 	 */
 	void writeShort(short v) throws IOException;
 
@@ -52,7 +52,7 @@ public interface DataOutput {
 	 * Write integer.
 	 * 
 	 * @param v value.
-	 * @throws IOException
+	 * @throws IOException IO Exception
 	 */
 	void writeInt(int v) throws IOException;
 
@@ -60,7 +60,7 @@ public interface DataOutput {
 	 * Write long.
 	 * 
 	 * @param v value.
-	 * @throws IOException
+	 * @throws IOException IO Exception
 	 */
 	void writeLong(long v) throws IOException;
 
@@ -68,7 +68,7 @@ public interface DataOutput {
 	 * Write float.
 	 * 
 	 * @param v value.
-	 * @throws IOException
+	 * @throws IOException IO Exception
 	 */
 	void writeFloat(float v) throws IOException;
 
@@ -76,7 +76,7 @@ public interface DataOutput {
 	 * Write double.
 	 * 
 	 * @param v value.
-	 * @throws IOException
+	 * @throws IOException IO Exception
 	 */
 	void writeDouble(double v) throws IOException;
 
@@ -84,7 +84,7 @@ public interface DataOutput {
 	 * Write string.
 	 * 
 	 * @param v value.
-	 * @throws IOException
+	 * @throws IOException IO Exception
 	 */
 	void writeUTF(String v) throws IOException;
 
@@ -92,7 +92,7 @@ public interface DataOutput {
 	 * Write byte array.
 	 * 
 	 * @param v value.
-	 * @throws IOException
+	 * @throws IOException IO Exception
 	 */
 	void writeBytes(byte[] v) throws IOException;
 
@@ -102,14 +102,14 @@ public interface DataOutput {
 	 * @param v value.
 	 * @param off offset.
 	 * @param len length.
-	 * @throws IOException
+	 * @throws IOException IO Exception
 	 */
 	void writeBytes(byte[] v, int off, int len) throws IOException;
 
 	/**
 	 * Flush buffer.
 	 * 
-	 * @throws IOException
+	 * @throws IOException IO Exception
 	 */
 	void flushBuffer() throws IOException;
 }
