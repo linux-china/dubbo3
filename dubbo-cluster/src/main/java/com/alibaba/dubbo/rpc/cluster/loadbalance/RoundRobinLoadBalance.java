@@ -35,9 +35,9 @@ public class RoundRobinLoadBalance extends AbstractLoadBalance {
 
     public static final String NAME = "roundrobin"; 
     
-    private final ConcurrentMap<String, AtomicPositiveInteger> sequences = new ConcurrentHashMap<String, AtomicPositiveInteger>();
+    private final ConcurrentMap<String, AtomicPositiveInteger> sequences = new ConcurrentHashMap<>();
 
-    private final ConcurrentMap<String, AtomicPositiveInteger> weightSequences = new ConcurrentHashMap<String, AtomicPositiveInteger>();
+    private final ConcurrentMap<String, AtomicPositiveInteger> weightSequences = new ConcurrentHashMap<>();
 
     protected <T> Invoker<T> doSelect(List<Invoker<T>> invokers, URL url, Invocation invocation) {
         String key = invokers.get(0).getUrl().getServiceKey() + "." + invocation.getMethodName();
@@ -56,7 +56,7 @@ public class RoundRobinLoadBalance extends AbstractLoadBalance {
                 weightSequence = weightSequences.get(key);
             }
             int currentWeight = weightSequence.getAndIncrement() % maxWeight;
-            List<Invoker<T>> weightInvokers = new ArrayList<Invoker<T>>();
+            List<Invoker<T>> weightInvokers = new ArrayList<>();
             for (Invoker<T> invoker : invokers) { // 筛选权重大于当前权重基数的Invoker
                 if (getWeight(invoker, invocation) > currentWeight) {
                     weightInvokers.add(invoker);

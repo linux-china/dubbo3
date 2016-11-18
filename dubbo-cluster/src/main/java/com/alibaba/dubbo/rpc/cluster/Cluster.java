@@ -38,7 +38,7 @@ public interface Cluster {
      * @param <T>
      * @param directory
      * @return cluster invoker
-     * @throws RpcException
+     * @throws RpcException rpc exception
      */
     @Adaptive
     <T> Invoker<T> join(Directory<T> directory) throws RpcException;

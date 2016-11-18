@@ -44,8 +44,7 @@ public abstract class AbstractConfigurator implements Configurator {
     }
 
     public URL configure(URL url) {
-        if (configuratorUrl == null || configuratorUrl.getHost() == null
-                || url == null || url.getHost() == null) {
+        if (configuratorUrl.getHost() == null || url == null || url.getHost() == null) {
             return url;
         }
         if (Constants.ANYHOST_VALUE.equals(configuratorUrl.getHost()) 

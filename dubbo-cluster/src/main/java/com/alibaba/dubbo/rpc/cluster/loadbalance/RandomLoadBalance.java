@@ -50,10 +50,10 @@ public class RandomLoadBalance extends AbstractLoadBalance {
             // 如果权重不相同且权重大于0则按总权重数随机
             int offset = random.nextInt(totalWeight);
             // 并确定随机值落在哪个片断上
-            for (int i = 0; i < length; i++) {
-                offset -= getWeight(invokers.get(i), invocation);
+            for (Invoker<T> invoker : invokers) {
+                offset -= getWeight(invoker, invocation);
                 if (offset < 0) {
-                    return invokers.get(i);
+                    return invoker;
                 }
             }
         }
