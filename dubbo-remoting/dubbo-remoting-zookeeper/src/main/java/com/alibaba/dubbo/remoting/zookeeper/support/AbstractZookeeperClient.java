@@ -57,7 +57,7 @@ public abstract class AbstractZookeeperClient<TargetChildListener> implements Zo
 		return stateListeners;
 	}
 
-	public List<String> addChildListener(String path, final ChildListener listener) {
+	public synchronized List<String> addChildListener(String path, final ChildListener listener) {
 		ConcurrentMap<ChildListener, TargetChildListener> listeners = childListeners.get(path);
 		if (listeners == null) {
 			childListeners.putIfAbsent(path, new ConcurrentHashMap<ChildListener, TargetChildListener>());
@@ -71,12 +71,15 @@ public abstract class AbstractZookeeperClient<TargetChildListener> implements Zo
 		return addTargetChildListener(path, targetListener);
 	}
 
-	public void removeChildListener(String path, ChildListener listener) {
+	public synchronized void removeChildListener(String path, ChildListener listener) {
 		ConcurrentMap<ChildListener, TargetChildListener> listeners = childListeners.get(path);
 		if (listeners != null) {
 			TargetChildListener targetListener = listeners.remove(listener);
 			if (targetListener != null) {
 				removeTargetChildListener(path, targetListener);
+			}
+			if (listeners.isEmpty()) {
+				childListeners.remove(path);
 			}
 		}
 	}
