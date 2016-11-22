@@ -29,7 +29,6 @@ Please execute build.sh to build project
 ### Todo
 
 * 代码迁移到Java 8
-* lombok介入减少代码量
 * Consul注册中心
 * javassist替换为byte-buddy
 * Lombok？？？: 精简代码 https://projectlombok.org/index.html
