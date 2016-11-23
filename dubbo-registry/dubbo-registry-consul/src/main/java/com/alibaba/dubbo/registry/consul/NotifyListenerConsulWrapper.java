@@ -38,6 +38,7 @@ public class NotifyListenerConsulWrapper {
         for (URL tempUrl : tempUrls) {
             if (!this.providerUrls.contains(tempUrl)) {
                 changed = true;
+                break;
             }
         }
         if (changed) {
