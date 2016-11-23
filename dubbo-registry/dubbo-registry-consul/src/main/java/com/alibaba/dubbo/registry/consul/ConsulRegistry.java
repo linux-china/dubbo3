@@ -21,13 +21,8 @@ import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.alibaba.dubbo.registry.NotifyListener;
 import com.alibaba.dubbo.registry.support.FailbackRegistry;
 import com.ecwid.consul.v1.ConsulClient;
-import com.ecwid.consul.v1.Response;
 import com.ecwid.consul.v1.agent.model.NewService;
-import com.ecwid.consul.v1.health.model.HealthService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -43,7 +38,7 @@ public class ConsulRegistry extends FailbackRegistry {
 
     private static final int DEFAULT_CONSUL_PORT = 8500;
 
-    private final ConcurrentMap<String, NotifyListener> notifiers = new ConcurrentHashMap<String, NotifyListener>();
+    private final ConcurrentMap<String, NotifyListenerConsulWrapper> notifiers = new ConcurrentHashMap<>();
 
     public ConsulRegistry(URL url) {
         super(url);
@@ -76,25 +71,16 @@ public class ConsulRegistry extends FailbackRegistry {
     @Override
     protected void doSubscribe(URL url, NotifyListener listener) {
         String serviceName = url.getServiceInterface();
-        List<URL> providerUrls = getProviderUrls(serviceName);
-        if (!providerUrls.isEmpty()) {
-            listener.notify(providerUrls);
-        }
+        NotifyListenerConsulWrapper wrapper = new NotifyListenerConsulWrapper(listener, consulClient, serviceName);
         if (notifiers.isEmpty()) {
             ServiceLookupThread lookupThread = new ServiceLookupThread();
             lookupThread.setDaemon(true);
             lookupThread.start();
         }
-        notifiers.put(serviceName, listener);
-    }
-
-    public List<URL> getProviderUrls(String serviceName) {
-        List<URL> urls = new ArrayList<>();
-        Response<List<HealthService>> healthServices = consulClient.getHealthServices(serviceName, true, null);
-        for (HealthService healthService : healthServices.getValue()) {
-            urls.add(URL.valueOf(healthService.getService().getAddress()));
+        if (!notifiers.containsKey(serviceName)) {
+            notifiers.put(serviceName, wrapper);
+            wrapper.sync();
         }
-        return urls;
     }
 
     @Override
@@ -126,8 +112,8 @@ public class ConsulRegistry extends FailbackRegistry {
             while (true) {
                 try {
                     sleep(15000);
-                    for (Map.Entry<String, NotifyListener> entry : notifiers.entrySet()) {
-                        entry.getValue().notify(getProviderUrls(entry.getKey()));
+                    for (NotifyListenerConsulWrapper wrapper : notifiers.values()) {
+                        wrapper.sync();
                     }
                 } catch (Throwable e) {
                     try {
