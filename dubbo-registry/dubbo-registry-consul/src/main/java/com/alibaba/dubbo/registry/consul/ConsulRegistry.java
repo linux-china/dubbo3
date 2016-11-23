@@ -21,7 +21,15 @@ import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.alibaba.dubbo.registry.NotifyListener;
 import com.alibaba.dubbo.registry.support.FailbackRegistry;
 import com.ecwid.consul.v1.ConsulClient;
+import com.ecwid.consul.v1.Response;
 import com.ecwid.consul.v1.agent.model.NewService;
+import com.ecwid.consul.v1.health.model.HealthService;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * consul registry
@@ -34,6 +42,8 @@ public class ConsulRegistry extends FailbackRegistry {
     ConsulClient consulClient;
 
     private static final int DEFAULT_CONSUL_PORT = 8500;
+
+    private final ConcurrentMap<String, NotifyListener> notifiers = new ConcurrentHashMap<String, NotifyListener>();
 
     public ConsulRegistry(URL url) {
         super(url);
@@ -51,7 +61,7 @@ public class ConsulRegistry extends FailbackRegistry {
     @Override
     protected void doRegister(URL url) {
         NewService consulService = new NewService();
-        consulService.setAddress(url.getHost());
+        consulService.setAddress(url.toFullString());
         consulService.setPort(url.getPort());
         consulService.setId(convertConsulSerivceId(url));
         consulService.setName(url.getServiceInterface());
@@ -65,12 +75,31 @@ public class ConsulRegistry extends FailbackRegistry {
 
     @Override
     protected void doSubscribe(URL url, NotifyListener listener) {
+        String serviceName = url.getServiceInterface();
+        List<URL> providerUrls = getProviderUrls(serviceName);
+        if (!providerUrls.isEmpty()) {
+            listener.notify(providerUrls);
+        }
+        if (notifiers.isEmpty()) {
+            ServiceLookupThread lookupThread = new ServiceLookupThread();
+            lookupThread.setDaemon(true);
+            lookupThread.start();
+        }
+        notifiers.put(serviceName, listener);
+    }
 
+    public List<URL> getProviderUrls(String serviceName) {
+        List<URL> urls = new ArrayList<>();
+        Response<List<HealthService>> healthServices = consulClient.getHealthServices(serviceName, true, null);
+        for (HealthService healthService : healthServices.getValue()) {
+            urls.add(URL.valueOf(healthService.getService().getAddress()));
+        }
+        return urls;
     }
 
     @Override
     protected void doUnsubscribe(URL url, NotifyListener listener) {
-
+        notifiers.remove(url.getServiceInterface());
     }
 
     /**
@@ -90,5 +119,23 @@ public class ConsulRegistry extends FailbackRegistry {
         return host + ":" + port + "-" + path;
     }
 
+    private class ServiceLookupThread extends Thread {
 
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    sleep(15000);
+                    for (Map.Entry<String, NotifyListener> entry : notifiers.entrySet()) {
+                        entry.getValue().notify(getProviderUrls(entry.getKey()));
+                    }
+                } catch (Throwable e) {
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException ignored) {
+                    }
+                }
+            }
+        }
+    }
 }
