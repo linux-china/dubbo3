@@ -15,59 +15,37 @@
  */
 package com.alibaba.dubbo.registry.consul;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import com.alibaba.dubbo.common.URL;
-import com.alibaba.dubbo.registry.NotifyListener;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * consulRegistryTest
- * 
+ *
  * @author linux_china
  */
 public class ConsulRegistryTest {
 
-    String            service     = "com.alibaba.dubbo.test.injvmServie";
-    URL               registryUrl = URL.valueOf("consul://239.255.255.255/");
-    URL               serviceUrl  = URL.valueOf("redis://redis/" + service
-                                                + "?notify=false&methods=test1,test2");
-    URL               consumerUrl = URL.valueOf("redis://consumer/" + service + "?notify=false&methods=test1,test2");
-    // RedisRegistry registry    = new RedisRegistry(registryUrl);
+    String service = "com.alibaba.dubbo.test.injvmServie";
+    //"consul://127.0.0.1:8500/com.alibaba.dubbo.registry.RegistryService?interface=com.alibaba.dubbo.registry.RegistryService"
+    URL registryUrl = URL.valueOf("consul://localhost:8500");
+    //"dubbo://192.168.11.1:20880/com.alibaba.dubbo.test.injvmServie?anyhost=true&application=dubbo-uic-provider&dubbo=3.0.0-SNAPSHOT&generic=false&interface=org.mvnsearch.uic.UicTemplate&methods=findById&pid=28893&realport=20880&side=provider&threads=200&timestamp=1479892263598"
+    URL serviceUrl = URL.valueOf("dubbo://192.168.11.1:20880/" + service + "?notify=false&methods=test1,test2");
+    // consumer://192.168.11.1/com.alibaba.dubbo.test.injvmServie?application=dubbo-uic-consumer&category=consumers&check=false&dubbo=3.0.0-SNAPSHOT&interface=org.mvnsearch.uic.UicTemplate&methods=findById&pid=29084&side=consumer&timeout=3000&timestamp=1479892383523
+    URL consumerUrl = URL.valueOf("consumer://192.168.11.1/" + service + "?notify=false&methods=test1,test2");
+    ConsulRegistry registry = new ConsulRegistry(registryUrl);
 
-    /**
-     * @throws java.lang.Exception
-     */
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
+    @Test
+    public void testIsAvailable() {
+        Assert.assertTrue(registry.isAvailable());
     }
 
     /**
-     * @throws java.lang.Exception
-     */
-    @Before
-    public void setUp() throws Exception {
-        //registry.register(service, serviceUrl);
-    }
-
-    /**
-     * Test method for {@link com.alibaba.dubbo.registry.support.injvm.InjvmRegistry#register(java.util.Map)}.
+     * test register service
      */
     @Test
     public void testRegister() {
-        /*List<URL> registered = null;
-        // clear first
-        registered = registry.getRegistered(service);
-
-        for (int i = 0; i < 2; i++) {
-            registry.register(service, serviceUrl);
-            registered = registry.getRegistered(service);
-            assertTrue(registered.contains(serviceUrl));
-        }
-        // confirm only 1 regist success;
-        registered = registry.getRegistered(service);
-        assertEquals(1, registered.size());*/
+        registry.register(serviceUrl);
     }
 
     /**
