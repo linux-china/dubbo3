@@ -112,8 +112,10 @@ public class ConsulRegistry extends FailbackRegistry {
             while (true) {
                 try {
                     sleep(15000);
-                    for (NotifyListenerConsulWrapper wrapper : notifiers.values()) {
-                        wrapper.sync();
+                    synchronized (notifiers) {
+                        for (NotifyListenerConsulWrapper wrapper : notifiers.values()) {
+                            wrapper.sync();
+                        }
                     }
                 } catch (Throwable e) {
                     try {
