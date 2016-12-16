@@ -1,6 +1,8 @@
 Todo
 ================
 
+* monitor replaced by metrics
+* dubbo monitor default: dropwizard metrics
 * code adjustment: upgraded to Java 8
 * javassist replaced by byte-buddy: https://zeroturnaround.com/rebellabs/testing-the-performance-of-4-java-runtime-code-generators-cglib-javassist-jdk-proxy-byte-buddy/
 * @Service -> @DubboService
