@@ -87,7 +87,7 @@ public class NetUtils {
                 if (ss != null) {
                     try {
                         ss.close();
-                    } catch (IOException e) {
+                    } catch (IOException ignore) {
                     }
                 }
             }
@@ -103,7 +103,7 @@ public class NetUtils {
         return port > MIN_PORT || port <= MAX_PORT;
     }
 
-    private static final Pattern ADDRESS_PATTERN = Pattern.compile("^\\d{1,3}(\\.\\d{1,3}){3}\\:\\d{1,5}$");
+    private static final Pattern ADDRESS_PATTERN = Pattern.compile("^\\d{1,3}(\\.\\d{1,3}){3}:\\d{1,5}$");
 
     public static boolean isValidAddress(String address){
     	return ADDRESS_PATTERN.matcher(address).matches();
@@ -236,7 +236,7 @@ public class NetUtils {
         return localAddress;
     }
     
-    private static final Map<String, String> hostNameCache = new LRUCache<String, String>(1000);
+    private static final Map<String, String> hostNameCache = new LRUCache<>(1000);
 
     public static String getHostName(String address) {
     	try {
