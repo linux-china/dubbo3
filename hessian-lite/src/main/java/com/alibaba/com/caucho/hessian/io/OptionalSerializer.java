@@ -11,15 +11,11 @@ import java.util.Optional;
 public class OptionalSerializer extends AbstractSerializer {
 
     public void writeObject(Object obj, AbstractHessianOutput out) throws IOException {
-        if (obj == null)
+        Optional optional = (Optional) obj;
+        if (optional == null || !optional.isPresent())
             out.writeNull();
-        else if (obj.getClass().equals(Optional.class)) {
-            Optional optional = (Optional) obj;
-            if (!optional.isPresent()) {
-                out.writeNull();
-            } else {
-                out.writeObject(optional.get());
-            }
+        else {
+            out.writeObject(optional.get());
         }
 
     }
