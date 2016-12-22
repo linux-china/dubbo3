@@ -43,7 +43,7 @@ public abstract class AbstractLoadBalance implements LoadBalance {
     protected int getWeight(Invoker<?> invoker, Invocation invocation) {
         int weight = invoker.getUrl().getMethodParameter(invocation.getMethodName(), Constants.WEIGHT_KEY, Constants.DEFAULT_WEIGHT);
         //todo bug 如果客户端时间不正确，没有什么意义
-        if (weight > 0) {
+       /* if (weight > 0) {
             long timestamp = invoker.getUrl().getParameter(Constants.TIMESTAMP_KEY, 0L);
             if (timestamp > 0L) {
                 int uptime = (int) (System.currentTimeMillis() - timestamp);
@@ -52,7 +52,7 @@ public abstract class AbstractLoadBalance implements LoadBalance {
                     weight = calculateWarmupWeight(uptime, warmup, weight);
                 }
             }
-        }
+        }*/
         return weight;
     }
 
