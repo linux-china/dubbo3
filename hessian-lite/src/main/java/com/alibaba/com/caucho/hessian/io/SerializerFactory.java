@@ -48,13 +48,16 @@
 
 package com.alibaba.com.caucho.hessian.io;
 
-import java.io.*;
+import javax.management.ObjectName;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.management.*;
 
 /**
  * Factory for returning serialization methods.
@@ -616,7 +619,7 @@ public class SerializerFactory extends AbstractSerializerFactory {
         // java8
         try {
             _staticSerializerMap.put(Optional.class, new OptionalSerializer());
-            _staticDeserializerMap.put(Optional.class,new OptionalDeserializer());
+            _staticDeserializerMap.put(Optional.class, new OptionalDeserializer());
         } catch (Throwable ignore) {
 
         }
