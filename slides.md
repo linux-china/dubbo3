@@ -26,8 +26,12 @@
 ---
 
 # Dubbo是什么
+分布式的Java RPC框架
 
-* Java分布式的RPC框架: Registry, Provider, Consumer
+* 服务提供方和消费者: Provider, Consumer
+* 网络通讯: Netty & NIO
+* 序列化机制: hessian 2 protocol
+* 负载均衡：Registry
 
 
 ---
@@ -44,11 +48,11 @@
 # 3.0和2.0的特性对比
 
 
-| Feature   | Dubbo 2.0               | Dubbo 3                  |
+| Feature   | Dubbo 2.0              | Dubbo 3                  |
 |:----------|:-----------------------|:-------------------------|
-| Remoting  | Netty 3,Mina, Grizzy    | Netty 3,4                |
-| Registry  | Simple,Redis,Zookeeper  | Redis, ZooKeeper, Consul  |
-| Container | Jetty,Spring            | Spring                   |
+| Remoting  | Netty 3,Mina, Grizzy   | Netty 3,4                |
+| Registry  | Simple,Redis,Zookeeper | Redis, ZooKeeper, Consul |
+| Container | Jetty,Spring           | Spring Boot              |
 
 
 ---
