@@ -15,11 +15,6 @@
  */
 package com.alibaba.dubbo.rpc.protocol;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.common.logger.Logger;
@@ -31,6 +26,10 @@ import com.alibaba.dubbo.rpc.Invoker;
 import com.alibaba.dubbo.rpc.Protocol;
 import com.alibaba.dubbo.rpc.support.ProtocolUtils;
 
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * abstract ProtocolSupport.
  * 
@@ -41,10 +40,10 @@ public abstract class AbstractProtocol implements Protocol {
 
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-	protected final Map<String, Exporter<?>> exporterMap = new ConcurrentHashMap<String, Exporter<?>>();
+	protected final Map<String, Exporter<?>> exporterMap = new ConcurrentHashMap<>();
 
 	//TODO SOFEREFENCE
-    protected final Set<Invoker<?>> invokers = new ConcurrentHashSet<Invoker<?>>();
+    protected final Set<Invoker<?>> invokers = new ConcurrentHashSet<>();
     
 	protected static String serviceKey(URL url) {
 	    return ProtocolUtils.serviceKey(url);
@@ -68,7 +67,7 @@ public abstract class AbstractProtocol implements Protocol {
                 }
             }
 	    }
-	    for (String key : new ArrayList<String>(exporterMap.keySet())) {
+	    for (String key : exporterMap.keySet()) {
             Exporter<?> exporter = exporterMap.remove(key);
             if (exporter != null) {
                 try {
@@ -89,14 +88,14 @@ public abstract class AbstractProtocol implements Protocol {
         if (value != null && value.length() > 0) {
             try{
                 timeout = Integer.parseInt(value);
-            }catch (Exception e) {
+            }catch (Exception ignore) {
             }        
         } else {
             value = ConfigUtils.getProperty(Constants.SHUTDOWN_WAIT_SECONDS_KEY);
             if (value != null && value.length() > 0) {
                 try{
                     timeout = Integer.parseInt(value) * 1000;
-                }catch (Exception e) {
+                }catch (Exception ignore) {
                 }        
             }
         }

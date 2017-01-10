@@ -1,4 +1,4 @@
-/**
+/*
  * Project: dubbo-rpc
  * 
  * File Created at 2012-2-24

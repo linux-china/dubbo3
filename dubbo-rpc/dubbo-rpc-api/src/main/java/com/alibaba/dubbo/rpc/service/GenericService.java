@@ -30,7 +30,7 @@ public interface GenericService {
      * @param parameterTypes 参数类型
      * @param args 参数列表
      * @return 返回值
-     * @throws Throwable 方法抛出的异常
+     * @throws GenericException 方法抛出的异常
      */
     Object $invoke(String method, String[] parameterTypes, Object[] args) throws GenericException;
 

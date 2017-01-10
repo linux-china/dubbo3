@@ -34,7 +34,7 @@ import com.alibaba.dubbo.rpc.RpcException;
  */
 public abstract class AbstractProxyProtocol extends AbstractProtocol {
 
-    private final List<Class<?>> rpcExceptions = new CopyOnWriteArrayList<Class<?>>();;
+    private final List<Class<?>> rpcExceptions = new CopyOnWriteArrayList<>();
 
     private ProxyFactory proxyFactory;
 

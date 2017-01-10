@@ -30,7 +30,7 @@ public class StaticContext extends ConcurrentHashMap<Object, Object>{
     private static final String SYSTEMNAME = "system";
     private String name ;
 	
-	private static final ConcurrentMap<String, StaticContext> context_map = new ConcurrentHashMap<String, StaticContext>() ;
+	private static final ConcurrentMap<String, StaticContext> context_map = new ConcurrentHashMap<>() ;
 	
     private StaticContext(String name) {
         super();
@@ -66,7 +66,6 @@ public class StaticContext extends ConcurrentHashMap<Object, Object>{
         return getKey(StringUtils.getServiceKey(paras), methodName, suffix);
     }
     private static String getKey(String servicekey, String methodName, String suffix) {
-        StringBuffer sb = new StringBuffer().append(servicekey).append(".").append(methodName).append(".").append(suffix);
-        return sb.toString();
+        return servicekey + "." + methodName + "." + suffix;
     }
 }

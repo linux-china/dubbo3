@@ -39,7 +39,7 @@ public interface Filter {
 	 * @param invoker service
 	 * @param invocation invocation.
 	 * @return invoke result.
-	 * @throws RpcException
+	 * @throws RpcException RPC Exception
 	 */
 	Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException;
 
