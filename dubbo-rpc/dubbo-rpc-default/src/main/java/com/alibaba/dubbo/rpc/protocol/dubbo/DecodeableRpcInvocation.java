@@ -16,12 +16,6 @@
 
 package com.alibaba.dubbo.rpc.protocol.dubbo;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.logger.Logger;
 import com.alibaba.dubbo.common.logger.LoggerFactory;
@@ -36,6 +30,12 @@ import com.alibaba.dubbo.remoting.exchange.Request;
 import com.alibaba.dubbo.remoting.transport.CodecSupport;
 import com.alibaba.dubbo.rpc.RpcInvocation;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
+
 import static com.alibaba.dubbo.rpc.protocol.dubbo.CallbackServiceCodec.decodeInvocationArgument;
 
 /**
@@ -45,13 +45,13 @@ public class DecodeableRpcInvocation extends RpcInvocation implements Codec, Dec
 
     private static final Logger log = LoggerFactory.getLogger(DecodeableRpcInvocation.class);
 
-    private Channel     channel;
+    private Channel channel;
 
-    private byte        serializationType;
+    private byte serializationType;
 
     private InputStream inputStream;
 
-    private Request     request;
+    private Request request;
 
     private volatile boolean hasDecoded;
 
@@ -87,7 +87,7 @@ public class DecodeableRpcInvocation extends RpcInvocation implements Codec, Dec
 
     public Object decode(Channel channel, InputStream input) throws IOException {
         ObjectInput in = CodecSupport.getSerialization(channel.getUrl(), serializationType)
-            .deserialize(channel.getUrl(), input);
+                .deserialize(channel.getUrl(), input);
 
         setAttachment(Constants.DUBBO_VERSION_KEY, in.readUTF());
         setAttachment(Constants.PATH_KEY, in.readUTF());
@@ -120,7 +120,7 @@ public class DecodeableRpcInvocation extends RpcInvocation implements Codec, Dec
             if (map != null && map.size() > 0) {
                 Map<String, String> attachment = getAttachments();
                 if (attachment == null) {
-                    attachment = new HashMap<String, String>();
+                    attachment = new HashMap<>();
                 }
                 attachment.putAll(map);
                 setAttachments(attachment);
@@ -129,9 +129,7 @@ public class DecodeableRpcInvocation extends RpcInvocation implements Codec, Dec
             for (int i = 0; i < args.length; i++) {
                 args[i] = decodeInvocationArgument(channel, this, pts, i, args[i]);
             }
-
             setArguments(args);
-
         } catch (ClassNotFoundException e) {
             throw new IOException(StringUtils.toString("Read invocation data failed.", e));
         }

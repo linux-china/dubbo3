@@ -36,12 +36,12 @@ import com.alibaba.dubbo.rpc.protocol.dubbo.DubboProtocol;
 public class ServersPageHandler implements PageHandler {
 
     public Page handle(URL url) {
-        List<List<String>> rows = new ArrayList<List<String>>();
+        List<List<String>> rows = new ArrayList<>();
         Collection<ExchangeServer> servers = DubboProtocol.getDubboProtocol().getServers();
         int clientCount = 0;
         if (servers != null && servers.size() > 0) {
             for (ExchangeServer s : servers) {
-                List<String> row = new ArrayList<String>();
+                List<String> row = new ArrayList<>();
                 String address = s.getUrl().getAddress();
                 row.add(NetUtils.getHostName(address) + "/" + address);
                 int clientSize = s.getExchangeChannels().size();

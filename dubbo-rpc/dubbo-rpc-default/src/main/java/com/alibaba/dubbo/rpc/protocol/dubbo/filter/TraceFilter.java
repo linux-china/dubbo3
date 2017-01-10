@@ -49,7 +49,7 @@ public class TraceFilter implements Filter {
     
     private static final String TRACE_COUNT = "trace.count";
     
-    private static final ConcurrentMap<String, Set<Channel>> tracers = new ConcurrentHashMap<String, Set<Channel>>();
+    private static final ConcurrentMap<String, Set<Channel>> tracers = new ConcurrentHashMap<>();
     
     public static void addTracer(Class<?> type, String method, Channel channel, int max) {
         channel.setAttribute(TRACE_MAX, max);
@@ -57,7 +57,7 @@ public class TraceFilter implements Filter {
         String key = method != null && method.length() > 0 ? type.getName() + "." + method : type.getName();
         Set<Channel> channels = tracers.get(key);
         if (channels == null) {
-            tracers.putIfAbsent(key, new ConcurrentHashSet<Channel>());
+            tracers.putIfAbsent(key, new ConcurrentHashSet<>());
             channels = tracers.get(key);
         }
         channels.add(channel);
@@ -85,15 +85,15 @@ public class TraceFilter implements Filter {
                 channels = tracers.get(key);
             }
             if (channels != null && channels.size() > 0) {
-                for (Channel channel : new ArrayList<Channel>(channels)) {
+                for (Channel channel : new ArrayList<>(channels)) {
                     if (channel.isConnected()) {
                         try {
                             int max = 1;
                             Integer m = (Integer) channel.getAttribute(TRACE_MAX);
                             if (m != null) {
-                                max = (int) m;
+                                max = m;
                             }
-                            int count = 0;
+                            int count;
                             AtomicInteger c = (AtomicInteger) channel.getAttribute(TRACE_COUNT);
                             if (c == null) {
                                 c = new AtomicInteger();

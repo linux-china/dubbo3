@@ -214,7 +214,7 @@ public class DubboProtocol extends AbstractProtocol {
 
         // export service.
         String key = serviceKey(url);
-        DubboExporter<T> exporter = new DubboExporter<T>(invoker, key, exporterMap);
+        DubboExporter<T> exporter = new DubboExporter<>(invoker, key, exporterMap);
         exporterMap.put(key, exporter);
 
         //export an stub service for dispaching event
@@ -282,7 +282,7 @@ public class DubboProtocol extends AbstractProtocol {
 
     public <T> Invoker<T> refer(Class<T> serviceType, URL url) throws RpcException {
         // create rpc invoker.
-        DubboInvoker<T> invoker = new DubboInvoker<T>(serviceType, url, getClients(url), invokers);
+        DubboInvoker<T> invoker = new DubboInvoker<>(serviceType, url, getClients(url), invokers);
         invokers.add(invoker);
         return invoker;
     }
@@ -319,7 +319,7 @@ public class DubboProtocol extends AbstractProtocol {
                 client.incrementAndGetCount();
                 return client;
             } else {
-//                logger.warn(new IllegalStateException("client is closed,but stay in clientmap .client :"+ client));
+                // logger.warn(new IllegalStateException("client is closed,but stay in clientmap .client :"+ client));
                 referenceClientMap.remove(key);
             }
         }

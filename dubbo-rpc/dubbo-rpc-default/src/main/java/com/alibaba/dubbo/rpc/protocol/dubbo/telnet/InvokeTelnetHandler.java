@@ -43,7 +43,7 @@ import com.alibaba.dubbo.rpc.protocol.dubbo.DubboProtocol;
 @Help(parameter = "[service.]method(args)", summary = "Invoke the service method.", detail = "Invoke the service method.")
 public class InvokeTelnetHandler implements TelnetHandler {
     
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "StringConcatenationInsideStringBufferAppend"})
     public String telnet(Channel channel, String message) {
         if (message == null || message.length() == 0) {
             return "Please input method name, eg: \r\ninvoke xxxMethod(1234, \"abcd\", {\"prop\" : \"value\"})\r\ninvoke XxxService.xxxMethod(1234, \"abcd\", {\"prop\" : \"value\"})\r\ninvoke com.xxx.XxxService.xxxMethod(1234, \"abcd\", {\"prop\" : \"value\"})";

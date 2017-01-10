@@ -35,6 +35,7 @@ import com.alibaba.dubbo.rpc.protocol.dubbo.DubboProtocol;
 @Help(parameter = "[-l] [port]", summary = "Print server ports and connections.", detail = "Print server ports and connections.")
 public class PortTelnetHandler implements TelnetHandler {
 
+    @SuppressWarnings("StringConcatenationInsideStringBufferAppend")
     public String telnet(Channel channel, String message) {
         StringBuilder buf = new StringBuilder();
         String port = null;

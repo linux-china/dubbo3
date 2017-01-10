@@ -15,10 +15,6 @@
  */
 package com.alibaba.dubbo.rpc.protocol.dubbo.telnet;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.common.extension.Activate;
 import com.alibaba.dubbo.common.utils.StringUtils;
@@ -32,15 +28,20 @@ import com.alibaba.dubbo.rpc.Invoker;
 import com.alibaba.dubbo.rpc.RpcStatus;
 import com.alibaba.dubbo.rpc.protocol.dubbo.DubboProtocol;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * CountTelnetHandler
- * 
+ *
  * @author william.liangf
  */
 @Activate
 @Help(parameter = "[service] [method] [times]", summary = "Count the service.", detail = "Count the service.")
 public class CountTelnetHandler implements TelnetHandler {
 
+    @SuppressWarnings("StringConcatenationInsideStringBufferAppend")
     public String telnet(final Channel channel, String message) {
         String service = (String) channel.getAttribute(ChangeTelnetHandler.SERVICE_KEY);
         if ((service == null || service.length() == 0)
@@ -66,7 +67,7 @@ public class CountTelnetHandler implements TelnetHandler {
         } else {
             times = parts.length > 2 ? parts[2] : "1";
         }
-        if (! StringUtils.isInteger(times)) {
+        if (!StringUtils.isInteger(times)) {
             return "Illegal times " + times + ", must be integer.";
         }
         final int t = Integer.parseInt(times);
@@ -84,27 +85,24 @@ public class CountTelnetHandler implements TelnetHandler {
                 final String mtd = method;
                 final Invoker<?> inv = invoker;
                 final String prompt = channel.getUrl().getParameter("prompt", "telnet");
-                Thread thread = new Thread(new Runnable() {
-                    public void run() {
-                        for (int i = 0; i < t; i ++) {
-                            String result = count(inv, mtd);
-                            try {
-                                channel.send("\r\n" + result);
-                            } catch (RemotingException e1) {
-                                return;
-                            }
-                            if (i < t - 1) {
-                                try {
-                                    Thread.sleep(1000);
-                                } catch (InterruptedException e) {
-                                }
-                            }
-                        }
+                Thread thread = new Thread(() -> {
+                    for (int i = 0; i < t; i++) {
+                        String result = count(inv, mtd);
                         try {
-                            channel.send("\r\n" + prompt + "> ");
+                            channel.send("\r\n" + result);
                         } catch (RemotingException e1) {
                             return;
                         }
+                        if (i < t - 1) {
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException ignore) {
+                            }
+                        }
+                    }
+                    try {
+                        channel.send("\r\n" + prompt + "> ");
+                    } catch (RemotingException ignore) {
                     }
                 }, "TelnetCount");
                 thread.setDaemon(true);
@@ -115,11 +113,11 @@ public class CountTelnetHandler implements TelnetHandler {
         }
         return buf.toString();
     }
-    
+
     private String count(Invoker<?> invoker, String method) {
         URL url = invoker.getUrl();
-        List<List<String>> table = new ArrayList<List<String>>();
-        List<String> header = new ArrayList<String>();
+        List<List<String>> table = new ArrayList<>();
+        List<String> header = new ArrayList<>();
         header.add("method");
         header.add("total");
         header.add("failed");
@@ -129,7 +127,7 @@ public class CountTelnetHandler implements TelnetHandler {
         if (method == null || method.length() == 0) {
             for (Method m : invoker.getInterface().getMethods()) {
                 RpcStatus count = RpcStatus.getStatus(url, m.getName());
-                List<String> row = new ArrayList<String>();
+                List<String> row = new ArrayList<>();
                 row.add(m.getName());
                 row.add(String.valueOf(count.getTotal()));
                 row.add(String.valueOf(count.getFailed()));
@@ -148,7 +146,7 @@ public class CountTelnetHandler implements TelnetHandler {
             }
             if (found) {
                 RpcStatus count = RpcStatus.getStatus(url, method);
-                List<String> row = new ArrayList<String>();
+                List<String> row = new ArrayList<>();
                 row.add(method);
                 row.add(String.valueOf(count.getTotal()));
                 row.add(String.valueOf(count.getFailed()));

@@ -90,7 +90,7 @@ public class DecodeableRpcResult extends RpcResult implements Codec, Decodeable 
             case DubboCodec.RESPONSE_WITH_EXCEPTION:
                 try {
                     Object obj = in.readObject();
-                    if (obj instanceof Throwable == false)
+                    if (!(obj instanceof Throwable))
                         throw new IOException("Response data error, expect Throwable, but get " + obj);
                     setException((Throwable) obj);
                 } catch (ClassNotFoundException e) {

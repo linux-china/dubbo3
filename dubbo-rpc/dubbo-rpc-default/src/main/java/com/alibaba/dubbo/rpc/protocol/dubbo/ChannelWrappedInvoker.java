@@ -110,7 +110,7 @@ class ChannelWrappedInvoker<T> extends AbstractInvoker<T> {
         }
 
         public boolean isClosed() {
-            return channel == null ? true : channel.isClosed();
+            return channel == null || channel.isClosed();
         }
 
         public void reset(URL url) {
@@ -122,7 +122,7 @@ class ChannelWrappedInvoker<T> extends AbstractInvoker<T> {
         }
 
         public boolean isConnected() {
-            return channel == null ? false : channel.isConnected();
+            return channel != null && channel.isConnected();
         }
 
         public boolean hasAttribute(String key) {
