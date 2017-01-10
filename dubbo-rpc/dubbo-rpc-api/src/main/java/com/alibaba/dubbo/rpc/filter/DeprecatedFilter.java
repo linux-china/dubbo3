@@ -38,7 +38,7 @@ public class DeprecatedFilter implements Filter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DeprecatedFilter.class);
 
-    private static final Set<String> logged = new ConcurrentHashSet<String>();
+    private static final Set<String> logged = new ConcurrentHashSet<>();
 
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
         String key = invoker.getInterface().getName() + "." + invocation.getMethodName();

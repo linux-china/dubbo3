@@ -59,6 +59,7 @@ import com.alibaba.dubbo.rpc.RpcException;
  * 
  * @author ding.lid
  */
+@SuppressWarnings("Duplicates")
 @Activate(group = Constants.PROVIDER, value = Constants.ACCESS_LOG_KEY)
 public class AccessLogFilter implements Filter {
     
@@ -74,16 +75,17 @@ public class AccessLogFilter implements Filter {
 
     private static final long LOG_OUTPUT_INTERVAL = 5000;
 
-    private final ConcurrentMap<String, Set<String>> logQueue = new ConcurrentHashMap<String, Set<String>>();
+    private final ConcurrentMap<String, Set<String>> logQueue = new ConcurrentHashMap<>();
 
     private final ScheduledExecutorService logScheduled = Executors.newScheduledThreadPool(2, new NamedThreadFactory("Dubbo-Access-Log", true));
 
     private volatile ScheduledFuture<?> logFuture = null;
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private class LogTask implements Runnable {
         public void run() {
             try {
-                if (logQueue != null && logQueue.size() > 0) {
+                if (logQueue.size() > 0) {
                     for (Map.Entry<String, Set<String>> entry : logQueue.entrySet()) {
                         try {
                             String accesslog = entry.getKey();
@@ -104,17 +106,14 @@ public class AccessLogFilter implements Filter {
                                     file.renameTo(archive);
                                 }
                             }
-                            FileWriter writer = new FileWriter(file, true);
-                            try {
-                                for(Iterator<String> iterator = logSet.iterator();
-                                    iterator.hasNext();
-                                    iterator.remove()) {
+                            try (FileWriter writer = new FileWriter(file, true)) {
+                                for (Iterator<String> iterator = logSet.iterator();
+                                     iterator.hasNext();
+                                     iterator.remove()) {
                                     writer.write(iterator.next());
                                     writer.write("\r\n");
                                 }
                                 writer.flush();
-                            } finally {
-                                writer.close();
                             }
                         } catch (Exception e) {
                             logger.error(e.getMessage(), e);
@@ -141,7 +140,7 @@ public class AccessLogFilter implements Filter {
         init();
         Set<String> logSet = logQueue.get(accesslog);
         if (logSet == null) {
-            logQueue.putIfAbsent(accesslog, new ConcurrentHashSet<String>());
+            logQueue.putIfAbsent(accesslog, new ConcurrentHashSet<>());
             logSet = logQueue.get(accesslog);
         }
         if (logSet.size() < LOG_MAX_BUFFER) {

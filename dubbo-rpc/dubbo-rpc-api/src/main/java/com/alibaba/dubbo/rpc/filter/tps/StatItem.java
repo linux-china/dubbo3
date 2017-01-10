@@ -70,11 +70,10 @@ class StatItem {
     }
     
     public String toString() {
-        return new StringBuilder(32).append("StatItem ")
-            .append("[name=").append(name).append(", ")
-            .append("rate = ").append(rate).append(", ")
-            .append("interval = ").append(interval).append("]")
-            .toString();
+        return "StatItem " +
+                "[name=" + name + ", " +
+                "rate = " + rate + ", " +
+                "interval = " + interval + "]";
     }
 
 }

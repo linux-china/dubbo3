@@ -30,6 +30,7 @@ import com.alibaba.dubbo.rpc.RpcStatus;
  * 
  * @author william.liangf
  */
+@SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
 @Activate(group = Constants.CONSUMER, value = Constants.ACTIVES_KEY)
 public class ActiveLimitFilter implements Filter {
 
@@ -48,7 +49,7 @@ public class ActiveLimitFilter implements Filter {
                     while ((active = count.getActive()) >= max) {
                         try {
                             count.wait(remain);
-                        } catch (InterruptedException e) {
+                        } catch (InterruptedException ignore) {
                         }
                         long elapsed = System.currentTimeMillis() - start;
                         remain = timeout - elapsed;
