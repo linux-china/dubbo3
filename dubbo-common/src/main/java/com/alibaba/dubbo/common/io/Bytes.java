@@ -15,11 +15,9 @@
  */
 package com.alibaba.dubbo.common.io;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import com.alibaba.dubbo.common.utils.IOUtils;
+
+import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
@@ -27,14 +25,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
 
-import com.alibaba.dubbo.common.utils.IOUtils;
-
 /**
  * CodecUtils.
  *
  * @author qian.lei
  */
 
+@SuppressWarnings({"UnusedAssignment", "PointlessArithmeticExpression"})
 public class Bytes {
     private static final String C64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="; //default base64.
 
@@ -42,9 +39,9 @@ public class Bytes {
 
     private static final int MASK4 = 0x0f, MASK6 = 0x3f, MASK8 = 0xff;
 
-    private static final Map<Integer, byte[]> DECODE_TABLE_MAP = new ConcurrentHashMap<Integer, byte[]>();
+    private static final Map<Integer, byte[]> DECODE_TABLE_MAP = new ConcurrentHashMap<>();
 
-    private static ThreadLocal<MessageDigest> MD = new ThreadLocal<MessageDigest>();
+    private static ThreadLocal<MessageDigest> MD = new ThreadLocal<>();
 
     /**
      * byte array copy.
@@ -739,7 +736,7 @@ public class Bytes {
      *
      * @param bytes source.
      * @return compressed byte array.
-     * @throws IOException.
+     * @throws IOException IO Exception
      */
     public static byte[] zip(byte[] bytes) throws IOException {
         UnsafeByteArrayOutputStream bos = new UnsafeByteArrayOutputStream();
@@ -758,7 +755,7 @@ public class Bytes {
      *
      * @param bytes compressed byte array.
      * @return byte uncompressed array.
-     * @throws IOException
+     * @throws IOException IO Exception
      */
     public static byte[] unzip(byte[] bytes) throws IOException {
         UnsafeByteArrayInputStream bis = new UnsafeByteArrayInputStream(bytes);
@@ -802,11 +799,8 @@ public class Bytes {
      * @return MD5 byte array.
      */
     public static byte[] getMD5(File file) throws IOException {
-        InputStream is = new FileInputStream(file);
-        try {
+        try (InputStream is = new FileInputStream(file)) {
             return getMD5(is);
-        } finally {
-            is.close();
         }
     }
 
