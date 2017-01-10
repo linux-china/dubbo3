@@ -35,7 +35,10 @@ import java.util.concurrent.ConcurrentHashMap;
 @io.netty.channel.ChannelHandler.Sharable
 public class NettyHandler extends ChannelHandlerAdapter implements ChannelOutboundHandler, ChannelInboundHandler {
 
-    private final Map<String, Channel> channels = new ConcurrentHashMap<String, Channel>(); // <ip:port, channel>
+    /**
+     * channels, key is ip:port, and value is channel
+     */
+    private final Map<String, Channel> channels = new ConcurrentHashMap<>();
     
     private final URL url;
     
