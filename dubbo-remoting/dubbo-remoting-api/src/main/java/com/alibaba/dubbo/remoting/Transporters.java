@@ -23,10 +23,19 @@ import com.alibaba.dubbo.remoting.transport.ChannelHandlerDispatcher;
 
 /**
  * Transporter facade. (API, Static, ThreadSafe)
- * 
+ *
  * @author william.liangf
  */
 public class Transporters {
+
+    static {
+        // check duplicate jar package
+        Version.checkDuplicate(Transporters.class);
+        Version.checkDuplicate(RemotingException.class);
+    }
+
+    private Transporters() {
+    }
 
     public static Server bind(String url, ChannelHandler... handler) throws RemotingException {
         return bind(URL.valueOf(url), handler);
@@ -71,13 +80,5 @@ public class Transporters {
         return ExtensionLoader.getExtensionLoader(Transporter.class).getAdaptiveExtension();
     }
 
-    static {
-        // check duplicate jar package
-        Version.checkDuplicate(Transporters.class);
-        Version.checkDuplicate(RemotingException.class);
-    }
-
-    private Transporters(){
-    }
 
 }
