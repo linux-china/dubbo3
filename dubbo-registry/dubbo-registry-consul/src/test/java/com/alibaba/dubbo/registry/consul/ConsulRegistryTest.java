@@ -49,6 +49,14 @@ public class ConsulRegistryTest {
     }
 
     /**
+     * test register service
+     */
+    @Test
+    public void testDeregister() {
+        registry.unregister(serviceUrl);
+    }
+
+    /**
      * Test method for
      * .
      */

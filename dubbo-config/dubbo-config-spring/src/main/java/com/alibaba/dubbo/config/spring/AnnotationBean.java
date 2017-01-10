@@ -48,7 +48,7 @@ import com.alibaba.dubbo.config.ProviderConfig;
 import com.alibaba.dubbo.config.ReferenceConfig;
 import com.alibaba.dubbo.config.RegistryConfig;
 import com.alibaba.dubbo.config.ServiceConfig;
-import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.dubbo.config.annotation.DubboConsumer;
 import com.alibaba.dubbo.config.annotation.DubboService;
 
 /**
@@ -209,7 +209,7 @@ public class AnnotationBean extends AbstractConfig implements DisposableBean, Be
                     && Modifier.isPublic(method.getModifiers())
                     && ! Modifier.isStatic(method.getModifiers())) {
                 try {
-                	Reference reference = method.getAnnotation(Reference.class);
+                	DubboConsumer reference = method.getAnnotation(DubboConsumer.class);
                 	if (reference != null) {
 	                	Object value = refer(reference, method.getParameterTypes()[0]);
 	                	if (value != null) {
@@ -227,7 +227,7 @@ public class AnnotationBean extends AbstractConfig implements DisposableBean, Be
                 if (! field.isAccessible()) {
                     field.setAccessible(true);
                 }
-                Reference reference = field.getAnnotation(Reference.class);
+                DubboConsumer reference = field.getAnnotation(DubboConsumer.class);
             	if (reference != null) {
 	                Object value = refer(reference, field.getType());
 	                if (value != null) {
@@ -241,7 +241,7 @@ public class AnnotationBean extends AbstractConfig implements DisposableBean, Be
         return bean;
     }
 
-    private Object refer(Reference reference, Class<?> referenceClass) { //method.getParameterTypes()[0]
+    private Object refer(DubboConsumer reference, Class<?> referenceClass) { //method.getParameterTypes()[0]
         String interfaceName;
         if (! "".equals(reference.interfaceName())) {
             interfaceName = reference.interfaceName();
