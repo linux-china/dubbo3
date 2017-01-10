@@ -29,7 +29,7 @@ import com.alibaba.dubbo.common.URL;
  */
 public abstract class AbstractCacheFactory implements CacheFactory {
     
-    private final ConcurrentMap<String, Cache> caches = new ConcurrentHashMap<String, Cache>();
+    private final ConcurrentMap<String, Cache> caches = new ConcurrentHashMap<>();
 
     public Cache getCache(URL url) {
         String key = url.toFullString();
