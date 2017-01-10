@@ -15,61 +15,86 @@
  */
 package com.alibaba.dubbo.config;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.config.support.Parameter;
 import com.alibaba.dubbo.rpc.ExporterListener;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * AbstractServiceConfig
- * 
+ *
  * @author william.liangf
  * @export
  */
 public abstract class AbstractServiceConfig extends AbstractInterfaceConfig {
 
-    private static final long      serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-    // 服务版本
-    protected String               version;
+    /**
+     * 服务版本
+     */
+    protected String version;
 
-    // 服务分组
-    protected String               group;
+    /**
+     * 服务分组
+     */
+    protected String group;
 
-    // 服务是否已经deprecated
-    protected Boolean              deprecated;
+    /**
+     * 服务是否已经deprecated
+     */
+    protected Boolean deprecated;
 
-    // 延迟暴露
-    protected Integer              delay;
+    /**
+     * 延迟暴露
+     */
+    protected Integer delay;
 
-    // 是否暴露
-    protected Boolean              export;
+    /**
+     * 是否暴露
+     */
+    protected Boolean export;
 
-    // 权重
-    protected Integer              weight;
+    /**
+     * 权重
+     */
+    protected Integer weight;
 
-    // 应用文档
-    protected String               document;
+    /**
+     * 应用文档
+     */
+    protected String document;
 
-    // 在注册中心上注册成动态的还是静态的服务
-    protected Boolean              dynamic;
+    /**
+     * 在注册中心上注册成动态的还是静态的服务
+     */
+    protected Boolean dynamic;
 
-    // 是否使用令牌
-    protected String               token;
+    /**
+     * 是否使用令牌
+     */
+    protected String token;
 
-    // 访问日志
-    protected String               accesslog;
+    /**
+     * 访问日志
+     */
+    protected String accesslog;
 
-    // 允许执行请求数
-    private Integer                executes;
-
+    /**
+     * 允许执行请求数
+     */
+    private Integer executes;
+    /**
+     * 协议配置
+     */
     protected List<ProtocolConfig> protocols;
 
-    // 是否注册
-    private Boolean                register;
+    /**
+     * 是否注册
+     */
+    private Boolean register;
 
     public String getVersion() {
         return version;
@@ -89,13 +114,13 @@ public abstract class AbstractServiceConfig extends AbstractInterfaceConfig {
         this.group = group;
     }
 
-	public Integer getDelay() {
-		return delay;
-	}
+    public Integer getDelay() {
+        return delay;
+    }
 
-	public void setDelay(Integer delay) {
-	    this.delay = delay;
-	}
+    public void setDelay(Integer delay) {
+        this.delay = delay;
+    }
 
     public Boolean getExport() {
         return export;
@@ -104,34 +129,34 @@ public abstract class AbstractServiceConfig extends AbstractInterfaceConfig {
     public void setExport(Boolean export) {
         this.export = export;
     }
-    
+
     public Integer getWeight() {
         return weight;
     }
-    
+
     public void setWeight(Integer weight) {
         this.weight = weight;
     }
-    
+
     @Parameter(escaped = true)
     public String getDocument() {
         return document;
     }
-    
+
     public void setDocument(String document) {
         this.document = document;
     }
 
-	public String getToken() {
-		return token;
-	}
+    public String getToken() {
+        return token;
+    }
 
-	public void setToken(String token) {
-	    checkName("token", token);
-		this.token = token;
-	}
-	
-	public void setToken(Boolean token) {
+    public void setToken(String token) {
+        checkName("token", token);
+        this.token = token;
+    }
+
+    public void setToken(Boolean token) {
         if (token == null) {
             setToken((String) null);
         } else {
@@ -159,9 +184,9 @@ public abstract class AbstractServiceConfig extends AbstractInterfaceConfig {
         return protocols;
     }
 
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings({"unchecked"})
     public void setProtocols(List<? extends ProtocolConfig> protocols) {
-        this.protocols = (List<ProtocolConfig>)protocols;
+        this.protocols = (List<ProtocolConfig>) protocols;
     }
 
     public ProtocolConfig getProtocol() {
@@ -179,7 +204,7 @@ public abstract class AbstractServiceConfig extends AbstractInterfaceConfig {
     public void setAccesslog(String accesslog) {
         this.accesslog = accesslog;
     }
-    
+
     public void setAccesslog(Boolean accesslog) {
         if (accesslog == null) {
             setAccesslog((String) null);
@@ -191,7 +216,7 @@ public abstract class AbstractServiceConfig extends AbstractInterfaceConfig {
     public Integer getExecutes() {
         return executes;
     }
-    
+
     public void setExecutes(Integer executes) {
         this.executes = executes;
     }

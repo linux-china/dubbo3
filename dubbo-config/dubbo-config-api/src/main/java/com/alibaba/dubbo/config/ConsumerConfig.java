@@ -25,7 +25,9 @@ public class ConsumerConfig extends AbstractReferenceConfig {
 
     private static final long serialVersionUID = 2827274711143680600L;
 
-    // 是否为缺省
+    /**
+     * 是否为缺省
+     */
     private Boolean isDefault;
 
     @Override

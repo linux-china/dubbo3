@@ -50,13 +50,13 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
 
     private static final long      serialVersionUID = -1559314110797223229L;
 
-    // 服务接口的本地实现类名
+    /** 服务接口的本地实现类名 */
     protected String               local;
 
-    // 服务接口的本地实现类名
+    /**  服务接口的本地实现类名 */
     protected String               stub;
 
-    // 服务监控
+    /**  服务监控  */
     protected MonitorConfig        monitor;
     
     // 代理类型

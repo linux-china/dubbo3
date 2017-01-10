@@ -15,30 +15,42 @@
  */
 package com.alibaba.dubbo.config;
 
-import java.util.Map;
-
 import com.alibaba.dubbo.config.support.Parameter;
+
+import java.util.Map;
 
 /**
  * MonitorConfig
- * 
+ *
  * @author william.liangf
  * @export
  */
 public class MonitorConfig extends AbstractConfig {
-	
-	private static final long serialVersionUID = -1184681514659198203L;
-	
-	private String protocol;
-	
-	private String address;
 
+    private static final long serialVersionUID = -1184681514659198203L;
+    /**
+     * 协议
+     */
+    private String protocol;
+    /**
+     * 监控服务器地址
+     */
+    private String address;
+    /**
+     * 用户名
+     */
     private String username;
-
+    /**
+     * 密码
+     */
     private String password;
-
-	private String group;
-
+    /**
+     * 分组
+     */
+    private String group;
+    /**
+     * 版本号
+     */
     private String version;
 
     // 自定义参数
@@ -46,7 +58,7 @@ public class MonitorConfig extends AbstractConfig {
 
     // 是否为缺省
     private Boolean isDefault;
-    
+
     public MonitorConfig() {
     }
 
@@ -55,15 +67,15 @@ public class MonitorConfig extends AbstractConfig {
     }
 
     @Parameter(excluded = true)
-	public String getAddress() {
-		return address;
-	}
+    public String getAddress() {
+        return address;
+    }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	@Parameter(excluded = true)
+    @Parameter(excluded = true)
     public String getProtocol() {
         return protocol;
     }

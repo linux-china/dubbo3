@@ -34,32 +34,52 @@ public abstract class AbstractReferenceConfig extends AbstractInterfaceConfig {
 
     // ======== 引用缺省值，当引用属性未设置时使用该缺省值替代  ========
 
-    // 检查服务提供者是否存在
+    /**
+     * 检查服务提供者是否存在
+     */
     protected Boolean check;
 
-    // 是否加载时即刻初始化
+    /**
+     * 是否加载时即刻初始化
+     */
     protected Boolean init;
 
-    // 是否使用泛接口
+    /**
+     * 是否使用泛接口
+     */
     protected String generic;
 
-    // 优先从JVM内获取引用实例
+    /**
+     * 优先从JVM内获取引用实例
+     */
     protected Boolean injvm;
 
-    // lazy create connection
+    /**
+     * lazy create connection
+     */
     protected Boolean lazy;
-
+    /**
+     * reconnect
+     */
     protected String reconnect;
-
+    /**
+     * sticky
+     */
     protected Boolean sticky;
 
-    //stub是否支持event事件. //TODO slove merge problem 
+    /**
+     * stub是否支持event事件. //TODO slove merge problem
+     */
     protected Boolean stubevent;//= Constants.DEFAULT_STUB_EVENT;
 
-    // 版本
+    /**
+     * 版本
+     */
     protected String version;
 
-    // 服务分组
+    /**
+     * 服务分组
+     */
     protected String group;
 
     public Boolean isCheck() {

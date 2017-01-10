@@ -54,18 +54,28 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
 
     private static final Map<String, Integer> RANDOM_PORT_MAP = new HashMap<String, Integer>();
 
-    // 接口类型
+    /**
+     * 接口类型
+     */
     private String interfaceName;
-
+    /**
+     * 接口类
+     */
     private Class<?> interfaceClass;
 
-    // 接口实现类引用
+    /**
+     * 接口实现类引用
+     */
     private T ref;
 
-    // 服务名称
+    /**
+     * 服务名称
+     */
     private String path;
 
-    // 方法配置
+    /**
+     * 方法配置
+     */
     private List<MethodConfig> methods;
 
     private ProviderConfig provider;

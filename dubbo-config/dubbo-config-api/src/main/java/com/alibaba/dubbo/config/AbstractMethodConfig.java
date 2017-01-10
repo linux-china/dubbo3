@@ -15,15 +15,15 @@
  */
 package com.alibaba.dubbo.config;
 
-import java.util.Map;
-
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.config.support.Parameter;
 import com.alibaba.dubbo.rpc.cluster.LoadBalance;
 
+import java.util.Map;
+
 /**
  * AbstractMethodConfig
- * 
+ *
  * @author william.liangf
  * @export
  */
@@ -31,37 +31,59 @@ public abstract class AbstractMethodConfig extends AbstractConfig {
 
     private static final long serialVersionUID = 1L;
 
-    // 远程调用超时时间(毫秒)
-    protected Integer             timeout;
+    /**
+     * 远程调用超时时间(毫秒)
+     */
+    protected Integer timeout;
 
-    // 重试次数
-    protected Integer             retries;
+    /**
+     * 重试次数
+     */
+    protected Integer retries;
 
-    // 最大并发调用
-    protected Integer             actives;
-    
-    // 负载均衡
-    protected String              loadbalance;
+    /**
+     * 最大并发调用
+     */
+    protected Integer actives;
 
-    // 是否异步
-    protected Boolean             async;
-    
-    // 异步发送是否等待发送成功
-    protected Boolean             sent;
+    /**
+     * 负载均衡
+     */
+    protected String loadbalance;
 
-    // 服务接口的失败mock实现类名
-    protected String              mock;
+    /**
+     * 是否异步
+     */
+    protected Boolean async;
 
-    // 合并器
-    protected String              merger;
-    
-    // 服务接口的失败mock实现类名
-    protected String              cache;
+    /**
+     * 异步发送是否等待发送成功
+     */
+    protected Boolean sent;
 
-    // 服务接口的失败mock实现类名
-    protected String              validation;
+    /**
+     * 服务接口的失败mock实现类名
+     */
+    protected String mock;
 
-    // 自定义参数
+    /**
+     * 合并器
+     */
+    protected String merger;
+
+    /**
+     * 服务接口的失败mock实现类名
+     */
+    protected String cache;
+
+    /**
+     * 服务接口的失败mock实现类名
+     */
+    protected String validation;
+
+    /**
+     * 自定义参数
+     */
     protected Map<String, String> parameters;
 
     public Integer getTimeout() {
@@ -100,7 +122,7 @@ public abstract class AbstractMethodConfig extends AbstractConfig {
     public Integer getActives() {
         return actives;
     }
-    
+
     public void setActives(Integer actives) {
         this.actives = actives;
     }
@@ -126,7 +148,7 @@ public abstract class AbstractMethodConfig extends AbstractConfig {
         }
         this.mock = mock;
     }
-    
+
     public void setMock(Boolean mock) {
         if (mock == null) {
             setMock((String) null);
