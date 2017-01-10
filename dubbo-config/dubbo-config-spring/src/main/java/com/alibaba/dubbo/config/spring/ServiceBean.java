@@ -15,11 +15,9 @@
  */
 package com.alibaba.dubbo.config.spring;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
+import com.alibaba.dubbo.config.*;
+import com.alibaba.dubbo.config.annotation.DubboService;
+import com.alibaba.dubbo.config.spring.extension.SpringExtensionFactory;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.DisposableBean;
@@ -31,35 +29,31 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.support.AbstractApplicationContext;
 
-import com.alibaba.dubbo.config.ApplicationConfig;
-import com.alibaba.dubbo.config.ModuleConfig;
-import com.alibaba.dubbo.config.MonitorConfig;
-import com.alibaba.dubbo.config.ProtocolConfig;
-import com.alibaba.dubbo.config.ProviderConfig;
-import com.alibaba.dubbo.config.RegistryConfig;
-import com.alibaba.dubbo.config.ServiceConfig;
-import com.alibaba.dubbo.config.annotation.DubboService;
-import com.alibaba.dubbo.config.spring.extension.SpringExtensionFactory;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * ServiceFactoryBean
- * 
+ *
  * @author william.liangf
  * @export
  */
+@SuppressWarnings("Duplicates")
 public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean, DisposableBean, ApplicationContextAware, ApplicationListener, BeanNameAware {
 
-	private static final long serialVersionUID = 213195494150089726L;
+    private static final long serialVersionUID = 213195494150089726L;
 
     private static transient ApplicationContext SPRING_CONTEXT;
-    
-	private transient ApplicationContext applicationContext;
+
+    private transient ApplicationContext applicationContext;
 
     private transient String beanName;
 
     private transient boolean supportedApplicationListener;
-    
-	public ServiceBean() {
+
+    public ServiceBean() {
         super();
     }
 
@@ -68,33 +62,33 @@ public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean
     }
 
     public static ApplicationContext getSpringContext() {
-	    return SPRING_CONTEXT;
-	}
+        return SPRING_CONTEXT;
+    }
 
-	public void setApplicationContext(ApplicationContext applicationContext) {
-		this.applicationContext = applicationContext;
-		SpringExtensionFactory.addApplicationContext(applicationContext);
-		if (applicationContext != null) {
-		    SPRING_CONTEXT = applicationContext;
-		    try {
-	            Method method = applicationContext.getClass().getMethod("addApplicationListener", ApplicationListener.class); // 兼容Spring2.0.1
-	            method.invoke(applicationContext, this);
-	            supportedApplicationListener = true;
-	        } catch (Throwable t) {
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+        SpringExtensionFactory.addApplicationContext(applicationContext);
+        if (applicationContext != null) {
+            SPRING_CONTEXT = applicationContext;
+            try {
+                Method method = applicationContext.getClass().getMethod("addApplicationListener", ApplicationListener.class); // 兼容Spring2.0.1
+                method.invoke(applicationContext, this);
+                supportedApplicationListener = true;
+            } catch (Throwable t) {
                 if (applicationContext instanceof AbstractApplicationContext) {
-    	            try {
-    	                Method method = AbstractApplicationContext.class.getDeclaredMethod("addListener", ApplicationListener.class); // 兼容Spring2.0.1
-                        if (! method.isAccessible()) {
+                    try {
+                        Method method = AbstractApplicationContext.class.getDeclaredMethod("addListener", ApplicationListener.class); // 兼容Spring2.0.1
+                        if (!method.isAccessible()) {
                             method.setAccessible(true);
                         }
-    	                method.invoke(applicationContext, this);
+                        method.invoke(applicationContext, this);
                         supportedApplicationListener = true;
-    	            } catch (Throwable ignore) {
-    	            }
-	            }
-	        }
-		}
-	}
+                    } catch (Throwable ignore) {
+                    }
+                }
+            }
+        }
+    }
 
     public void setBeanName(String name) {
         this.beanName = name;
@@ -102,7 +96,7 @@ public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean
 
     public void onApplicationEvent(ApplicationEvent event) {
         if (ContextRefreshedEvent.class.getName().equals(event.getClass().getName())) {
-        	if (isDelay() && ! isExported() && ! isUnexported()) {
+            if (isDelay() && !isExported() && !isUnexported()) {
                 if (logger.isInfoEnabled()) {
                     logger.info("The service ready on spring started. service: " + getInterface());
                 }
@@ -110,7 +104,7 @@ public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean
             }
         }
     }
-    
+
     private boolean isDelay() {
         Integer delay = getDelay();
         ProviderConfig provider = getProvider();
@@ -120,15 +114,15 @@ public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean
         return supportedApplicationListener && (delay == null || delay == -1);
     }
 
-    @SuppressWarnings({ "unchecked", "deprecation" })
-	public void afterPropertiesSet() throws Exception {
+    @SuppressWarnings({"unchecked", "deprecation"})
+    public void afterPropertiesSet() throws Exception {
         if (getProvider() == null) {
-            Map<String, ProviderConfig> providerConfigMap = applicationContext == null ? null  : BeanFactoryUtils.beansOfTypeIncludingAncestors(applicationContext, ProviderConfig.class, false, false);
+            Map<String, ProviderConfig> providerConfigMap = applicationContext == null ? null : BeanFactoryUtils.beansOfTypeIncludingAncestors(applicationContext, ProviderConfig.class, false, false);
             if (providerConfigMap != null && providerConfigMap.size() > 0) {
-                Map<String, ProtocolConfig> protocolConfigMap = applicationContext == null ? null  : BeanFactoryUtils.beansOfTypeIncludingAncestors(applicationContext, ProtocolConfig.class, false, false);
+                Map<String, ProtocolConfig> protocolConfigMap = applicationContext == null ? null : BeanFactoryUtils.beansOfTypeIncludingAncestors(applicationContext, ProtocolConfig.class, false, false);
                 if ((protocolConfigMap == null || protocolConfigMap.size() == 0)
                         && providerConfigMap.size() > 1) { // 兼容旧版本
-                    List<ProviderConfig> providerConfigs = new ArrayList<ProviderConfig>();
+                    List<ProviderConfig> providerConfigs = new ArrayList<>();
                     for (ProviderConfig config : providerConfigMap.values()) {
                         if (config.isDefault() != null && config.isDefault()) {
                             providerConfigs.add(config);
@@ -159,7 +153,7 @@ public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean
             if (applicationConfigMap != null && applicationConfigMap.size() > 0) {
                 ApplicationConfig applicationConfig = null;
                 for (ApplicationConfig config : applicationConfigMap.values()) {
-                    if (config.isDefault() == null || config.isDefault().booleanValue()) {
+                    if (config.isDefault() == null || config.isDefault()) {
                         if (applicationConfig != null) {
                             throw new IllegalStateException("Duplicate application configs: " + applicationConfig + " and " + config);
                         }
@@ -177,7 +171,7 @@ public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean
             if (moduleConfigMap != null && moduleConfigMap.size() > 0) {
                 ModuleConfig moduleConfig = null;
                 for (ModuleConfig config : moduleConfigMap.values()) {
-                    if (config.isDefault() == null || config.isDefault().booleanValue()) {
+                    if (config.isDefault() == null || config.isDefault()) {
                         if (moduleConfig != null) {
                             throw new IllegalStateException("Duplicate module configs: " + moduleConfig + " and " + config);
                         }
@@ -194,13 +188,13 @@ public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean
                 && (getApplication() == null || getApplication().getRegistries() == null || getApplication().getRegistries().size() == 0)) {
             Map<String, RegistryConfig> registryConfigMap = applicationContext == null ? null : BeanFactoryUtils.beansOfTypeIncludingAncestors(applicationContext, RegistryConfig.class, false, false);
             if (registryConfigMap != null && registryConfigMap.size() > 0) {
-                List<RegistryConfig> registryConfigs = new ArrayList<RegistryConfig>();
+                List<RegistryConfig> registryConfigs = new ArrayList<>();
                 for (RegistryConfig config : registryConfigMap.values()) {
-                    if (config.isDefault() == null || config.isDefault().booleanValue()) {
+                    if (config.isDefault() == null || config.isDefault()) {
                         registryConfigs.add(config);
                     }
                 }
-                if (registryConfigs != null && registryConfigs.size() > 0) {
+                if (registryConfigs.size() > 0) {
                     super.setRegistries(registryConfigs);
                 }
             }
@@ -212,7 +206,7 @@ public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean
             if (monitorConfigMap != null && monitorConfigMap.size() > 0) {
                 MonitorConfig monitorConfig = null;
                 for (MonitorConfig config : monitorConfigMap.values()) {
-                    if (config.isDefault() == null || config.isDefault().booleanValue()) {
+                    if (config.isDefault() == null || config.isDefault()) {
                         if (monitorConfig != null) {
                             throw new IllegalStateException("Duplicate monitor configs: " + monitorConfig + " and " + config);
                         }
@@ -226,27 +220,27 @@ public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean
         }
         if ((getProtocols() == null || getProtocols().size() == 0)
                 && (getProvider() == null || getProvider().getProtocols() == null || getProvider().getProtocols().size() == 0)) {
-            Map<String, ProtocolConfig> protocolConfigMap = applicationContext == null ? null  : BeanFactoryUtils.beansOfTypeIncludingAncestors(applicationContext, ProtocolConfig.class, false, false);
+            Map<String, ProtocolConfig> protocolConfigMap = applicationContext == null ? null : BeanFactoryUtils.beansOfTypeIncludingAncestors(applicationContext, ProtocolConfig.class, false, false);
             if (protocolConfigMap != null && protocolConfigMap.size() > 0) {
-                List<ProtocolConfig> protocolConfigs = new ArrayList<ProtocolConfig>();
+                List<ProtocolConfig> protocolConfigs = new ArrayList<>();
                 for (ProtocolConfig config : protocolConfigMap.values()) {
-                    if (config.isDefault() == null || config.isDefault().booleanValue()) {
+                    if (config.isDefault() == null || config.isDefault()) {
                         protocolConfigs.add(config);
                     }
                 }
-                if (protocolConfigs != null && protocolConfigs.size() > 0) {
+                if (protocolConfigs.size() > 0) {
                     super.setProtocols(protocolConfigs);
                 }
             }
         }
         if (getPath() == null || getPath().length() == 0) {
-            if (beanName != null && beanName.length() > 0 
+            if (beanName != null && beanName.length() > 0
                     && getInterface() != null && getInterface().length() > 0
                     && beanName.startsWith(getInterface())) {
                 setPath(beanName);
             }
         }
-        if (! isDelay()) {
+        if (!isDelay()) {
             export();
         }
     }
