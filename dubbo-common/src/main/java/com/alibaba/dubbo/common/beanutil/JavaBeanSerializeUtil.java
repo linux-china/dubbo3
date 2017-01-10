@@ -15,20 +15,16 @@
  */
 package com.alibaba.dubbo.common.beanutil;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.IdentityHashMap;
-import java.util.Map;
-
 import com.alibaba.dubbo.common.logger.Logger;
 import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.alibaba.dubbo.common.utils.LogHelper;
 import com.alibaba.dubbo.common.utils.ReflectUtils;
+
+import java.lang.reflect.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.IdentityHashMap;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:gang.lvg@taobao.com">kimi</a>
@@ -36,6 +32,9 @@ import com.alibaba.dubbo.common.utils.ReflectUtils;
 public final class JavaBeanSerializeUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(JavaBeanSerializeUtil.class);
+
+    private JavaBeanSerializeUtil() {
+    }
 
     public static JavaBeanDescriptor serialize(Object obj) {
         return serialize(obj, JavaBeanAccessor.FIELD);
@@ -46,7 +45,7 @@ public final class JavaBeanSerializeUtil {
             return null;
         }
         if (obj instanceof JavaBeanDescriptor) {
-            return (JavaBeanDescriptor)obj;
+            return (JavaBeanDescriptor) obj;
         }
         IdentityHashMap<Object, JavaBeanDescriptor> cache = new IdentityHashMap<Object, JavaBeanDescriptor>();
         return createDescriptorIfAbsent(obj, accessor, cache);
@@ -74,7 +73,7 @@ public final class JavaBeanSerializeUtil {
         if (cache.containsKey(obj)) {
             return cache.get(obj);
         } else if (obj instanceof JavaBeanDescriptor) {
-            return (JavaBeanDescriptor)obj;
+            return (JavaBeanDescriptor) obj;
         } else {
             JavaBeanDescriptor result = createDescriptorForSerialize(obj.getClass());
             cache.put(obj, result);
@@ -165,8 +164,8 @@ public final class JavaBeanSerializeUtil {
 
     public static Object deserialize(JavaBeanDescriptor beanDescriptor) {
         return deserialize(
-            beanDescriptor,
-            Thread.currentThread().getContextClassLoader());
+                beanDescriptor,
+                Thread.currentThread().getContextClassLoader());
     }
 
     public static Object deserialize(JavaBeanDescriptor beanDescriptor, ClassLoader loader) {
@@ -274,7 +273,7 @@ public final class JavaBeanSerializeUtil {
         } catch (NoSuchMethodException e) {
             for (Method m : cls.getMethods()) {
                 if (ReflectUtils.isBeanPropertyWriteMethod(m)
-                    && m.getName().equals(name)) {
+                        && m.getName().equals(name)) {
                     method = m;
                 }
             }
@@ -305,9 +304,7 @@ public final class JavaBeanSerializeUtil {
             try {
                 constructor.setAccessible(true);
                 return constructor.newInstance(constructorArgs);
-            } catch (InstantiationException e) {
-                LogHelper.warn(logger, e.getMessage(), e);
-            } catch (IllegalAccessException e) {
+            } catch (InstantiationException | IllegalAccessException e) {
                 LogHelper.warn(logger, e.getMessage(), e);
             } catch (InvocationTargetException e) {
                 LogHelper.warn(logger, e.getMessage(), e);
@@ -321,19 +318,19 @@ public final class JavaBeanSerializeUtil {
         if (boolean.class.equals(cl) || Boolean.class.equals(cl)) {
             return Boolean.FALSE;
         } else if (byte.class.equals(cl) || Byte.class.equals(cl)) {
-            return Byte.valueOf((byte) 0);
+            return (byte) 0;
         } else if (short.class.equals(cl) || Short.class.equals(cl)) {
-            return Short.valueOf((short) 0);
+            return (short) 0;
         } else if (int.class.equals(cl) || Integer.class.equals(cl)) {
-            return Integer.valueOf(0);
+            return 0;
         } else if (long.class.equals(cl) || Long.class.equals(cl)) {
-            return Long.valueOf(0L);
+            return 0L;
         } else if (float.class.equals(cl) || Float.class.equals(cl)) {
-            return Float.valueOf((float) 0);
+            return (float) 0;
         } else if (double.class.equals(cl) || Double.class.equals(cl)) {
-            return Double.valueOf((double) 0);
+            return (double) 0;
         } else if (char.class.equals(cl) || Character.class.equals(cl)) {
-            return new Character((char) 0);
+            return (char) 0;
         } else {
             return null;
         }
@@ -376,12 +373,9 @@ public final class JavaBeanSerializeUtil {
             Class<?> cl = name2Class(loader, beanDescriptor.getClassName());
             result = instantiate(cl);
             cache.put(beanDescriptor, result);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e.getMessage(), e);
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }
-
         return result;
     }
 
@@ -416,9 +410,7 @@ public final class JavaBeanSerializeUtil {
      * 把 Class.forName 的返回值转换为 Class.
      *
      * @param name Class.getName()
-     *
      * @return Class
-     *
      * @throws ClassNotFoundException Class.forName
      */
     public static Class<?> name2Class(ClassLoader loader, String name) throws ClassNotFoundException {
@@ -450,15 +442,12 @@ public final class JavaBeanSerializeUtil {
 
     private static boolean isReferenceType(String type) {
         return type != null
-            && type.startsWith(REFERENCE_TYPE_PREFIX)
-            && type.endsWith(REFERENCE_TYPE_SUFFIX);
+                && type.startsWith(REFERENCE_TYPE_PREFIX)
+                && type.endsWith(REFERENCE_TYPE_SUFFIX);
     }
 
-    private static Method getEnumValueOfMethod(Class cl) throws NoSuchMethodException {
-        return cl.getMethod("valueOf", Class.class, String.class);
-    }
-
-    private JavaBeanSerializeUtil() {
+    private static Method getEnumValueOfMethod(Class clazz) throws NoSuchMethodException {
+        return clazz.getMethod("valueOf", Class.class, String.class);
     }
 
 }
