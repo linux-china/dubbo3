@@ -15,16 +15,7 @@
  */
 package com.alibaba.dubbo.registry.redis;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.Executors;
@@ -54,6 +45,7 @@ import com.alibaba.dubbo.rpc.RpcException;
  *
  * @author william.liangf
  */
+@SuppressWarnings("FieldCanBeLocal")
 public class RedisRegistry extends FailbackRegistry {
 
     private static final Logger logger = LoggerFactory.getLogger(RedisRegistry.class);
@@ -68,9 +60,9 @@ public class RedisRegistry extends FailbackRegistry {
 
     private final String root;
 
-    private final Map<String, JedisPool> jedisPools = new ConcurrentHashMap<String, JedisPool>();
+    private final Map<String, JedisPool> jedisPools = new ConcurrentHashMap<>();
 
-    private final ConcurrentMap<String, Notifier> notifiers = new ConcurrentHashMap<String, Notifier>();
+    private final ConcurrentMap<String, Notifier> notifiers = new ConcurrentHashMap<>();
 
     private final int reconnectPeriod;
 
@@ -110,7 +102,7 @@ public class RedisRegistry extends FailbackRegistry {
         }
         replicate = "replicate".equals(cluster);
 
-        List<String> addresses = new ArrayList<String>();
+        List<String> addresses = new ArrayList<>();
         addresses.add(url.getAddress());
         String[] backups = url.getParameter(Constants.BACKUP_KEY, new String[0]);
         if (backups != null && backups.length > 0) {
@@ -142,13 +134,11 @@ public class RedisRegistry extends FailbackRegistry {
         this.root = group;
 
         this.expirePeriod = url.getParameter(Constants.SESSION_TIMEOUT_KEY, Constants.DEFAULT_SESSION_TIMEOUT);
-        this.expireFuture = expireExecutor.scheduleWithFixedDelay(new Runnable() {
-            public void run() {
-                try {
-                    deferExpired(); // 延长过期时间
-                } catch (Throwable t) { // 防御性容错
-                    logger.error("Unexpected exception occur at defer expire time, cause: " + t.getMessage(), t);
-                }
+        this.expireFuture = expireExecutor.scheduleWithFixedDelay(() -> {
+            try {
+                deferExpired(); // 延长过期时间
+            } catch (Throwable t) { // 防御性容错
+                logger.error("Unexpected exception occur at defer expire time, cause: " + t.getMessage(), t);
             }
         }, expirePeriod / 2, expirePeriod / 2, TimeUnit.MILLISECONDS);
     }
@@ -157,9 +147,8 @@ public class RedisRegistry extends FailbackRegistry {
         for (Map.Entry<String, JedisPool> entry : jedisPools.entrySet()) {
             JedisPool jedisPool = entry.getValue();
             try {
-                Jedis jedis = jedisPool.getResource();
-                try {
-                    for (URL url : new HashSet<URL>(getRegistered())) {
+                try (Jedis jedis = jedisPool.getResource()) {
+                    for (URL url : new HashSet<>(getRegistered())) {
                         if (url.getParameter(Constants.DYNAMIC_KEY, true)) {
                             String key = toCategoryPath(url);
                             if (jedis.hset(key, url.toFullString(), String.valueOf(System.currentTimeMillis() + expirePeriod)) == 1) {
@@ -173,8 +162,6 @@ public class RedisRegistry extends FailbackRegistry {
                     if (!replicate) {
                         break;//  如果服务器端已同步数据，只需写入单台机器
                     }
-                } finally {
-                    jedisPool.returnResource(jedis);
                 }
             } catch (Throwable t) {
                 logger.warn("Failed to write provider heartbeat to redis registry. registry: " + entry.getKey() + ", cause: " + t.getMessage(), t);
@@ -215,15 +202,12 @@ public class RedisRegistry extends FailbackRegistry {
     public boolean isAvailable() {
         for (JedisPool jedisPool : jedisPools.values()) {
             try {
-                Jedis jedis = jedisPool.getResource();
-                try {
+                try (Jedis jedis = jedisPool.getResource()) {
                     if (jedis.isConnected()) {
                         return true; // 至少需单台机器可用
                     }
-                } finally {
-                    jedisPool.returnResource(jedis);
                 }
-            } catch (Throwable t) {
+            } catch (Throwable ignore) {
             }
         }
         return false;
@@ -264,16 +248,13 @@ public class RedisRegistry extends FailbackRegistry {
         for (Map.Entry<String, JedisPool> entry : jedisPools.entrySet()) {
             JedisPool jedisPool = entry.getValue();
             try {
-                Jedis jedis = jedisPool.getResource();
-                try {
+                try (Jedis jedis = jedisPool.getResource()) {
                     jedis.hset(key, value, expire);
                     jedis.publish(key, Constants.REGISTER);
                     success = true;
                     if (!replicate) {
                         break; //  如果服务器端已同步数据，只需写入单台机器
                     }
-                } finally {
-                    jedisPool.returnResource(jedis);
                 }
             } catch (Throwable t) {
                 exception = new RpcException("Failed to register service to redis registry. registry: " + entry.getKey() + ", service: " + url + ", cause: " + t.getMessage(), t);
@@ -297,16 +278,13 @@ public class RedisRegistry extends FailbackRegistry {
         for (Map.Entry<String, JedisPool> entry : jedisPools.entrySet()) {
             JedisPool jedisPool = entry.getValue();
             try {
-                Jedis jedis = jedisPool.getResource();
-                try {
+                try (Jedis jedis = jedisPool.getResource()) {
                     jedis.hdel(key, value);
                     jedis.publish(key, Constants.UNREGISTER);
                     success = true;
                     if (!replicate) {
                         break; //  如果服务器端已同步数据，只需写入单台机器
                     }
-                } finally {
-                    jedisPool.returnResource(jedis);
                 }
             } catch (Throwable t) {
                 exception = new RpcException("Failed to unregister service to redis registry. registry: " + entry.getKey() + ", service: " + url + ", cause: " + t.getMessage(), t);
@@ -338,33 +316,26 @@ public class RedisRegistry extends FailbackRegistry {
         for (Map.Entry<String, JedisPool> entry : jedisPools.entrySet()) {
             JedisPool jedisPool = entry.getValue();
             try {
-                Jedis jedis = jedisPool.getResource();
-                try {
+                try (Jedis jedis = jedisPool.getResource()) {
                     if (service.endsWith(Constants.ANY_VALUE)) {
                         admin = true;
                         Set<String> keys = jedis.keys(service);
                         if (keys != null && keys.size() > 0) {
-                            Map<String, Set<String>> serviceKeys = new HashMap<String, Set<String>>();
+                            Map<String, Set<String>> serviceKeys = new HashMap<>();
                             for (String key : keys) {
                                 String serviceKey = toServicePath(key);
-                                Set<String> sk = serviceKeys.get(serviceKey);
-                                if (sk == null) {
-                                    sk = new HashSet<String>();
-                                    serviceKeys.put(serviceKey, sk);
-                                }
+                                Set<String> sk = serviceKeys.computeIfAbsent(serviceKey, k -> new HashSet<>());
                                 sk.add(key);
                             }
                             for (Set<String> sk : serviceKeys.values()) {
-                                doNotify(jedis, sk, url, Arrays.asList(listener));
+                                doNotify(jedis, sk, url, Collections.singletonList(listener));
                             }
                         }
                     } else {
-                        doNotify(jedis, jedis.keys(service + Constants.PATH_SEPARATOR + Constants.ANY_VALUE), url, Arrays.asList(listener));
+                        doNotify(jedis, jedis.keys(service + Constants.PATH_SEPARATOR + Constants.ANY_VALUE), url, Collections.singletonList(listener));
                     }
                     success = true;
                     break; // 只需读一个服务器的数据
-                } finally {
-                    jedisPool.returnResource(jedis);
                 }
             } catch (Throwable t) { // 尝试下一个服务器
                 exception = new RpcException("Failed to subscribe service from redis registry. registry: " + entry.getKey() + ", service: " + url + ", cause: " + t.getMessage(), t);
@@ -384,8 +355,8 @@ public class RedisRegistry extends FailbackRegistry {
     }
 
     private void doNotify(Jedis jedis, String key) {
-        for (Map.Entry<URL, Set<NotifyListener>> entry : new HashMap<URL, Set<NotifyListener>>(getSubscribed()).entrySet()) {
-            doNotify(jedis, Arrays.asList(key), entry.getKey(), new HashSet<NotifyListener>(entry.getValue()));
+        for (Map.Entry<URL, Set<NotifyListener>> entry : new HashMap<>(getSubscribed()).entrySet()) {
+            doNotify(jedis, Collections.singletonList(key), entry.getKey(), new HashSet<>(entry.getValue()));
         }
     }
 
@@ -395,7 +366,7 @@ public class RedisRegistry extends FailbackRegistry {
             return;
         }
         long now = System.currentTimeMillis();
-        List<URL> result = new ArrayList<URL>();
+        List<URL> result = new ArrayList<>();
         List<String> categories = Arrays.asList(url.getParameter(Constants.CATEGORY_KEY, new String[0]));
         String consumerService = url.getServiceInterface();
         for (String key : keys) {
@@ -409,7 +380,7 @@ public class RedisRegistry extends FailbackRegistry {
             if (!categories.contains(Constants.ANY_VALUE) && !categories.contains(category)) {
                 continue;
             }
-            List<URL> urls = new ArrayList<URL>();
+            List<URL> urls = new ArrayList<>();
             Map<String, String> values = jedis.hgetAll(key);
             if (values != null && values.size() > 0) {
                 for (Map.Entry<String, String> entry : values.entrySet()) {
@@ -433,7 +404,7 @@ public class RedisRegistry extends FailbackRegistry {
                 logger.info("redis notify: " + key + " = " + urls);
             }
         }
-        if (result == null || result.size() == 0) {
+        if (result.size() == 0) {
             return;
         }
         for (NotifyListener listener : listeners) {
@@ -485,11 +456,8 @@ public class RedisRegistry extends FailbackRegistry {
             if (msg.equals(Constants.REGISTER)
                     || msg.equals(Constants.UNREGISTER)) {
                 try {
-                    Jedis jedis = jedisPool.getResource();
-                    try {
+                    try (Jedis jedis = jedisPool.getResource()) {
                         doNotify(jedis, key);
-                    } finally {
-                        jedisPool.returnResource(jedis);
                     }
                 } catch (Throwable t) { // TODO 通知失败没有恢复机制保障
                     logger.error(t.getMessage(), t);
@@ -600,7 +568,8 @@ public class RedisRegistry extends FailbackRegistry {
                                         }
                                         break;
                                     } finally {
-                                        jedisPool.returnBrokenResource(jedis);
+                                        jedis.close();
+                                        //jedisPool.returnBrokenResource(jedis);
                                     }
                                 } catch (Throwable t) { // 重试另一台
                                     logger.warn("Failed to subscribe service from redis registry. registry: " + entry.getKey() + ", cause: " + t.getMessage(), t);
