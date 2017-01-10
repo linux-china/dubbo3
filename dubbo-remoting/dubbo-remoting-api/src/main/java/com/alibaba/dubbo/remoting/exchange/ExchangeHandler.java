@@ -29,10 +29,10 @@ public interface ExchangeHandler extends ChannelHandler, TelnetHandler {
     /**
      * reply.
      * 
-     * @param channel
-     * @param request
+     * @param channel channel
+     * @param request request
      * @return response
-     * @throws RemotingException
+     * @throws RemotingException remote exception
      */
     Object reply(ExchangeChannel channel, Object request) throws RemotingException;
 

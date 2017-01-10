@@ -311,10 +311,8 @@ public class ExchangeCodec extends TelnetCodec {
                 throw (IOException) t;
             } else if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
-            } else if (t instanceof Error) {
+            } else {
                 throw (Error) t;
-            } else  {
-                throw new RuntimeException(t.getMessage(), t);
             }
         }
     }

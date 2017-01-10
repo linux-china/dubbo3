@@ -20,41 +20,41 @@ import com.alibaba.dubbo.remoting.RemotingException;
 
 /**
  * ExchangeChannel. (API/SPI, Prototype, ThreadSafe)
- * 
+ *
  * @author william.liangf
  */
 public interface ExchangeChannel extends Channel {
 
     /**
      * send request.
-     * 
-     * @param request
+     *
+     * @param request request object
      * @return response future
-     * @throws RemotingException
+     * @throws RemotingException remote exception
      */
     ResponseFuture request(Object request) throws RemotingException;
 
     /**
      * send request.
-     * 
-     * @param request
-     * @param timeout
+     *
+     * @param request request
+     * @param timeout timeout
      * @return response future
-     * @throws RemotingException
+     * @throws RemotingException remote exception
      */
     ResponseFuture request(Object request, int timeout) throws RemotingException;
 
     /**
      * get message handler.
-     * 
+     *
      * @return message handler
      */
     ExchangeHandler getExchangeHandler();
 
     /**
      * graceful close.
-     * 
-     * @param timeout
+     *
+     * @param timeout timeout
      */
     void close(int timeout);
 

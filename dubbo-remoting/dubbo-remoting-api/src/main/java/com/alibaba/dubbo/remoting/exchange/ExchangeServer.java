@@ -15,29 +15,29 @@
  */
 package com.alibaba.dubbo.remoting.exchange;
 
+import com.alibaba.dubbo.remoting.Server;
+
 import java.net.InetSocketAddress;
 import java.util.Collection;
 
-import com.alibaba.dubbo.remoting.Server;
-
 /**
  * ExchangeServer. (API/SPI, Prototype, ThreadSafe)
- * 
+ *
  * @author william.liangf
  */
 public interface ExchangeServer extends Server {
 
     /**
      * get channels.
-     * 
+     *
      * @return channels
      */
     Collection<ExchangeChannel> getExchangeChannels();
 
     /**
      * get channel.
-     * 
-     * @param remoteAddress
+     *
+     * @param remoteAddress remote address
      * @return channel
      */
     ExchangeChannel getExchangeChannel(InetSocketAddress remoteAddress);

@@ -83,8 +83,8 @@ public class TelnetUtils {
         StringBuilder buf = new StringBuilder();
         //line
         buf.append("+");
-        for (int j = 0; j < widths.length; j ++) {
-            for (int k = 0; k < widths[j] + 2; k ++) {
+        for (int width : widths) {
+            for (int k = 0; k < width + 2; k++) {
                 buf.append("-");
             }
             buf.append("+");
@@ -107,8 +107,8 @@ public class TelnetUtils {
         buf.append("\r\n");
         //line
         buf.append("+");
-        for (int j = 0; j < widths.length; j ++) {
-            for (int k = 0; k < widths[j] + 2; k ++) {
+        for (int width : widths) {
+            for (int k = 0; k < width + 2; k++) {
                 buf.append("-");
             }
             buf.append("+");
@@ -147,8 +147,8 @@ public class TelnetUtils {
         }
         //line
         buf.append("+");
-        for (int j = 0; j < widths.length; j ++) {
-            for (int k = 0; k < widths[j] + 2; k ++) {
+        for (int width : widths) {
+            for (int k = 0; k < width + 2; k++) {
                 buf.append("-");
             }
             buf.append("+");

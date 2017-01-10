@@ -21,7 +21,7 @@ import com.alibaba.dubbo.remoting.RemotingException;
 
 /**
  * TelnetHandler
- * 
+ *
  * @author william.liangf
  */
 @SPI
@@ -29,9 +29,9 @@ public interface TelnetHandler {
 
     /**
      * telnet.
-     * 
-     * @param channel
-     * @param message
+     *
+     * @param channel channel
+     * @param message message
      */
     String telnet(Channel channel, String message) throws RemotingException;
 

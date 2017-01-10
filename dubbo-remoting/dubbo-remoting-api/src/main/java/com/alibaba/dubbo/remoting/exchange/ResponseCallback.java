@@ -25,14 +25,14 @@ public interface ResponseCallback {
     /**
      * done.
      * 
-     * @param response
+     * @param response response
      */
     void done(Object response);
 
     /**
      * caught exception.
      * 
-     * @param exception
+     * @param exception exception
      */
     void caught(Throwable exception);
 

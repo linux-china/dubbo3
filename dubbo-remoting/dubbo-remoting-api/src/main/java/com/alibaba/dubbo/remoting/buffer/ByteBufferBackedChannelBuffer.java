@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 
 /**
  * @author <a href="mailto:gang.lvg@alibaba-inc.com">kimi</a>
