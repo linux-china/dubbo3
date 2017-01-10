@@ -15,17 +15,12 @@
  */
 package com.alibaba.dubbo.rpc.protocol.injvm;
 
-import java.util.Map;
-
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.common.utils.NetUtils;
-import com.alibaba.dubbo.common.utils.UrlUtils;
-import com.alibaba.dubbo.rpc.Exporter;
-import com.alibaba.dubbo.rpc.RpcContext;
-import com.alibaba.dubbo.rpc.RpcException;
-import com.alibaba.dubbo.rpc.Invocation;
-import com.alibaba.dubbo.rpc.Result;
+import com.alibaba.dubbo.rpc.*;
 import com.alibaba.dubbo.rpc.protocol.AbstractInvoker;
+
+import java.util.Map;
 
 /**
  * InjvmInvoker
@@ -46,13 +41,9 @@ class InjvmInvoker<T> extends AbstractInvoker<T> {
 
     @Override
 	public boolean isAvailable() {
-    	InjvmExporter<?> exporter = (InjvmExporter<?>) exporterMap.get(key);
-    	if (exporter == null)  {
-            return false;
-        } else {
-        	return super.isAvailable();
-        }
-	}
+        InjvmExporter<?> exporter = (InjvmExporter<?>) exporterMap.get(key);
+        return exporter != null && super.isAvailable();
+    }
 
 	public Result doInvoke(Invocation invocation) throws Throwable {
         Exporter<?> exporter = InjvmProtocol.getExporter(exporterMap, getUrl());
