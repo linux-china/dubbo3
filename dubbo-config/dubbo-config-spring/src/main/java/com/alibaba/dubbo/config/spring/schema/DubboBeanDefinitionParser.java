@@ -111,7 +111,7 @@ public class DubboBeanDefinitionParser implements BeanDefinitionParser {
                 PropertyValue property = definition.getPropertyValues().getPropertyValue("protocol");
                 if (property != null) {
                     Object value = property.getValue();
-                    if (value instanceof ProtocolConfig && id.equals(((ProtocolConfig) value).getName())) {
+                    if (value instanceof ProtocolConfig && Objects.equals(id, ((ProtocolConfig) value).getName())) {
                         definition.getPropertyValues().addPropertyValue("protocol", new RuntimeBeanReference(id));
                     }
                 }
@@ -251,7 +251,7 @@ public class DubboBeanDefinitionParser implements BeanDefinitionParser {
         return beanDefinition;
     }
 
-    private static final Pattern GROUP_AND_VERION = Pattern.compile("^[\\-.0-9_a-zA-Z]+(\\:[\\-.0-9_a-zA-Z]+)?$");
+    private static final Pattern GROUP_AND_VERION = Pattern.compile("^[\\-.0-9_a-zA-Z]+(:[\\-.0-9_a-zA-Z]+)?$");
 
     protected static MonitorConfig convertMonitor(String monitor) {
         if (monitor == null || monitor.length() == 0) {

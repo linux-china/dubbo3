@@ -15,12 +15,11 @@
  */
 package com.alibaba.dubbo.config.spring.extension;
 
-import java.util.Set;
-
-import org.springframework.context.ApplicationContext;
-
 import com.alibaba.dubbo.common.extension.ExtensionFactory;
 import com.alibaba.dubbo.common.utils.ConcurrentHashSet;
+import org.springframework.context.ApplicationContext;
+
+import java.util.Set;
 
 /**
  * SpringExtensionFactory
@@ -29,7 +28,7 @@ import com.alibaba.dubbo.common.utils.ConcurrentHashSet;
  */
 public class SpringExtensionFactory implements ExtensionFactory {
     
-    private static final Set<ApplicationContext> contexts = new ConcurrentHashSet<ApplicationContext>();
+    private static final Set<ApplicationContext> contexts = new ConcurrentHashSet<>();
     
     public static void addApplicationContext(ApplicationContext context) {
         contexts.add(context);
