@@ -30,7 +30,9 @@ Please execute build.sh to build project
 ### Todo
 
 * 代码迁移到Java 8
+* JSR 308 and Java Optional
 * Consul注册中心
+* 多数据中心
 * javassist替换为byte-buddy
 * Lombok？？？: 精简代码 https://projectlombok.org/index.html
 * 文档更新
