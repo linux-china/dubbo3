@@ -1,5 +1,4 @@
 jdk:
   - oraclejdk8
 install:
-   - mvn -DskipTests clean source:jar package
-   - mvn -pl dubbo install
+   - mvn -DskipTests clean source:jar package install
