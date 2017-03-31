@@ -74,7 +74,7 @@
         <!-- Common libs -->
         <netty3.version>3.10.6.Final</netty3.version>
         <hessian_lite.version>3.2.1-fixed-2</hessian_lite.version>
-        <zookeeper.version>3.4.9</zookeeper.version>
+        <zookeeper.version>3.4.10</zookeeper.version>
         <curator.version>2.12.0</curator.version>
         <consul-api.version>1.2.1</consul-api.version>
         <jfreechart.version>1.0.19</jfreechart.version>
