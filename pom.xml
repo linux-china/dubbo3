@@ -80,9 +80,9 @@
         <jfreechart.version>1.0.19</jfreechart.version>
         <!-- Test libs -->
         <easymock.version>3.4</easymock.version>
-        <spring.version>4.3.7.RELEASE</spring.version>
-        <platform-bom.version>Brussels-SR1</platform-bom.version>
-        <copyright>Copyright 1999-2016 Alibaba Group.&#10; &#10;Licensed under the Apache License, Version 2.0 (the
+        <spring.version>4.3.8.RELEASE</spring.version>
+        <platform-bom.version>Brussels-SR2</platform-bom.version>
+        <copyright>Copyright 1999-2017 Alibaba Group.&#10; &#10;Licensed under the Apache License, Version 2.0 (the
             &quot;License&quot;);&#10;you may not use this file except in compliance with the License.&#10;You may
             obtain a copy of the License at&#10; &#10; http://www.apache.org/licenses/LICENSE-2.0&#10; &#10;Unless
             required by applicable law or agreed to in writing, software&#10;distributed under the License is
@@ -184,7 +184,7 @@
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.6.0</version>
+                <version>3.6.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
