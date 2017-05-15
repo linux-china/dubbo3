@@ -19,6 +19,8 @@ Dubbo是一个高性能的分布式RPC框架，主要包括一下部分:
 * 容器: 取消Jetty支持，使用Spring Boot替换
 * Docker: 在 Protocol 配置中增加了 exportHost 和 exportPort 参数, 区分容器内绑定的真实地址和注册到注册中心的宿主机地址
 
+请参考presentation： https://gitpitch.com/linux-china/dubbo3
+
 ### Quick Start
 
 Please visit https://github.com/linux-china/spring-boot-dubbo for demo with Spring Boot integration.
