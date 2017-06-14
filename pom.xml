@@ -76,7 +76,7 @@
         <hessian_lite.version>3.2.1-fixed-2</hessian_lite.version>
         <zookeeper.version>3.4.10</zookeeper.version>
         <curator.version>2.12.0</curator.version>
-        <consul-api.version>1.2.2</consul-api.version>
+        <consul-api.version>1.2.3</consul-api.version>
         <jfreechart.version>1.0.19</jfreechart.version>
         <!-- Test libs -->
         <easymock.version>3.4</easymock.version>
