@@ -33,7 +33,7 @@ Please execute build.sh to build project
 
 * 代码迁移到Java 8
 * JSR 308 and Java Optional
-* Consul注册中心
+* Consul注册中心，添加health checker
 * 多数据中心
 * javassist替换为byte-buddy
 * Lombok？？？: 精简代码 https://projectlombok.org/index.html
