@@ -70,8 +70,8 @@ public class ConsulRegistry extends FailbackRegistry {
         if (dubboHTTPCheckURL != null) {
             NewService.Check check = new NewService.Check();
             check.setHttp(dubboHTTPCheckURL);
-            check.setInterval("30s");
-            check.setTimeout("5s");
+            check.setInterval("15s");
+            check.setTimeout("3s");
             dubboService.setCheck(check);
         }
         consulClient.agentServiceRegister(dubboService);
