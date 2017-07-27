@@ -60,6 +60,18 @@ public class ConsulRegistry extends FailbackRegistry {
         consulService.setPort(url.getPort());
         consulService.setId(convertConsulSerivceId(url));
         consulService.setName(url.getServiceInterface());
+        //set health checker
+        String dubboHTTPCheckURL = System.getProperty("DUBBO_HTTP_CHECK_URL");
+        if (dubboHTTPCheckURL == null) {
+            dubboHTTPCheckURL = System.getenv("DUBBO_HTTP_CHECK_URL");
+        }
+        if (dubboHTTPCheckURL != null) {
+            NewService.Check check = new NewService.Check();
+            check.setHttp(dubboHTTPCheckURL);
+            check.setInterval("30s");
+            check.setTimeout("5s");
+            consulService.setCheck(check);
+        }
         consulClient.agentServiceRegister(consulService);
     }
 
