@@ -38,3 +38,4 @@ Please execute build.sh to build project
 * javassist替换为byte-buddy
 * Lombok？？？: 精简代码 https://projectlombok.org/index.html
 * 文档更新
+* Reactive支持: Reactor & RxJava
