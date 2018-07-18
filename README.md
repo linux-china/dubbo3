@@ -21,6 +21,15 @@ Dubbo是一个高性能的分布式RPC框架，主要包括一下部分:
 
 请参考presentation： https://gitpitch.com/linux-china/dubbo3
 
+
+### Dubbo Spring Boot
+不少同学会对Dubbo更多的需求，这当然是对，但是有一些特性可能做在Dubbo和某些框架的集成上更好，如Dubbo Spring Boot，这里列举一下特性：
+
+* Metrics集成，这个在Dubbo Spring Boot中通过filter机制完成更方便
+* DevOps API: 各种信息暴露
+
+相信的请访问： https://github.com/linux-china/spring-boot-dubbo
+
 ### Quick Start
 
 Please visit https://github.com/linux-china/spring-boot-dubbo for demo with Spring Boot integration.
