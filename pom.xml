@@ -80,7 +80,7 @@
         <jfreechart.version>1.0.19</jfreechart.version>
         <!-- Test libs -->
         <easymock.version>3.4</easymock.version>
-        <spring.version>4.3.18.RELEASE</spring.version>
+        <spring.version>4.3.29.RELEASE</spring.version>
         <platform-bom.version>Brussels-SR11</platform-bom.version>
         <copyright>Copyright 1999-2017 Alibaba Group.&#10; &#10;Licensed under the Apache License, Version 2.0 (the
             &quot;License&quot;);&#10;you may not use this file except in compliance with the License.&#10;You may
